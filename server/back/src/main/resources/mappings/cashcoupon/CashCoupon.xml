@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.cashcoupon.dao.ICashCouponDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.cashcoupon.entity.CashCouponBean">
+        SELECT
+        cash_coupon.id as id,
+        dict.type as dicttype,
+        cash_coupon.money as money,
+        cash_coupon.type as type,
+        cash_coupon.create_time as createTime,
+        cash_coupon.update_time as updateTime,
+        dict.label as lable
+        FROM
+        tb_cash_coupon cash_coupon
+        inner join sys_dict dict on dict.`value` = cash_coupon.type
+        where 1=1
+        <if test="id!=null">
+            and cash_coupon.id=#{id}
+        </if>
+        <if test="money!=null">
+            and cash_coupon.money=#{money}
+        </if>
+        <if test="type!=null">
+            and cash_coupon.type=#{type}
+        </if>
+        <if test="createTime!=null">
+            and cash_coupon.create_time=#{createTime}
+        </if>
+        <if test="updateTime!=null">
+            and cash_coupon.update_time=#{updateTime}
+        </if>
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.cashcoupon.entity.CashCouponBean">
+        SELECT
+        cash_coupon.id as id,
+        cash_coupon.money as money,
+        cash_coupon.type as type,
+        cash_coupon.create_time as createTime,
+        cash_coupon.update_time as updateTime
+        FROM
+    tb_cash_coupon cash_coupon
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_cash_coupon
+        (
+        id,
+        money,
+        type,
+        create_time,
+        create_by,
+        update_time,
+        update_by
+        )
+        VALUES(
+        #{id},
+        #{money},
+        #{type},
+        #{createTime},
+        #{createBy.id},
+        #{updateTime},
+        #{updateBy.id}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_cash_coupon
+        <set>
+            money = #{money},
+            update_time = #{updateTime},
+            update_by = #{updateBy.id}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+    tb_cash_coupon
+        WHERE id= #{id}
+    </update>
+    <insert id="saveSysdict">
+       insert into sys_dict(id,value,label,type,sort) values(#{id},#{value},#{lable},#{type},#{sort})
+    </insert>
+    <select id="dictList" resultType="com.rmkj.microcap.common.modules.sys.bean.SysDictBean">
+        select * from sys_dict where del_flag = 0
+    </select>
+</mapper>

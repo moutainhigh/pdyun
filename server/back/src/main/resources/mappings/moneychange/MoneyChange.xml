@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.moneychange.dao.IMoneyChangeDao">
+    <select id="queryList" resultType="com.rmkj.microcap.modules.moneychange.entity.MoneyChangeBean">
+        SELECT
+        units.`name` as unitsName,
+	    agent.real_name AS agentRealName,
+        money_change.id as id,
+        money_change.user_id as userId,
+        money_change.dif_money as difMoney,
+        money_change.type as type,
+        money_change.before_money as beforeMoney,
+        money_change.after_money as afterMoney,
+        money_change.create_time as createTime,
+        money_change.remark as remark,
+        users.chn_name as uname,
+        users.mobile as mobile
+        FROM
+        tb_money_change money_change
+        LEFT JOIN tb_user users on  money_change.user_id = users.id
+        LEFT JOIN tb_ml3_agent agent ON agent.agent_invite_code = users.agent_invite_code
+        LEFT JOIN tb_ml3_member_units units ON units.id = agent.units_id
+        where 1=1
+        ORDER BY money_change.create_time desc
+    </select>
+
+    <select id="findMoneyChangePage" resultType="com.rmkj.microcap.modules.moneychange.entity.MoneyChangePageBean" parameterType="com.rmkj.microcap.modules.moneychange.entity.MoneyChangePageBean">
+        SELECT
+          T.id AS id,
+          T.user_id AS userId,
+          T.dif_money AS difMoney,
+          T.type AS type,
+          T.before_money AS beforeMoney,
+          T.after_money AS afterMoney,
+          T.create_time AS createTime,
+          T.remark AS remark,
+          tb_user.chn_name AS chnName,
+          tb_user.mobile AS mobile,
+          tb_ml3_agent.real_name AS agentRealName,
+          tb_ml3_member_units.`name` AS unitsName
+        from (
+          select * from tb_money_change money_change
+            <where>
+                <if test="userIdList != null">
+                    user_id IN (
+                      <foreach collection="userIdList" item="userId" index="index" separator=",">
+                        #{userId}
+                      </foreach>
+                    )
+                </if>
+                <if test="createTimeMin != null">
+                  AND  create_time &gt; #{createTimeMin}
+                </if>
+                <if test="createTimeMax != null">
+                    and create_time &lt; #{createTimeMax}
+                </if>
+            </where>
+          ORDER BY create_time DESC LIMIT #{start},#{rows}
+        ) T,tb_user,tb_ml3_agent,tb_ml3_member_units
+          WHERE T.user_id = tb_user.id AND tb_user.agent_invite_code = tb_ml3_agent.agent_invite_code AND tb_ml3_member_units.id = tb_ml3_agent.units_id
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Long" parameterType="com.rmkj.microcap.modules.moneychange.entity.MoneyChangePageBean">
+        SELECT COUNT(*) FROM tb_money_change
+          <where>
+              <if test="userIdList != null">
+                  user_id IN (
+                    <foreach collection="userIdList" item="userId" index="index" separator=",">
+                        #{userId}
+                    </foreach>
+                  )
+              </if>
+              <if test="createTimeMin != null">
+                  AND  create_time &gt; #{createTimeMin}
+              </if>
+              <if test="createTimeMax != null">
+                  and create_time &lt; #{createTimeMax}
+              </if>
+          </where>
+    </select>
+
+    <select id="get" resultType="com.rmkj.microcap.modules.moneychange.entity.MoneyChangeBean">
+        SELECT
+        money_change.id as id,
+        money_change.user_id as userId,
+        money_change.dif_money as difMoney,
+        money_change.type as type,
+        money_change.before_money as beforeMoney,
+        money_change.after_money as afterMoney,
+        money_change.create_time as createTime,
+        money_change.remark as remark
+        FROM
+    tb_money_change money_change
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_money_change
+        (
+        id,
+        user_id,
+        dif_money,
+        type,
+        before_money,
+        after_money,
+        create_time,
+        remark
+        )
+        VALUES(
+        #{id},
+        #{userId},
+        #{difMoney},
+        #{type},
+        #{beforeMoney},
+        #{afterMoney},
+        #{createTime},
+        #{remark}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_money_change
+        <set>
+            id = #{id},
+            user_id = #{userId},
+            dif_money = #{difMoney},
+            type = #{type},
+            before_money = #{beforeMoney},
+            after_money = #{afterMoney},
+            create_time = #{createTime},
+            remark = #{remark}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+          tb_money_change
+        WHERE id= #{id}
+    </update>
+</mapper>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.modules.subGoods.dao.SubGoodsDao">
+    <select id="queryList" resultType="com.rmkj.microcap.modules.subGoods.entity.SubGoods" parameterType="com.rmkj.microcap.modules.subGoods.entity.SubGoods">
+      SELECT
+            goods.id AS id,
+            goods.img_path AS imgPath,
+            goods.img_load_path AS imgLoadPath,
+            goods.goods_name AS goodsName,
+            goods.goods_total_num AS goodsTotalNum,
+            goods.goods_left_num AS goodsLeftNum,
+            goods.sub_scale AS subScale,
+            goods.goods_sub_price AS goodsSubPrice,
+            goods.goods_cost AS goodsCost,
+            goods.`status` AS status,
+            goods.create_time AS createTime,
+            goods.sub_days AS subDays,
+            goods.user_mobile AS userMobile,
+            goods.user_id AS userId,
+            goodsSpec.id AS goodsSpecId,
+            goodsSpec.sub_total_num AS subTotalNum,
+            goodsSpec.sub_make_num AS subMakeNum,
+            goodsSpec.sub_send_num AS subSendNum,
+            goods.goods_code as goodsCode
+        FROM
+            tb_sub_goods goods
+        LEFT JOIN `tb_sub_goods_spec` goodsSpec ON goods.id = goodsSpec.goods_id
+        WHERE 1 = 1
+        <include refid="quertListWhere"/>
+        ORDER BY goods.create_time DESC LIMIT #{start}, #{rows}
+    </select>
+
+    <select id="queryListTotal" resultType="java.lang.Long" parameterType="com.rmkj.microcap.modules.subGoods.entity.SubGoods">
+        SELECT
+          count(1)
+        FROM tb_sub_goods goods
+        LEFT JOIN `tb_sub_goods_spec` goodsSpec ON goods.id = goodsSpec.goods_id
+        WHERE 1 = 1
+        <include refid="quertListWhere"/>
+    </select>
+
+    <sql id="quertListWhere">
+        <if test="id != null and id != ''">
+            AND goods.id = #{id}
+        </if>
+        <if test="goodsName != null and goodsName != ''">
+            AND goods.goods_name = #{goodsName}
+        </if>
+    </sql>
+
+    <select id="getGoodsType" resultType="com.rmkj.microcap.modules.subGoods.entity.GoodsType">
+      SELECT id,
+             type_name as typeName,
+             create_time as createTime
+         FROM tb_goods_type
+        WHERE status = '1'
+    </select>
+
+    <insert id="insert" parameterType="com.rmkj.microcap.modules.subGoods.entity.SubGoods">
+        INSERT INTO tb_sub_goods(
+          id, type_id, img_path, img_load_path, img_detail_path, img_detail_load_path, goods_name, goods_total_num, goods_left_num, sub_scale, goods_sub_price, goods_cost, status, create_time, sub_days, user_id, user_mobile, goods_code
+        )
+        VALUES (
+          #{id}, #{goodsType}, #{imgPath}, #{imgLoadPath}, #{imgDetailPath}, #{imgDetailLoadPath}, #{goodsName}, #{goodsTotalNum}, #{goodsLeftNum}, #{subScale}, #{goodsSubPrice}, #{goodsCost}, #{status}, #{createTime}, #{subDays}, #{userId}, #{userMobile}, #{goodsCode}
+        )
+    </insert>
+
+    <select id="getById" resultType="com.rmkj.microcap.modules.subGoods.entity.SubGoods" parameterType="java.lang.String">
+        SELECT
+            goods.id AS id,
+            goods.img_path AS imgPath,
+            goods.img_load_path AS imgLoadPath,
+            goods.goods_name AS goodsName,
+            goods.goods_total_num AS goodsTotalNum,
+            goods.goods_left_num AS goodsLeftNum,
+            goods.sub_scale AS subScale,
+            goods.goods_sub_price AS goodsSubPrice,
+            goods.goods_cost AS goodsCost,
+            goods.`status` AS status,
+            goods.create_time AS createTime,
+            goods.sub_days AS subDays,
+            goods.user_mobile AS userMobile,
+            goods.user_id AS userId,
+            goodsSpec.id AS goodsSpecId,
+            goodsSpec.sub_total_num AS subTotalNum,
+            goodsSpec.sub_make_num AS subMakeNum,
+            goodsSpec.sub_send_num AS subSendNum,
+            goods.goods_code as goodsCode
+        FROM
+            tb_sub_goods goods
+        LEFT JOIN `tb_sub_goods_spec` goodsSpec ON goods.id = goodsSpec.goods_id
+        WHERE goods.id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.rmkj.microcap.modules.subGoods.entity.SubGoods">
+        UPDATE tb_sub_goods
+        <set>
+            <if test="goodsName != null and goodsName != ''">
+                goods_name = #{goodsName},
+            </if>
+            <if test="subScale != null and subScale != ''">
+                sub_scale = #{subScale},
+            </if>
+            <if test="goodsCost != null and goodsCost != ''">
+                goods_cost = #{goodsCost},
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                goods_name = #{goodsName},
+            </if>
+            <if test="goodsCode !=null and goodsCode != ''">
+                goods_code = #{goodsCode}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatusById" parameterType="java.lang.String">
+        UPDATE tb_sub_goods SET status = #{1} WHERE id = #{0}
+    </update>
+
+    <select id="takeGoodsList" parameterType="com.rmkj.microcap.modules.subGoods.entity.TakeGoodsParam" resultType="com.rmkj.microcap.modules.subGoods.entity.TakeGoodsBean">
+        SELECT
+              take.id,
+              take.goods_id as goodsId,
+              take.goods_name as goodsName,
+              take.user_id as userId,
+              take.goods_num as goodsNum,
+              take.create_time as createTime,
+              take.money,
+              take.status,
+              take.address_id as addressId,
+              take.update_time as updateTime,
+              take.service_fee as serviceFee,
+              take.buy_fee as buyFee,
+              user.mobile as userMobile,
+              user.chn_name as userChnName,
+              agent.id as agentId,
+              agent.account as agentName,
+              agent.units_id as unitsId,
+              units.name as unitsName,
+              agent.center_id as centerId,
+              center.name as centerName,
+              address.receiver_name as receiverName,
+              address.receiver_mobile as receiverMobile,
+              address.region,
+              address.address
+        FROM
+            tb_goods_take take LEFT JOIN tb_user user on take.user_id = user.id
+                               LEFT JOIN tb_ml3_agent agent on user.agent_invite_code = agent.agent_invite_code
+                               LEFT JOIN tb_ml3_member_units units on agent.units_id = units.id
+                               LEFT JOIN tb_ml3_operate_center center on agent.center_id = center.id
+                               LEFT JOIN tb_user_address address on take.address_id = address.id
+        WHERE 1 = 1
+            <if test='goodsId!=null and goodsId!=""'>
+                AND take.goods_id = #{goodsId}
+            </if>
+            <if test='mobile!=null and mobile!=""'>
+                AND user.mobile = #{mobile}
+            </if>
+            <if test='agentId!=null and agentId!=""'>
+                AND agent.id = #{agentId}
+            </if>
+            <if test='unitsId!=null and unitsId!=""'>
+                AND agent.units_id = #{unitsId}
+            </if>
+            <if test='centerId!=null and centerId!=""'>
+                AND agent.center_id = #{centerId}
+            </if>
+        ORDER BY
+              take.create_time DESC
+    </select>
+
+    <select id="getTakeGoods" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.subGoods.entity.TakeGoodsBean">
+        SELECT
+              take.id,
+              take.goods_id as goodsId,
+              take.goods_name as goodsName,
+              take.user_id as userId,
+              take.goods_num as goodsNum,
+              take.create_time as createTime,
+              take.money,
+              take.status,
+              take.address_id as addressId,
+              take.update_time as updateTime,
+              take.service_fee as serviceFee,
+              take.buy_fee as buyFee
+        FROM
+            tb_goods_take take
+       WHERE take.id = #{0}
+    </select>
+
+    <select id="countTakeGoodsList" parameterType="com.rmkj.microcap.modules.subGoods.entity.TakeGoodsParam" resultType="java.lang.Integer">
+        SELECT
+          count(1)
+        FROM
+            tb_goods_take take LEFT JOIN tb_user user on take.user_id = user.id
+                               LEFT JOIN tb_ml3_agent agent on user.agent_invite_code = agent.agent_invite_code
+                               LEFT JOIN tb_ml3_member_units units on agent.units_id = units.id
+                               LEFT JOIN tb_ml3_operate_center center on agent.center_id = center.id
+                               LEFT JOIN tb_user_address address on take.address_id = address.id
+        WHERE 1 = 1
+            <if test='goodsId!=null and goodsId!=""'>
+                AND take.goods_id = #{goodsId}
+            </if>
+            <if test='mobile!=null and mobile!=""'>
+                AND user.mobile = #{mobile}
+            </if>
+            <if test='agentId!=null and agentId!=""'>
+                AND agent.id = #{agentId}
+            </if>
+            <if test='unitsId!=null and unitsId!=""'>
+                AND agent.units_id = #{unitsId}
+            </if>
+            <if test='centerId!=null and centerId!=""'>
+                AND agent.center_id = #{centerId}
+            </if>
+     </select>
+
+    <update id="goodsOperate" parameterType="java.util.Map">
+        UPDATE tb_goods_take SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <select id="getSubTrade" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.subGoods.entity.SubTradeBean">
+        SELECT
+          trade.id,
+          trade.serial_no as serialNo,
+          trade.user_id as userId,
+          trade.hold_num as holdNum,
+          trade.money,
+          trade.status,
+          trade.hold_flag as holdFlag,
+          trade.service_fee as serviceFee,
+          trade.fee_buy as feeBuy,
+          trade.buy_time as buyTime,
+          trade.buy_point as buyPoint
+        FROM
+            tb_goods_take take LEFT JOIN tb_trade trade ON take.serial_no = trade.serial_no
+        WHERE
+            take.id = #{0}
+    </select>
+
+    <update id="returnOldSubTrade" parameterType="com.rmkj.microcap.modules.subGoods.entity.SubTradeBean">
+        UPDATE tb_trade
+           SET hold_num = #{holdNum},
+               service_fee = #{serviceFee},
+               fee_buy = #{feeBuy},
+               money = #{money}
+         WHERE id = #{id}
+    </update>
+
+    <insert id="createNewTrade" parameterType="com.rmkj.microcap.modules.subGoods.entity.SubTradeBean">
+        INSERT INTO tb_trade(
+            id,
+            serial_no,
+            user_id,
+            goods_id,
+            goods_name,
+            hold_num,
+            money,
+            service_fee,
+            fee_buy,
+            fee_sell,
+            buy_point,
+            buy_time,
+            status,
+            agent_id,
+            units_id,
+            center_id,
+            hold_flag,
+            parent1_id,
+            parent2_id,
+            parent3_id
+        )
+        VALUES (
+            #{id},
+            #{serialNo},
+            #{userId},
+            #{goodsId},
+            #{goodsName},
+            #{holdNum},
+            #{money},
+            #{serviceFee},
+            #{feeBuy},
+            #{feeSell},
+            #{buyPoint},
+            #{buyTime},
+            #{status},
+            #{agentId},
+            #{unitsId},
+            #{centerId},
+            #{holdFlag},
+            #{parent1Id},
+            #{parent2Id},
+            #{parent3Id}
+        )
+    </insert>
+
+    <select id="getIntegralList" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.subGoods.entity.IntegralBean">
+        SELECT
+            integral.id,
+            integral.user_id as userId,
+            integral.type,
+            integral.integral,
+            integral.integral_before as integralBefore,
+            integral.integral_after as integralAfter,
+            integral.create_time as createTime,
+            integral.remark,
+            `user`.chn_name as userName,
+            `user`.mobile
+        FROM
+          tb_integral integral LEFT JOIN tb_user user on integral.user_id = user.id
+        WHERE 1 = 1
+            <if test='_parameter!=null and _parameter!=""'>
+                AND user.mobile = #{0}
+            </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="countIntegral" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+            count(1)
+        FROM
+        tb_integral integral LEFT JOIN tb_user user on integral.user_id = user.id
+        WHERE 1 = 1
+        <if test='_parameter!=null and _parameter!=""'>
+            AND user.mobile = #{0}
+        </if>
+    </select>
+
+</mapper>

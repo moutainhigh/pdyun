@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.ReturnMoneyOut.dao.IReturnMoneyOutDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        SELECT
+        return_money_out.id as id,
+        return_money_out.serial_no as serialNo,
+        `user`.chn_name as userChnName,
+        user.mobile as userMobile,
+        return_money_out.user_id as userId,
+        return_money_out.money as money,
+        return_money_out.fee as fee,
+        return_money_out.third_serial_no as thirdSerialNo,
+        return_money_out.status as status,
+        return_money_out.remark as remark,
+        return_money_out.create_time as createTime,
+        return_money_out.complete_time as completeTime,
+        return_money_out.chn_name as chnName,
+        return_money_out.bank_account as bankAccount,
+        return_money_out.bank_name as bankName,
+        return_money_out.open_bank_name as openBankName,
+        return_money_out.province as province,
+        return_money_out.city as city,
+        return_money_out.failure_reason as failureReason,
+        return_money_out.review_status as reviewStatus,
+        return_money_out.lian_hang_no as lianHangNo
+        FROM
+        tb_return_money_out return_money_out
+        left join tb_user user on `user`.id = return_money_out.user_id
+        where 1=1
+        <if test="userChnName!=null">
+            and `user`.chn_name=#{userChnName}
+        </if>
+        <if test="userMobile!=null">
+            and user.mobile = #{userMobile}
+        </if>
+        <if test="createTimeMin!=null">
+            and return_money_out.create_time &gt; #{createTimeMin}
+        </if>
+        <if test="createTimeMax!=null">
+            and return_money_out.create_time &lt; #{createTimeMax}
+        </if>
+        order by return_money_out.create_time desc
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        SELECT
+        return_money_out.id as id,
+        return_money_out.serial_no as serialNo,
+        return_money_out.user_id as userId,
+        return_money_out.money as money,
+        return_money_out.fee as fee,
+        return_money_out.third_serial_no as thirdSerialNo,
+        return_money_out.status as status,
+        return_money_out.remark as remark,
+        return_money_out.create_time as createTime,
+        return_money_out.complete_time as completeTime,
+        return_money_out.chn_name as chnName,
+        return_money_out.bank_account as bankAccount,
+        return_money_out.bank_name as bankName,
+        return_money_out.open_bank_name as openBankName,
+        return_money_out.province as province,
+        return_money_out.city as city,
+        return_money_out.failure_reason as failureReason,
+		return_money_out.review_status as reviewStatus,
+		return_money_out.lian_hang_no as lianHangNo
+        FROM
+    tb_return_money_out return_money_out
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_return_money_out
+        (
+        id,
+        serial_no,
+        user_id,
+        money,
+        fee,
+        third_serial_no,
+        status,
+        remark,
+        create_time,
+        complete_time,
+        chn_name,
+        bank_account,
+        bank_name,
+        open_bank_name,
+        province,
+        city,
+        failure_reason,
+		review_status,
+		lian_hang_no
+        )
+        VALUES(
+        #{id},
+        #{serialNo},
+        #{userId},
+        #{money},
+        #{fee},
+        #{thirdSerialNo},
+        #{status},
+        #{remark},
+        #{createTime},
+        #{completeTime},
+        #{chnName},
+        #{bankAccount},
+        #{bankName},
+        #{openBankName},
+        #{province},
+        #{city},
+        #{failureReason},
+		#{reviewStatus},
+		#{lianHangNo}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_return_money_out
+        <set>
+            id = #{id},
+            serial_no = #{serialNo},
+            user_id = #{userId},
+            money = #{money},
+            fee = #{fee},
+            third_serial_no = #{thirdSerialNo},
+            status = #{status},
+            remark = #{remark},
+            create_time = #{createTime},
+            complete_time = #{completeTime},
+            chn_name = #{chnName},
+            bank_account = #{bankAccount},
+            bank_name = #{bankName},
+            open_bank_name = #{openBankName},
+            province = #{province},
+            city = #{city},
+            failure_reason = #{failureReason}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        UPDATE
+    tb_return_money_out
+        WHERE id= #{id}
+    </update>
+    <update id="outPast" parameterType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        UPDATE tb_return_money_out SET status = 2,failure_reason=#{failureReason}
+        WHERE id = #{id} AND status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         = 1
+    </update>
+    <update id="outPastIn" parameterType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        UPDATE tb_return_money_out SET status = 1
+        WHERE id = #{id} AND status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          = 1
+    </update>
+
+    <select id="findNoResult2Check" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordForOutBean">
+        SELECT
+        id as id,
+        serial_no as serialNo,
+        user_id as userId,
+        money as money,
+        fee as fee,
+        third_serial_no as thirdSerialNo,
+        status as status,
+        remark as remark,
+        create_time as createTime,
+        review_time AS reviewTime,
+        complete_time as completeTime,
+        chn_name as chnName,
+        bank_name as bankName,
+        bank_account as bankAccount,
+        failure_reason as failureReason
+        FROM tb_return_money_out WHERE status = 0 AND review_status = 1 AND type = 1 AND third_serial_no is not null
+    </select>
+
+    <select id="findNoResultCheckOutMoney" resultType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        SELECT
+        id as id,
+        serial_no as serialNo,
+        user_id as userId,
+        money as money,
+        fee as fee,
+        third_serial_no as thirdSerialNo,
+        status as status,
+        remark as remark,
+        create_time as createTime,
+        review_time AS reviewTime,
+        complete_time as completeTime,
+        chn_name as chnName,
+        bank_name as bankName,
+        bank_account as bankAccount,
+        failure_reason as failureReason
+        FROM tb_return_money_out WHERE status = 0 AND review_status = 1 AND type = 1 AND third_serial_no is not null
+    </select>
+
+    <update id="updateSuccess" parameterType="string">
+          UPDATE tb_return_money_out SET status = 1, complete_time = now() WHERE id = #{id}
+    </update>
+
+    <update id="updateFailure" parameterType="string">
+          UPDATE tb_return_money_out SET status = 2, review_status = if(review_status = 0, 1, review_status), review_time = if(review_time is null, now(), review_time), complete_time = now() WHERE id = #{id}
+    </update>
+
+    <update id="updateTimeOut" parameterType="string">
+        UPDATE tb_money_record SET status = 0,review_status = 1,complete_time = now() WHERE id = #{id}
+    </update>
+
+    <update id="updateReturnMoneyOutSuccess" parameterType="string">
+        UPDATE tb_return_money_out SET review_status = 1,status = 1,complete_time = now() WHERE id = #{id}
+    </update>
+
+    <select id="queryInfoForOut" parameterType="java.util.List" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordForOutBean">
+        SELECT
+        id as id,
+        serial_no as serialNo,
+        user_id as userId,
+        money as money,
+        fee as fee,
+        third_serial_no as thirdSerialNo,
+        status as status,
+        remark as remark,
+        create_time as createTime,
+        complete_time as completeTime,
+        bank_name as bankName,
+        bank_account AS bankAccount,
+        chn_name as chnName,
+        open_bank_name AS openBankName,
+        province AS province,
+        city AS city,
+        lian_hang_no AS lianHangNo
+        FROM tb_return_money_out WHERE `status` = 0 AND review_status = 0 AND id in
+        <foreach collection="list" open="(" close=")" separator="," item="it">
+            #{it}
+        </foreach>
+    </select>
+    <!-- 根据id查询佣金记录 批量查询 -->
+    <select id="queryInfoForReturnMoneyOut" parameterType="java.util.List" resultType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        SELECT
+        id as id,
+        serial_no as serialNo,
+        user_id as userId,
+        money as money,
+        fee as fee,
+        third_serial_no as thirdSerialNo,
+        status as status,
+        remark as remark,
+        create_time as createTime,
+        complete_time as completeTime,
+        bank_name as bankName,
+        bank_account AS bankAccount,
+        chn_name as chnName,
+        open_bank_name AS openBankName,
+        province AS province,
+        city AS city,
+        lian_hang_no AS lianHangNo
+        FROM tb_return_money_out WHERE `status` = 0 AND review_status = 0 AND id in
+        <foreach collection="list" open="(" close=")" separator="," item="it">
+            #{it}
+        </foreach>
+    </select>
+
+    <select id="queryUserMoney" parameterType="string" resultType="com.rmkj.microcap.modules.user.entity.UserBean">
+        SELECT
+        id,
+        return_money AS returnMoney
+        FROM tb_user
+        WHERE id = #{id}
+    </select>
+
+    <update id="returnMoney2User" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.ReturnMoney2User">
+        UPDATE tb_user SET return_money = #{money} + #{difMoney} WHERE id = #{id} AND return_money = #{money}
+    </update>
+
+    <insert id="addMoneyChange" parameterType="com.rmkj.microcap.modules.moneychange.entity.MoneyChangeBean">
+        INSERT INTO
+        tb_money_change
+        (id, user_id, dif_money, type, before_money, after_money, create_time, remark)
+        VALUES
+        (#{id}, #{userId}, #{difMoney}, #{type}, #{beforeMoney}, #{afterMoney}, now(), #{remark})
+    </insert>
+
+    <update id="pass" parameterType="java.util.List">
+        UPDATE tb_return_money_out SET review_status = 1
+        WHERE review_status = 0 AND id in
+        <foreach collection="list" open="(" close=")" separator="," item="it">
+            #{it}
+        </foreach>
+    </update>
+
+    <update id="nopass" parameterType="java.util.Map">
+        UPDATE tb_return_money_out SET review_status = 2, status = 2, failure_reason = #{failureReason}
+        WHERE review_status = 0 AND id in
+        <foreach collection="ids" open="(" close=")" separator="," item="it">
+            #{it}
+        </foreach>
+    </update>
+
+    <update id="review" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        UPDATE tb_return_money_out SET review_status = 1, review_time = now(), third_serial_no = #{thirdSerialNo}
+        WHERE review_status = 0 AND type = 1 AND id = #{id}
+    </update>
+    <!-- 根据id查询佣金提现记录 -->
+    <select id="findByIds" parameterType="java.util.List" resultType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        SELECT
+            id as id,
+            serial_no as serialNo,
+            user_id as userId,
+            money as money,
+            fee as fee,
+            third_serial_no as thirdSerialNo,
+            status as status,
+            remark as remark,
+            create_time as createTime,
+            complete_time as completeTime,
+            bank_name as bankName,
+            bank_account AS bankAccount,
+            chn_name as chnName,
+            open_bank_name AS openBankName,
+            province AS province,
+            city AS city,
+            lian_hang_no AS lianHangNo
+        FROM tb_return_money_out
+        WHERE type = 1 AND status = 0 AND id IN
+        <foreach collection="list" open="(" close=")" item="it" separator=",">
+            #{it}
+        </foreach>
+    </select>
+
+    <!-- 威鹏支付出金时，修改审核状态，状态 -->
+    <update id="outPastInStatusAndReviewStatus" parameterType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        UPDATE tb_return_money_out
+        <set>
+            complete_time = now(),
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="thirdSerialNo != null">
+                third_serial_no = #{thirdSerialNo},
+            </if>
+            <if test="reviewStatus != null">
+                review_status = #{reviewStatus},
+            </if>
+            <if test="failureReason != null">
+                failure_reason = #{failureReason},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            complete_time = now()
+        </set>
+        WHERE id = #{id} AND status = 0
+    </update>
+
+    <!--威鹏代付查询-->
+    <select id="findWeiPengNoResult2Check" resultType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        SELECT
+        id as id,
+        serial_no as serialNo,
+        user_id as userId,
+        money as money,
+        fee as fee,
+        third_serial_no as thirdSerialNo,
+        status as status,
+        review_time as reviewTime,
+        review_status as reviewStatus,
+        remark as remark,
+        create_time as createTime,
+        complete_time as completeTime,
+        chn_name as chnName,
+        bank_name as bankName,
+        bank_account as bankAccount,
+        failure_reason as failureReason
+        FROM tb_return_money_out WHERE status = 0 AND review_status = 1 AND TIMESTAMPDIFF(MINUTE,review_time,now()) &gt;10
+    </select>
+
+    <select id="getReturnMoneyByserialNo" resultType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean" parameterType="java.lang.String">
+        SELECT
+        id as id,
+        serial_no as serialNo,
+        user_id as userId,
+        money as money,
+        fee as fee,
+        third_serial_no as thirdSerialNo,
+        status as status,
+        remark as remark,
+        create_time as createTime,
+        complete_time as completeTime,
+        bank_name as bankName,
+        bank_account AS bankAccount,
+        chn_name as chnName,
+        open_bank_name AS openBankName,
+        province AS province,
+        city AS city,
+        lian_hang_no AS lianHangNo
+        FROM
+        tb_return_money_out
+        WHERE serial_no = #{serialNo} AND review_status = 1 AND status = 0
+    </select>
+
+    <!-- 威鹏支付出金成功时，收到异步通知时修改 -->
+    <update id="updateDaiPayOutPastInStatus" parameterType="com.rmkj.microcap.modules.ReturnMoneyOut.entity.ReturnMoneyOutBean">
+        UPDATE tb_return_money_out SET
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="thirdSerialNo != null">
+            third_serial_no = #{thirdSerialNo},
+        </if>
+        <if test="failureReason != null">
+            failure_reason = #{failureReason},
+        </if>
+        <if test="remark != null">
+            remark = #{remark},
+        </if>
+        complete_time = now()
+        WHERE serial_no = #{serialNo} AND review_status = 1 AND status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        = 1
+    </update>
+</mapper>

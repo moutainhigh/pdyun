@@ -1,0 +1,3586 @@
+
+        <html xmlns:v="urn:schemas-microsoft-com:vml"
+        xmlns:o="urn:schemas-microsoft-com:office:office"
+        xmlns:w="urn:schemas-microsoft-com:office:word"
+        xmlns="http://www.w3.org/TR/REC-html40">
+        <head><meta http-equiv=Content-Type content="text/html;  
+        charset=utf-8">
+        <style type="text/css">
+            table  
+            {  
+                border-collapse: collapse;
+                border: none;  
+                width: 100%;  
+            }  
+            td  
+            {  
+                border: solid #CCC 1px;  
+            }  
+            .codestyle{
+                word-break: break-all;
+                background:silver;mso-highlight:silver;
+            }
+        </style>
+        <meta name=ProgId content=Word.Document>
+        <meta name=Generator content="Microsoft Word 11">
+        <meta name=Originator content="Microsoft Word 11">
+        <xml><w:WordDocument><w:View>Print</w:View></xml></head>
+        <body><h1>1、用户模块</h1><div style="margin-left:20px;"><h2>1.1、注册</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>用户注册接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/user/register</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">password</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>密码</td>
+</tr>
+<tr>
+<td style="text-align: left;">verifyCode</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>验证码</td>
+</tr>
+<tr>
+<td style="text-align: left;">refereePhone</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>推荐人手机号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;cookie&quot;: {
+      &quot;name&quot;: &quot;_auth&quot;,
+      &quot;value&quot;: &quot;%7B%22agentInviteCode%22%3A%222MICCv%22%2C%22mobile%22%3A%222222%22%2C%22password%22%3A%221111%22%2C%22refereePhone%22%3A%2218559287870%22%2C%22terminal%22%3A%223%22%2C%22thirdReg%22%3Afalse%2C%22verifyCode%22%3A%223333%22%7D&quot;,
+      &quot;version&quot;: 0,
+      &quot;maxAge&quot;: -1,
+      &quot;path&quot;: &quot;/front/&quot;,
+      &quot;secure&quot;: false,
+      &quot;httpOnly&quot;: false
+    }
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">cookie</td>
+<td style="text-align: left;">Cookie</td>
+<td>返回Cookie对象</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>1.2、登陆</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>用户登陆接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/user/login</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">password</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>密码</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;cookie&quot;: {
+      &quot;name&quot;: &quot;_auth&quot;,
+      &quot;value&quot;: &quot;%7B%22userId%22%3A%22ce02daf77944449994e9ea1570eb28a0%22%7D&quot;,
+      &quot;version&quot;: 0,
+      &quot;maxAge&quot;: 157680000,
+      &quot;path&quot;: &quot;/front/&quot;,
+      &quot;secure&quot;: false,
+      &quot;httpOnly&quot;: false
+    },
+    &quot;user&quot;: {
+      &quot;id&quot;: &quot;ce02daf77944449994e9ea1570eb28a0&quot;,
+      &quot;chnName&quot;: &quot;15621&quot;,
+      &quot;mobile&quot;: &quot;15621&quot;,
+      &quot;tradePassword&quot;: &quot;b59c67bf196a4758191e42f76670ceba&quot;,
+      &quot;money&quot;: 0,
+      &quot;rechargeMoney&quot;: 0,
+      &quot;agentInviteCode&quot;: &quot;2MICCv&quot;,
+      &quot;status&quot;: 0,
+      &quot;registerTime&quot;: &quot;2018-04-23 17:32:33&quot;,
+      &quot;lastLoginTime&quot;: &quot;2018-04-23 17:32:48&quot;,
+      &quot;lastLoginIp&quot;: &quot;0:0:0:0:0:0:0:1&quot;
+    }
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">string</td>
+<td>用户id</td>
+</tr>
+<tr>
+<td style="text-align: left;">chnName</td>
+<td style="text-align: left;">string</td>
+<td>昵称</td>
+</tr>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">string</td>
+<td>手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">tradePassword</td>
+<td style="text-align: left;">string</td>
+<td>密码</td>
+</tr>
+<tr>
+<td style="text-align: left;">rechargeMoney</td>
+<td style="text-align: left;">string</td>
+<td>累计充值资金</td>
+</tr>
+<tr>
+<td style="text-align: left;">agentInviteCode</td>
+<td style="text-align: left;">string</td>
+<td>邀请码</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastLoginTime</td>
+<td style="text-align: left;">string</td>
+<td>最后一次登录时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastLoginIp</td>
+<td style="text-align: left;">string</td>
+<td>最后一次登录地址</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">int</td>
+<td>用户状态：0 正常 1 停用</td>
+</tr>
+<tr>
+<td style="text-align: left;">money</td>
+<td style="text-align: left;">bigdecimal</td>
+<td>金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">registerTime</td>
+<td style="text-align: left;">string</td>
+<td>注册时间</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>1.3、忘记密码</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>忘记密码接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/user/forgetPassword</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>用户手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">verifyCode</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>验证码</td>
+</tr>
+<tr>
+<td style="text-align: left;">newPwd</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>新密码</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>1.4、修改密码</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>修改密码接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/user/updatePassword</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">oldPwd</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>旧密码</td>
+</tr>
+<tr>
+<td style="text-align: left;">newPwd</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>新密码</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>正确返回：
+  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }
+错误返回：
+{
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+        &quot;error&quot;:&quot;原密码不正确&quot;
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>1.5、短信接口</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>短信接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/validatecode/{type}_{mobile}</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">type</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>"reg"-注册， "mmoble"-修改手机号, "mtpwd"-修改交易密码,"moneyout"-提现</td>
+</tr>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>手机号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {}
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div></div><h1>2、首页模块</h1><div style="margin-left:20px;"><h2>2.1、获取当前价格(新增参数)</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取当前价格接口  </li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/sub/getSubGoodsById</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;goodsInfo&quot;: {
+      &quot;id&quot;: &quot;dd2064819966489bb193f786a43ece09&quot;,
+      &quot;imgLoadPath&quot;: &quot;http://192.168.0.107:8082/back/subgoods/show/20180427/20180427142056.jpg&quot;,
+      &quot;goodsName&quot;: &quot;测试图片&quot;,
+      &quot;goodsTotalNum&quot;: 10000,
+      &quot;goodsLeftNum&quot;: 10000,
+      &quot;subScale&quot;: 20,
+      &quot;goodsSubPrice&quot;: 1000,
+      &quot;goodsCost&quot;: 9
+    },
+    &quot;basePrice&quot;: 9.4, //新添
+    &quot;newPrice&quot;: 0, //新添
+    &quot;retailPrice&quot;: 10002 //新添
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">String</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">imgLoadPath</td>
+<td style="text-align: left;">String</td>
+<td>商品图片路径</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">String</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsTotalNum</td>
+<td style="text-align: left;">int</td>
+<td>商品总数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsLeftNum</td>
+<td style="text-align: left;">int</td>
+<td>商品剩余数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">subScale</td>
+<td style="text-align: left;">decimal</td>
+<td>认购比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsSubPrice</td>
+<td style="text-align: left;">decimal</td>
+<td>商品原始价</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsCost</td>
+<td style="text-align: left;">decimal</td>
+<td>商品当前价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">basePrice</td>
+<td style="text-align: left;">decimal</td>
+<td>商品基准价</td>
+</tr>
+<tr>
+<td style="text-align: left;">newPrice</td>
+<td style="text-align: left;">decimal</td>
+<td>商品最新价</td>
+</tr>
+<tr>
+<td style="text-align: left;">retailPrice</td>
+<td style="text-align: left;">decimal</td>
+<td>商品零售价</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>2.2、获取单条快讯/公告</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取单条快讯/公告接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/index/getNewsById</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>快讯/公告id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;news&quot;: {
+      &quot;id&quot;: &quot;471d2a98563f4715baadd10d45830168&quot;,
+      &quot;title&quot;: &quot;测试22222222222222&quot;,
+      &quot;content&quot;: &quot;&lt;p&gt;&lt;img alt=\&quot;\&quot; src=\&quot;https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=243907821,2964803590&amp;amp;fm=27&amp;amp;gp=0.jpg\&quot; style=\&quot;height:354px; width:500px\&quot; /&gt;阿萨飒飒飒飒是阿萨撒飒飒&lt;/p&gt;\n&quot;,
+      &quot;createTime&quot;: &quot;2018-04-05 10:11:54.0&quot;
+    }
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">String</td>
+<td>快讯/公告id</td>
+</tr>
+<tr>
+<td style="text-align: left;">title</td>
+<td style="text-align: left;">String</td>
+<td>标题</td>
+</tr>
+<tr>
+<td style="text-align: left;">content</td>
+<td style="text-align: left;">String</td>
+<td>内容</td>
+</tr>
+<tr>
+<td style="text-align: left;">createTime</td>
+<td style="text-align: left;">String</td>
+<td>发布时间</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>2.3、获取资讯公告</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取资讯公告接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://169.254.25.104:8080/front/api/index/getNewsFlash</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">type</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>1-产品中心， 2-公告中心 ， 3-热门咨询</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+      {
+        &quot;id&quot;: &quot;390e01fd6cd843d3b2606a99dc18b0e4&quot;,
+        &quot;title&quot;: &quot;测试标题&quot;,
+        &quot;createTime&quot;: &quot;2017-12-26 10:00:16.0&quot;
+      },
+      {
+        &quot;id&quot;: &quot;471d2a98563f4715baadd10d45830168&quot;,
+        &quot;title&quot;: &quot;测试22222222222222&quot;,
+        &quot;createTime&quot;: &quot;2018-04-05 10:11:54.0&quot;
+      }
+    ]
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">String</td>
+<td>资讯id</td>
+</tr>
+<tr>
+<td style="text-align: left;">title</td>
+<td style="text-align: left;">String</td>
+<td>标题</td>
+</tr>
+<tr>
+<td style="text-align: left;">createTime</td>
+<td style="text-align: left;">String</td>
+<td>发布时间</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div></div><h1>3、商城模块</h1><div style="margin-left:20px;"><h2>3.1、查询买卖街商品类型(新接口)</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>查询买卖街商品类型接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://xx.com/api/sub/findGoodsType</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET</li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+        &quot;goodsTypeList&quot;: [
+            {
+                &quot;id&quot;: &quot;1&quot;,
+                &quot;typeName&quot;: &quot;军火&quot;,
+                &quot;createTime&quot;: &quot;2018-05-16 16:33:34.0&quot;,
+                &quot;status&quot;: &quot;1&quot;
+            },
+            {
+                &quot;id&quot;: &quot;2&quot;,
+                &quot;typeName&quot;: &quot;艺术&quot;,
+                &quot;createTime&quot;: &quot;2018-05-16 16:33:58.0&quot;,
+                &quot;status&quot;: &quot;1&quot;
+            }
+        ]
+    }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">int</td>
+<td>商品类型id</td>
+</tr>
+<tr>
+<td style="text-align: left;">typeName</td>
+<td style="text-align: left;">int</td>
+<td>商品类型name</td>
+</tr>
+<tr>
+<td style="text-align: left;">createTime</td>
+<td style="text-align: left;">int</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">int</td>
+<td>状态： 1-正常，2-删除</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div></div><h1>4、发现模块</h1><div style="margin-left:20px;"><h2>4.1、获取积分</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取积分接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/sub/getUserIntegral</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;integral&quot;: 1
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">integral</td>
+<td style="text-align: left;">string</td>
+<td>用户积分</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>4.2、获取积分明细</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取积分明细接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/sub/getUserIntegralDetail</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;integral&quot;: [
+      {
+        &quot;id&quot;: &quot;1&quot;,
+        &quot;type&quot;: &quot;2&quot;,
+        &quot;integral&quot;: 1,
+        &quot;integralBefore&quot;: 1,
+        &quot;integralAfter&quot;: 2,
+        &quot;createTime&quot;: &quot;2018-05-03 09:26:08&quot;,
+        &quot;remark&quot;: &quot;日返&quot;
+      }
+    ]
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">type</td>
+<td style="text-align: left;">string</td>
+<td>类型 ： 1-正积分 2-负积分</td>
+</tr>
+<tr>
+<td style="text-align: left;">integral</td>
+<td style="text-align: left;">decimal</td>
+<td>变化积分</td>
+</tr>
+<tr>
+<td style="text-align: left;">integralBefore</td>
+<td style="text-align: left;">decimal</td>
+<td>变化前积分</td>
+</tr>
+<tr>
+<td style="text-align: left;">integralAfter</td>
+<td style="text-align: left;">decimal</td>
+<td>变化后积分</td>
+</tr>
+<tr>
+<td style="text-align: left;">createTime</td>
+<td style="text-align: left;">string</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">remark</td>
+<td style="text-align: left;">string</td>
+<td>备注</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div></div><h1>5、我的模块</h1><div style="margin-left:20px;"><h2>5.1、获取用户信息</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取用户信息接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/my/getMyInfo</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<p>```{
+"error_code": 0,
+"data": {
+"myInfo": {
+"id": "4a9c7466b4a34ce18751c6bc3d5990dd",
+"serialNo": "CY18559287870",
+"mobile": "185****7870",
+"inviteName": "moni002",
+"tradeNum": 37,
+"transferNum": 0,
+"money": 17661
+}
+}
+}</p>
+<table width='100%' class='codestyle'><pre><code>
+
+ **返回参数说明** 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+|mobile |string   |用户手机号|
+|id |string   |用户id|
+|serialNo |string   |用户编号|
+|inviteName |string   |推荐人姓名|
+|money |bigdecimal   |用户余额|
+|tradeNum |int   |我的订单数目|
+|transferNum |int   |我的转让数目|
+|returnMoney|bigdecimal|奖励金额|
+
+ **备注** 
+
+- 更多返回错误代码请看首页的错误代码描述</code></pre></table></div><h2>5.2、添加地址</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>添加地址接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://xx.com/front/api/my/addMyAddress</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">receiverName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>收货人</td>
+</tr>
+<tr>
+<td style="text-align: left;">receiverMobile</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>收货人手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">region</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地区</td>
+</tr>
+<tr>
+<td style="text-align: left;">address</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地址</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {}
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.3、资金充值</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>充值接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://xx.com/api/moneyRecord/huanxun/gateway</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">money</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>充值金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankAccount</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>银行卡号</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankType</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>银行类型</td>
+</tr>
+<tr>
+<td style="text-align: left;">chnName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>持卡人姓名</td>
+</tr>
+<tr>
+<td style="text-align: left;">idCard</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>身份证号码</td>
+</tr>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>预留手机号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+        &quot;pGateWayReq&quot;: &quot;&lt;Ips&gt;&lt;GateWayReq&gt;&lt;head&gt;&lt;Version&gt;v1.0.0&lt;/Version&gt;&lt;MerCode&gt;204156&lt;/MerCode&gt;&lt;MerName&gt;&lt;/MerName&gt;&lt;Account&gt;2041560018&lt;/Account&gt;&lt;MsgId&gt;&lt;/MsgId&gt;&lt;ReqDate&gt;20180507092644&lt;/ReqDate&gt;&lt;Signature&gt;cf9cbce4766405b44a2ebbbfdf765c32&lt;/Signature&gt;&lt;/head&gt;&lt;body&gt;&lt;MerBillNo&gt;MO1525656403678892&lt;/MerBillNo&gt;&lt;Amount &gt;100&lt;/Amount &gt;&lt;Date &gt;20180507&lt;/Date &gt;&lt;CurrencyType &gt;156&lt;/CurrencyType &gt;&lt;GatewayType &gt;01&lt;/GatewayType &gt;&lt;Lang&gt;GB&lt;/Lang&gt;&lt;Merchanturl&gt;&lt;![CDATA[http://xxx/front/v1/huanxun/pay/callback]]&gt;&lt;/Merchanturl&gt;&lt;FailUrl&gt;&lt;![CDATA[http://xxx/front/v1/huanxun/pay/callback]]&gt;&lt;/FailUrl&gt;&lt;Attach&gt;&lt;![CDATA[MO1525656403678892]]&gt;&lt;/Attach&gt;&lt;OrderEncodeType&gt;5&lt;/OrderEncodeType&gt;&lt;RetEncodeType&gt;17&lt;/RetEncodeType&gt;&lt;RetType&gt;1&lt;/RetType&gt;&lt;ServerUrl&gt;&lt;![CDATA[http://xxx/front/v1/huanxun/pay/callback]]&gt;&lt;/ServerUrl&gt;&lt;BillEXP&gt;24&lt;/BillEXP&gt;&lt;GoodsName&gt;PindoCloud&lt;/GoodsName&gt;&lt;IsCredit&gt;1&lt;/IsCredit&gt;&lt;BankCode&gt;1100&lt;/BankCode&gt;&lt;ProductType&gt;1&lt;/ProductType&gt;&lt;/body&gt;&lt;/GateWayReq&gt;&lt;/Ips&gt;&quot;,
+        &quot;payUrl&quot;: &quot;https://newpay.ips.com.cn/psfp-entry/gateway/payment.do&quot;
+    }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">pGateWayReq</td>
+<td style="text-align: left;">String</td>
+<td>支付内容</td>
+</tr>
+<tr>
+<td style="text-align: left;">payUrl</td>
+<td style="text-align: left;">String</td>
+<td>发起支付链接</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong>
+发起支付表单提交方式采用Post隐含域方式，表单格式如下：</p>
+<pre><code class="language-java">&lt;form action=&quot;https://newpay.ips.com.cn/psfp-entry/gateway/payment.do&quot; method=&quot;post&quot;&gt;
+    &lt;input name=&quot;pGateWayReq&quot; type=&quot;hidden&quot; value=&quot; &quot; /&gt;
+&lt;/form&gt;</code></pre></table>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.4、地址管理</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>地址管理接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/my/getMyAddress</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<p>```{
+"error_code": 0,
+"data": {
+"addressList": [
+{
+"id": "5fd80869a3aa429db690da802540176e",
+"receiverName": "aaaa",
+"receiverMobile": "bbbb",
+"region": "cccc",
+"address": "dddd",</p>
+<table width='100%' class='codestyle'><pre><code>    &quot;addrType&quot;: &quot;2&quot;
+  },
+  {
+    &quot;id&quot;: &quot;57e9ee7633234182bd4dce281c3985d1&quot;,
+    &quot;receiverName&quot;: &quot;1111&quot;,
+    &quot;receiverMobile&quot;: &quot;2222&quot;,
+    &quot;region&quot;: &quot;3333&quot;,
+    &quot;address&quot;: &quot;4444&quot;,
+
+    &quot;addrType&quot;: &quot;2&quot;
+  }
+]</code></pre></table>
+<p>}
+}</p>
+<table width='100%' class='codestyle'><pre><code>
+
+ **返回参数说明** 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----|
+|id |string   |地址id|
+|receiverName |string   |收货人|
+|receiverMobile |string   |收货人手机号|
+|region |string   |所在地区|
+|address |string   |详细地址|
+
+|addrType |string   |是否默认地址：1-是  2-否|
+
+ **备注** 
+
+- 更多返回错误代码请看首页的错误代码描述</code></pre></table></div><h2>5.5、设为默认地址</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>设为默认地址接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/my/setDefaultAddress</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地址id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {}
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.6、删除地址</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>删除地址接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/my/deleteMyAddress</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>DELETE </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地址id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<p>```{
+"error_code": 0,
+"data": {}
+}</p>
+<table width='100%' class='codestyle'><pre><code>
+
+ **返回参数说明** 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+
+ **备注** 
+
+- 更多返回错误代码请看首页的错误代码描述</code></pre></table></div><h2>5.7、订单管理</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>订单管理接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/my/getMyTrade</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>状态：1 持仓  2挂单 3 平仓（交割） 4 下架</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">string</td>
+<td>商品名称</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code> 持仓：
+ {
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+      {
+        &quot;id&quot;: &quot;47354e09c2b549ab8dec9284e891bbce&quot;,
+        &quot;serialNo&quot;: &quot;JY1525229140060561&quot;,
+        &quot;money&quot;: 0,
+        &quot;status&quot;: &quot;1&quot;,
+        &quot;buyTime&quot;: &quot;2018-05-02 10:45:40&quot;,
+        &quot;buyPoint&quot;: 10000,
+        &quot;holdNum&quot;: 3500,
+        &quot;serviceFee&quot;: 0,
+        &quot;goodsName&quot;: &quot;航空母舰&quot;,
+        &quot;goodsId&quot;: &quot;e3fa78f35fab439ea9c2fc1a13024945&quot;,
+        &quot;feeBuy&quot;: 0,
+        &quot;feeSell&quot;: 0
+      }
+    ]
+  }
+}
+挂单：
+{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+      {
+        &quot;id&quot;: &quot;30818daa1f4f47a8b515118cd3e0e5d7&quot;,
+        &quot;serialNo&quot;: &quot;RG1525233565257497&quot;,
+        &quot;status&quot;: &quot;2&quot;,
+        &quot;buyTime&quot;: &quot;2018-05-02 11:59:25&quot;,
+        &quot;buyPoint&quot;: 10000,
+        &quot;hangTime&quot;: &quot;2018-05-04 17:37:29&quot;,
+        &quot;holdNum&quot;: 500,
+        &quot;goodsName&quot;: &quot;航空母舰&quot;,
+        &quot;goodsId&quot;: &quot;e3fa78f35fab439ea9c2fc1a13024945&quot;
+      }
+    ]
+  }
+}
+
+平仓：
+{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+      {
+        &quot;id&quot;: &quot;f1fd57d7175a4bb4977bb63936c17f3e&quot;,
+        &quot;serialNo&quot;: &quot;RG1525228874314554&quot;,
+        &quot;money&quot;: 300000,
+        &quot;status&quot;: &quot;3&quot;,
+        &quot;buyTime&quot;: &quot;2018-05-02 10:41:14&quot;,
+        &quot;buyPoint&quot;: 10000,
+        &quot;sellPoint&quot;: 100,
+        &quot;difMoney&quot;: -297000,
+        &quot;sellTime&quot;: &quot;2018-05-02 16:19:09&quot;,
+        &quot;holdNum&quot;: 30,
+        &quot;serviceFee&quot;: 9000,
+        &quot;goodsName&quot;: &quot;40-火箭&quot;,
+        &quot;goodsId&quot;: &quot;a4ebff2134a74b06ad2c95d10f045e15&quot;,
+        &quot;feeBuy&quot;: 0,
+        &quot;feeSell&quot;: 9
+      }
+    ]
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">string</td>
+<td>订单id</td>
+</tr>
+<tr>
+<td style="text-align: left;">serialNo</td>
+<td style="text-align: left;">string</td>
+<td>流水号</td>
+</tr>
+<tr>
+<td style="text-align: left;">money</td>
+<td style="text-align: left;">decimal</td>
+<td>总金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyTime</td>
+<td style="text-align: left;">Date</td>
+<td>买入时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyPoint</td>
+<td style="text-align: left;">string</td>
+<td>买入价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">sellPoint</td>
+<td style="text-align: left;">string</td>
+<td>卖出价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">difMoney</td>
+<td style="text-align: left;">string</td>
+<td>盈亏金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">sellTime</td>
+<td style="text-align: left;">Date</td>
+<td>卖出时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">hangTime</td>
+<td style="text-align: left;">Date</td>
+<td>挂单时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">holdNum</td>
+<td style="text-align: left;">int</td>
+<td>数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">serviceFee</td>
+<td style="text-align: left;">decimal</td>
+<td>服务费</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">string</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">feeBuy</td>
+<td style="text-align: left;">decimal</td>
+<td>买入手续费</td>
+</tr>
+<tr>
+<td style="text-align: left;">feeSell</td>
+<td style="text-align: left;">decimal</td>
+<td>卖出手续费</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">string</td>
+<td>状态：1 持仓  2挂单 3 平仓（交割） 4 下架</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.8、银行卡绑定</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>银行卡绑定接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/front/api/my/addBankCard</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">chnName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>持卡人</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankAccount</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>卡号</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>开户行</td>
+</tr>
+<tr>
+<td style="text-align: left;">phone</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>预留手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">idCard</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>身份证号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.9、仓库管理(待定)</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>仓库管理接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/api/my/getWarehouse</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.10、资金管理</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>资金管理接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://169.254.25.104:8080/front/api/my/moneyManager</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">type</td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">string</td>
+<td>类型：""或NULL-全部  0-充值  1-提现</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<p>```{
+"error_code": 0,
+"data": {
+"moneyRecord": [
+{
+"id": "00d46333740344db8f6208221e391334",
+"serialNo": "MO1516190877127192",
+"money": 300,
+"fee": 0,
+"type": "0",
+"channel": "明付网关支付",
+"status": "0",
+"createTime": "2018-01-17 20:07:57"
+}
+]
+}
+}</p>
+<table width='100%' class='codestyle'><pre><code>
+
+ **返回参数说明** 
+
+|参数名|类型|说明|
+|:-----  |:-----|-----                           |
+|id |String   |资金记录id  |
+|serialNo |String   |流水号  |
+|money |BigDecimal   |金额  |
+|fee |BigDecimal   |手续费  |
+|type |String   |类型： 0-充值  1-提现  |
+|channel |String   |渠道  |
+|status |String   |状态 0 处理中 1 成功 2 失败  |
+|createTime |String   |创建时间  |
+
+ **备注** 
+
+- 更多返回错误代码请看首页的错误代码描述</code></pre></table></div><h2>5.11、预定管理(待定)</h2><div style="margin-left:20px;"></div><h2>5.12、修改地址接口</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>修改地址接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://169.254.25.104:8080/front/api/my/updAddress</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">receiverName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>收货人</td>
+</tr>
+<tr>
+<td style="text-align: left;">receiverMobile</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>收货人手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">region</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地区</td>
+</tr>
+<tr>
+<td style="text-align: left;">address</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地址</td>
+</tr>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地址记录id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+      &quot;uid&quot;: &quot;1&quot;,
+      &quot;username&quot;: &quot;12154545&quot;,
+      &quot;name&quot;: &quot;吴系挂&quot;,
+      &quot;groupid&quot;: 2 ,
+      &quot;reg_time&quot;: &quot;1436864169&quot;,
+      &quot;last_login_time&quot;: &quot;0&quot;,
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">groupid</td>
+<td style="text-align: left;">int</td>
+<td>用户组id，1：超级管理员；2：普通用户</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.13、返回二维码参数</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>返回二维码参数接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/user/getShareImg</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;inviteId&quot;: &quot;f1099d872c4b4bfea0e759056f1b570b&quot;,
+    &quot;refereePhone&quot;: &quot;156218687&quot;
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">refereePhone</td>
+<td style="text-align: left;">String</td>
+<td>邀请人手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">inviteId</td>
+<td style="text-align: left;">String</td>
+<td>邀请人id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.14、推荐管理</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>推荐管理接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://xx.com/api/my/corps</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<p>|参数名|必选|类型|说明|
+<strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+        &quot;corps&quot;: [
+            {
+                &quot;chnName&quot;: &quot;ZWJ&quot;,
+                &quot;mobile&quot;: &quot;13967165796&quot;,
+                &quot;id&quot;: &quot;08099529f0764c2d9b01768d8ed086bb&quot;,
+                &quot;parent2Total&quot;: &quot;0&quot;
+            },
+            {
+                &quot;chnName&quot;: &quot;林晓祥&quot;,
+                &quot;mobile&quot;: &quot;13175602999&quot;,
+                &quot;id&quot;: &quot;084a572a5de640d092c55533a5596374&quot;,
+                &quot;parent2Total&quot;: &quot;0&quot;
+            }
+        ]
+    }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">chnName</td>
+<td style="text-align: left;">int</td>
+<td>用户姓名</td>
+</tr>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">string</td>
+<td>手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">parent2Total</td>
+<td style="text-align: left;">string</td>
+<td>有效邀请人数</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.15、资金提现</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>资金提现接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://xx.com/api/moneyRecord/out</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">money</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>提现金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">password</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>登录密码</td>
+</tr>
+<tr>
+<td style="text-align: left;">type</td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">string</td>
+<td>提现类型: 0:资金提现</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>//成功
+  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }
+ //失败
+  {
+    &quot;error_code&quot;: 28,
+    &quot;data&quot;: {
+        &quot;error&quot;: &quot;请先绑定银行卡&quot;
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.16、修改银行卡信息</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>修改银行卡信息接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/my/updateBankCard</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">chnName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>持卡人</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankAccount</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>卡号</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>开户行</td>
+</tr>
+<tr>
+<td style="text-align: left;">phone</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>预留手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">idCard</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>身份证号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>5.17、获取银行卡信息</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取银行卡信息接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/my/getBankCard</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+      &quot;chnName&quot;: &quot;张三&quot;,
+      &quot;bankAccount&quot;: &quot;12154545&quot;,
+      &quot;bankName&quot;: &quot;银行&quot;,
+      &quot;createTime&quot;: &quot;2018-09-09&quot; ,
+      &quot;idCard&quot;: &quot;1436864169&quot;,
+      &quot;phone&quot;: &quot;11111111&quot;
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">chnName</td>
+<td style="text-align: left;">String</td>
+<td>账号用户名</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankAccount</td>
+<td style="text-align: left;">String</td>
+<td>银行卡号</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankName</td>
+<td style="text-align: left;">String</td>
+<td>银行名</td>
+</tr>
+<tr>
+<td style="text-align: left;">createTime</td>
+<td style="text-align: left;">String</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">idCard</td>
+<td style="text-align: left;">String</td>
+<td>身份证号</td>
+</tr>
+<tr>
+<td style="text-align: left;">phone</td>
+<td style="text-align: left;">String</td>
+<td>手机号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div></div><h1>6、认购模块</h1><div style="margin-left:20px;"><h2>6.1、获取认购/购销/下架商品(新增参数)</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取认购/购销/下架商品接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://xx.com/front/api/sub/getSubGoods</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">String</td>
+<td>状态： 1-认购  2-购销  3-下架</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsTypeId</td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">String</td>
+<td>商品类型:为空时查询全部商品(新增参数)</td>
+</tr>
+<tr>
+<td style="text-align: left;">isStore</td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">String</td>
+<td>是否收藏： 为1时是获取我的收藏列表</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+       {
+        &quot;id&quot;: &quot;1&quot;,
+        &quot;imgLoadPath&quot;: &quot;http://192.168.0.107:8082/back/subgoods/show/20180427/20180427101304.jpg&quot;,
+        &quot;goodsName&quot;: &quot;1111&quot;,
+        &quot;goodsTotalNum&quot;: 100,
+        &quot;goodsLeftNum&quot;: 100,
+        &quot;subScale&quot;: 30,
+        &quot;goodsSubPrice&quot;: 22.22,
+        &quot;goodsCost&quot;: 9.12,
+        &quot;subTotalNum&quot;: &quot;10,3&quot;,
+        &quot;subMakeNum&quot;: &quot;7,2&quot;,
+        &quot;subSendNum&quot;: &quot;3,1&quot;,
+        &quot;specList&quot;: [],
+        &quot;subGoodsNum&quot;: 30,
+        &quot;subGoodsLeftNum&quot;: 30,
+        &quot;subDays&quot;: 41,
+        &quot;subGoodsSpec&quot;: &quot;买10存7提3&quot;,
+        &quot;subBuyNum&quot;: 10,
+        &quot;buyPointMin&quot;: 15, //新增
+        &quot;sellPointNew&quot;: 100 //新增,
+        &quot;goodsCode&quot;: &quot;vvv&quot;, //新增
+      },
+      {
+        &quot;id&quot;: &quot;1&quot;,
+        &quot;imgLoadPath&quot;: &quot;http://192.168.0.107:8082/back/subgoods/show/20180427/20180427101304.jpg&quot;,
+        &quot;goodsName&quot;: &quot;1111&quot;,
+        &quot;goodsTotalNum&quot;: 100,
+        &quot;goodsLeftNum&quot;: 100,
+        &quot;subScale&quot;: 30,
+        &quot;goodsSubPrice&quot;: 22.22,
+        &quot;goodsCost&quot;: 9.12,
+        &quot;subTotalNum&quot;: &quot;10,3&quot;,
+        &quot;subMakeNum&quot;: &quot;7,2&quot;,
+        &quot;subSendNum&quot;: &quot;3,1&quot;,
+        &quot;specList&quot;: [],
+        &quot;subGoodsNum&quot;: 30,
+        &quot;subGoodsLeftNum&quot;: 30,
+        &quot;subDays&quot;: 41,
+        &quot;subGoodsSpec&quot;: &quot;买3存2提1&quot;,
+        &quot;subBuyNum&quot;: 3,
+        &quot;buyPointMin&quot;: 15,
+        &quot;sellPointNew&quot;: 100
+      }
+    ]
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">String</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">imgLoadPath</td>
+<td style="text-align: left;">String</td>
+<td>图片路径</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">String</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsTotalNum</td>
+<td style="text-align: left;">int</td>
+<td>商品总数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsLeftNum</td>
+<td style="text-align: left;">int</td>
+<td>商品剩余数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">subScale</td>
+<td style="text-align: left;">BigDecimal</td>
+<td>认购比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsSubPrice</td>
+<td style="text-align: left;">BigDecimal</td>
+<td>商品原始价</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsCost</td>
+<td style="text-align: left;">BigDecimal</td>
+<td>商品购销价</td>
+</tr>
+<tr>
+<td style="text-align: left;">subTotalNum</td>
+<td style="text-align: left;">String</td>
+<td>规格总数</td>
+</tr>
+<tr>
+<td style="text-align: left;">subMakeNum</td>
+<td style="text-align: left;">String</td>
+<td>规格存取数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">subSendNum</td>
+<td style="text-align: left;">String</td>
+<td>规格发货数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">specList</td>
+<td style="text-align: left;">list</td>
+<td>规格数组</td>
+</tr>
+<tr>
+<td style="text-align: left;">subGoodsNum</td>
+<td style="text-align: left;">int</td>
+<td>可以认购的总数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">subGoodsLeftNum</td>
+<td style="text-align: left;">int</td>
+<td>可以认购的剩余数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">subDays</td>
+<td style="text-align: left;">int</td>
+<td>认购剩余天数</td>
+</tr>
+<tr>
+<td style="text-align: left;">subGoodsSpec</td>
+<td style="text-align: left;">String</td>
+<td>商品规格</td>
+</tr>
+<tr>
+<td style="text-align: left;">subBuyNum</td>
+<td style="text-align: left;">int</td>
+<td>商品规格买的数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyPointMin</td>
+<td style="text-align: left;">string</td>
+<td>当日最低卖出价</td>
+</tr>
+<tr>
+<td style="text-align: left;">sellPointNew</td>
+<td style="text-align: left;">string</td>
+<td>最新成交价</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsCode</td>
+<td style="text-align: left;">string</td>
+<td>商品代码</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.2、获取服务费/手续费比例</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取服务费/手续费比例接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/sub/getScales</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;scalesBean&quot;: {
+      &quot;subServiceScale&quot;: 0.03,
+      &quot;subFeeScale&quot;: 0.003
+    }
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">subServiceScale</td>
+<td style="text-align: left;">decimal</td>
+<td>服务费比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">subFeeScale</td>
+<td style="text-align: left;">decimal</td>
+<td>手续费比例</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.3、客户挂单(新增参数)</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>客户挂单接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://xx.com/api/trade/entryOrders</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">holdNum</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>挂单数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyPoint</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>挂单价格(新增参数)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code> 正确返回：
+ {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+
+    }
+ }
+ 错误返回：
+ {
+    &quot;error_code&quot;: 46,
+    &quot;data&quot;: {
+        &quot;error&quot;: &quot;商品数量不足&quot;
+    }
+ }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">error_code</td>
+<td style="text-align: left;">int</td>
+<td>返回状态代码: 0:成功 不为0需要获取错误返回中的error</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.4、认购接口</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>认购接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8080/api/sub/subMake</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">holdNum</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">int</td>
+<td>认购数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">money</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">decimal</td>
+<td>金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">serviceFee</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">decimal</td>
+<td>服务费</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyPoint</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">decimal</td>
+<td>认购价格</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  正确返回：
+  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }
+  错误返回：
+  {
+  &quot;error_code&quot;: 34,
+  &quot;data&quot;: {
+    &quot;error&quot;: &quot;用户已没有认购机会&quot;
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.5、获取挂单商品</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取挂单商品接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/sub//getHangGoods</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+      {
+        &quot;id&quot;: &quot;f1fd57d7175a4bb4977bb63936c17f3e&quot;,
+        &quot;serialNo&quot;: &quot;RG1525228874314554&quot;,
+        &quot;userId&quot;: &quot;4a9c7466b4a34ce18751c6bc3d5990dd&quot;,
+        &quot;goodsId&quot;: &quot;a4ebff2134a74b06ad2c95d10f045e15&quot;,
+        &quot;goodsName&quot;: &quot;40-火箭&quot;,
+        &quot;holdNum&quot;: 30,
+        &quot;chnName&quot;: &quot;布丁粉&quot;,
+        &quot;mobile&quot;: &quot;18559287870&quot;，
+        &quot;imgLoadPath&quot;:&quot;.....&quot;
+      }
+    ]
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">String</td>
+<td>挂单记录id</td>
+</tr>
+<tr>
+<td style="text-align: left;">serialNo</td>
+<td style="text-align: left;">String</td>
+<td>挂单记录流水号</td>
+</tr>
+<tr>
+<td style="text-align: left;">userId</td>
+<td style="text-align: left;">String</td>
+<td>挂单记录id</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">String</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">String</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">holdNum</td>
+<td style="text-align: left;">int</td>
+<td>商品数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">chnName</td>
+<td style="text-align: left;">String</td>
+<td>商品所属用户id</td>
+</tr>
+<tr>
+<td style="text-align: left;">mobile</td>
+<td style="text-align: left;">String</td>
+<td>商品所属用户手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">imgLoadPath</td>
+<td style="text-align: left;">String</td>
+<td>商品图片路径</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.6、买入挂单商品接口(旧-不用)</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>买入挂单商品接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/sub/buyHangGoods</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>所买挂单商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>所买挂单商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">holdNum</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>所买挂单商品数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">hangUserPhone</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>挂单人手机号</td>
+</tr>
+<tr>
+<td style="text-align: left;">curPrice</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品当前价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">hangOrderId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>挂单记录的id</td>
+</tr>
+<tr>
+<td style="text-align: left;">feeBuy</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>手续费</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyMoney</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>购买金额</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {}
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.7、获取系统时间</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取系统时间接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/getSysTime</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;sysTime&quot;: &quot;2018-05-09 10:02:56&quot;
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">sysTime</td>
+<td style="text-align: left;">String</td>
+<td>系统时间</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.8、获取认购商品剩余比例</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取认购商品剩余比例接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/getLeftScale</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;leftPercent&quot;: &quot;23%&quot;
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">leftPercent</td>
+<td style="text-align: left;">string</td>
+<td>认购商品剩余比例</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.9、提货接口</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>提货接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/takeGoodsAway</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">serialNo</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>流水号</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsNum</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">int</td>
+<td>提货数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">addressId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>地址id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>   正确返回：
+  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }
+  错误返回：
+  {
+  &quot;error_code&quot;: 68,
+  &quot;data&quot;: {
+    &quot;error&quot;: &quot;提货数量错误&quot;
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">error_code</td>
+<td style="text-align: left;">int</td>
+<td>返回代码</td>
+</tr>
+<tr>
+<td style="text-align: left;">error</td>
+<td style="text-align: left;">String</td>
+<td>返回错误信息</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.10、获取挂单商品信息统计</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取挂单商品信息统计接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/getHangDetail</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+      {
+        &quot;goodsId&quot;: &quot;25233f406872466d8a27e0d906526d1b&quot;,
+        &quot;goodsName&quot;: &quot;沙漠之鹰-s&quot;,
+        &quot;totalHoldNum&quot;: 2,
+        &quot;buyPoint&quot;: 9.3
+      },
+      {
+        &quot;goodsId&quot;: &quot;25233f406872466d8a27e0d906526d1b&quot;,
+        &quot;goodsName&quot;: &quot;沙漠之鹰-s&quot;,
+        &quot;totalHoldNum&quot;: 1,
+        &quot;buyPoint&quot;: 2000
+      }
+    ],
+    &quot;goodStatistics&quot;: {
+      &quot;todayTotalNum&quot;: 3,
+      &quot;todayTotalMoney&quot;: 4009,
+      &quot;averagePrice&quot;: 4,
+      &quot;totalLeftNum&quot;: 9995,
+      &quot;firstPrice&quot;: 9.3,
+      &quot;maxPrice&quot;: 2000,
+      &quot;minPrice&quot;: 9.3,
+      &quot;forSell&quot;: 3,
+      &quot;goodsName&quot;: &quot;沙漠之鹰-s&quot;,
+      &quot;goodsId&quot;: &quot;25233f406872466d8a27e0d906526d1b&quot;
+    }
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">list</td>
+<td style="text-align: left;"></td>
+<td>该商品挂单列表</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">String</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">String</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">totalHoldNum</td>
+<td style="text-align: left;">int</td>
+<td>挂单总数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyPoint</td>
+<td style="text-align: left;">decimal</td>
+<td>挂单金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">String</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodStatistics</td>
+<td style="text-align: left;"></td>
+<td>该商品的统计信息</td>
+</tr>
+<tr>
+<td style="text-align: left;">todayTotalNum</td>
+<td style="text-align: left;">int</td>
+<td>今日销售数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">todayTotalMoney</td>
+<td style="text-align: left;">decimal</td>
+<td>今日销售总额</td>
+</tr>
+<tr>
+<td style="text-align: left;">averagePrice</td>
+<td style="text-align: left;">decimal</td>
+<td>平均价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">totalLeftNum</td>
+<td style="text-align: left;">int</td>
+<td>库存总量</td>
+</tr>
+<tr>
+<td style="text-align: left;">firstPrice</td>
+<td style="text-align: left;">decimal</td>
+<td>首单价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxPrice</td>
+<td style="text-align: left;">decimal</td>
+<td>最高价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">minPrice</td>
+<td style="text-align: left;">decimal</td>
+<td>最低价格</td>
+</tr>
+<tr>
+<td style="text-align: left;">forSell</td>
+<td style="text-align: left;">int</td>
+<td>待售数量</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.11、撤销挂单</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>撤销挂单接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/cancelHangTrade</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">serialNo</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>订单流水号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>正确返回：
+  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }
+错误返回：
+ {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+        &quot;error&quot;:&quot;订单流水号不能为空&quot;
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.12、买入挂单商品（新）</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>买入挂单商品接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://192.168.0.136:8080/front/api/sub/buyHangGoodsNew</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">buyNum</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">int</td>
+<td>买入数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">buyPoints</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>所选价格规格（多选以逗号分隔，如：5,10,15）</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.13、判断商品是否已收藏</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>判断商品是否已收藏接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/judgeGoodsStore</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+      &quot;exist&quot;: true
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">exist</td>
+<td style="text-align: left;">boolean</td>
+<td>true:已收藏 ， false：未收藏</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.14、收藏</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>收藏接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/goodsStore</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.15、取消收藏</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>取消收藏接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/goodsStoreCancel</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>  {
+    &quot;error_code&quot;: 0,
+    &quot;data&quot;: {
+    }
+  }</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.16、收藏的商品列表（刪除，用获取购销商品接口替换）</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>收藏的商品列表接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/getMyGoodsStore</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>POST </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;list&quot;: [
+      {
+        &quot;goodsId&quot;: &quot;25233f406872466d8a27e0d906526d1b&quot;,
+        &quot;goodsName&quot;: &quot;沙漠之鹰-s&quot;,
+        &quot;goodsCode&quot;: &quot;2222&quot;,
+        &quot;imgLoadPath&quot;: &quot;.....&quot;
+        &quot;storeTime&quot;:&quot;....&quot;
+        &quot;status&quot;:&quot;1&quot;
+      }
+    ]
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">String</td>
+<td>商品id</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsName</td>
+<td style="text-align: left;">String</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">goodsCode</td>
+<td style="text-align: left;">String</td>
+<td>商品代码</td>
+</tr>
+<tr>
+<td style="text-align: left;">imgLoadPath</td>
+<td style="text-align: left;">String</td>
+<td>图片路径</td>
+</tr>
+<tr>
+<td style="text-align: left;">storeTime</td>
+<td style="text-align: left;">String</td>
+<td>商品收藏时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">String</td>
+<td>状态： 1-认购  2-购销  3-下架</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.17、获取商品详情图片</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取商品详情图片接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/getGoodsDetailImg</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">goodsId</td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">string</td>
+<td>商品id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;imgDetailPath&quot;: &quot;http://192.168.0.136:8082/back/subgoods/show/20180522/201805221108467.jpg&quot;
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">imgDetailPath</td>
+<td style="text-align: left;">String</td>
+<td>详情图片地址</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.18、获取挂单价格上下浮动比例</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取挂单价格上下浮动比例接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/getUpAndDownPercent</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;upAndDownPercent&quot;: 0.1
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">upAndDownPercent</td>
+<td style="text-align: left;">decimal</td>
+<td>挂单价格上下浮动比例</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div><h2>6.19、获取开市时间</h2><div style="margin-left:20px;"><p><strong>简要描述：</strong> </p>
+<ul>
+<li>获取开市时间接口</li>
+</ul>
+<p><strong>请求URL：</strong> </p>
+<ul>
+<li><code>http://localhost:8083/front/api/sub/openWeekAndTime</code></li>
+</ul>
+<p><strong>请求方式：</strong></p>
+<ul>
+<li>GET </li>
+</ul>
+<p><strong>参数：</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">必选</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>返回示例</strong></p>
+<table width='100%' class='codestyle'><pre><code>{
+  &quot;error_code&quot;: 0,
+  &quot;data&quot;: {
+    &quot;openWeekAndTime&quot;: {
+      &quot;weekDaySet&quot;: &quot;1,2,3,4,5&quot;,
+      &quot;openTime&quot;: &quot;9:00-12:00,13:30-16:30&quot;
+    }
+  }
+}</code></pre></table>
+<p><strong>返回参数说明</strong> </p>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">参数名</th>
+<th style="text-align: left;">类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">weekDaySet</td>
+<td style="text-align: left;">String</td>
+<td>开市时间,(如：9:00-12:00,13:30-16:30)</td>
+</tr>
+<tr>
+<td style="text-align: left;">openTime</td>
+<td style="text-align: left;">String</td>
+<td>开市时间,(如：1,2,3  -> 周一周二周三)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>备注</strong> </p>
+<ul>
+<li>更多返回错误代码请看首页的错误代码描述</li>
+</ul></div></div></body></html>

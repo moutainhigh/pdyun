@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.modules.chanong.my.dao.MyDao">
+
+   <select id="getMyStatistic" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.chanong.my.bean.MyStatisticBean">
+       select
+          agent.account as inviteName,
+          (count(trade.id)+count(hold.id)) as tradeNum
+        from tb_user user  left join tb_ml3_agent agent on `user`.agent_invite_code  = agent.agent_invite_code
+        left join tb_trade trade on user.id = trade.user_id
+        left join tb_trade_hold hold on user.id = hold.user_id
+        where user.id = #{0}
+   </select>
+
+    <insert id="addMyAddress" parameterType="com.rmkj.microcap.modules.chanong.my.bean.MyAddressBean">
+        INSERT INTO tb_user_address(id,user_id,receiver_name,receiver_mobile,region,address,create_time)
+        VALUES (#{id},#{userId},#{receiverName},#{receiverMobile},#{region},#{address},now())
+    </insert>
+
+    <update id="updAddress" parameterType="com.rmkj.microcap.modules.chanong.my.bean.MyAddressBean">
+        UPDATE tb_user_address
+        SET receiver_name = #{receiverName},
+            receiver_mobile = #{receiverMobile},
+            region = #{region},
+            address = #{address}
+         WHERE id = #{id}
+    </update>
+
+    <select id="getMyAddress" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.chanong.my.bean.MyAddressBean">
+        SELECT
+            id ,
+            receiver_name as receiverName,
+            receiver_mobile as receiverMobile,
+            region ,
+            address ,
+            addr_type as addrType
+        FROM  tb_user_address
+       WHERE user_id = #{0}
+        ORDER BY create_time desc
+    </select>
+
+    <update id="setDefaultAddress" parameterType="java.lang.String">
+        UPDATE tb_user_address SET addr_type = '1' WHERE id = #{0}
+    </update>
+    
+    <update id="setOtherAddress" parameterType="java.lang.String">
+        UPDATE tb_user_address SET addr_type = '2' WHERE id != #{0}
+    </update>
+
+    <delete id="deleteMyAddress" parameterType="java.lang.String">
+        DELETE FROM tb_user_address WHERE id = #{0}
+    </delete>
+
+    <select id="getHoldTrade" parameterType="com.rmkj.microcap.modules.chanong.my.bean.MyTradeBean" resultType="com.rmkj.microcap.modules.trade.entity.Trade">
+            SELECT
+                id,
+                serial_no AS serialNo,
+                user_id AS userId,
+                money,
+                `type`,
+                fee,
+                code,
+                contract_name AS contractName,
+                point_value AS pointValue,
+                profit_max AS profitMax,
+                loss_max AS lossMax,
+                profit_max_point AS profitMaxPoint,
+                loss_max_point AS lossMaxPoint,
+                buy_up_down AS buyUpDown,
+                `status`,
+                buy_time AS buyTime,
+                buy_point AS buyPoint,
+                sell_point AS sellPoint,
+                dif_money AS difMoney,
+                sell_type AS sellType,
+                sell_time AS sellTime
+            FROM tb_trade_hold
+            WHERE user_id = #{userId}
+            <if test="code != null">
+                AND code = #{code}
+            </if>
+              order by buy_time desc
+    </select>
+
+    <select id="getSellTrade" parameterType="com.rmkj.microcap.modules.chanong.my.bean.MyTradeBean" resultType="com.rmkj.microcap.modules.trade.entity.Trade">
+            SELECT
+              id AS id,
+              serial_no AS serialNo,
+              ifnull(money,0) AS money,
+              hold_num as holdNum,
+              ifnull(service_fee,0) as serviceFee,
+              goods_name as goodsName,
+              goods_id as goodsId,
+              ifnull(fee_buy,0) as feeBuy,
+              ifnull(fee_sell,0) as feeSell,
+              `status` AS status,
+              buy_time AS buyTime,
+              buy_point AS buyPoint,
+              sell_point AS sellPoint,
+              ifnull(dif_money,0) AS difMoney,
+              sell_time AS sellTime,
+              hang_time AS  hangTime
+            FROM tb_trade
+            WHERE user_id = #{userId}
+            <if test="goodsName != null">
+                AND goods_name like CONCAT('%',#{goodsName},'%')
+            </if>
+            <choose>
+                <when test="status != null and status == 1">
+                    AND `status` = #{status} ORDER BY buy_Time DESC
+                </when>
+                <when test="status != null and status == 2">
+                    AND `status` = #{status} ORDER BY hang_time DESC
+                </when>
+                <otherwise>
+                    AND `status` = #{status} ORDER BY sell_time DESC
+                </otherwise>
+            </choose>
+    </select>
+
+    <select id="getUserMoneyRecord" parameterType="com.rmkj.microcap.modules.chanong.my.bean.MoneyBean" resultType="com.rmkj.microcap.modules.money.entity.MoneyRecord" >
+    SELECT
+        id,
+        serial_no AS serialNo,
+        money,
+        fee,
+        `type`,
+        third_serial_no AS thirdSerialNo,
+        channel,
+        status,
+        remark,
+        create_time AS createTime,
+        complete_time AS completeTime,
+        chn_name AS chnName,
+        bank_name AS bankName,
+        bank_account AS bankAccount,
+        failure_reason AS failureReason
+    FROM
+        tb_money_record
+    WHERE
+        user_id = #{userId}
+        <if test='type != null and type != ""'>
+            AND type = #{type}
+        </if>
+        order by create_time desc
+    </select>
+
+    <insert id="addBankCard" parameterType="com.rmkj.microcap.modules.chanong.my.bean.BankCardBean">
+        INSERT INTO tb_bank_card(id,user_id,chn_name,bank_account,bank_name,create_time,id_card,phone)
+        VALUES (#{id},#{userId},#{chnName},#{bankAccount},#{bankName},now(),#{idCard},#{phone})
+    </insert>
+
+    <select id="alreadyHasCard" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.chanong.my.bean.BankCardBean">
+        SELECT id,
+               user_id as userId,
+               chn_name as chnName,
+               bank_account as bankAccount,
+               bank_name as bankName,
+               create_time as  createTime,
+               id_card as idCard,
+               phone
+         FROM  tb_bank_card
+        WHERE  user_id = #{0}
+    </select>
+
+    <update id="updateBankCard" parameterType="com.rmkj.microcap.modules.chanong.my.bean.BankCardBean">
+        UPDATE tb_bank_card
+           SET chn_name = #{chnName}, bank_account = #{bankAccount}, bank_name = #{bankName},
+               create_time = now(), id_card = #{idCard}, phone = #{phone}
+        WHERE  user_id = #{userId}
+    </update>
+
+    <select id="getBankCard" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.chanong.my.bean.BankCardBean">
+        SELECT id,
+               user_id as userId,
+               chn_name as chnName,
+               bank_account as bankAccount,
+               bank_name as bankName,
+               create_time as  createTime,
+               id_card as idCard,
+               phone
+         FROM  tb_bank_card
+        WHERE  user_id = #{0}
+    </select>
+</mapper>

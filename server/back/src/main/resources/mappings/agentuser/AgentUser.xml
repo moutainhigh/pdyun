@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.agentuser.dao.IAgentUserDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.agentuser.entity.AgentUserBean">
+        SELECT
+        agent_user.user_id as userId,
+        agent_user.agent_id as agentId,
+        agent_user.total_money as totalMoney,
+        agent_user.total_trade_count as totalTradeCount,
+        agent_user.create_time as createTime
+        FROM
+    tb_agent_user agent_user
+        where 1=1
+        <if test="userId!=null">
+            and agent_user.user_id=#{userId}
+        </if>
+        <if test="agentId!=null">
+            and agent_user.agent_id=#{agentId}
+        </if>
+        <if test="totalMoney!=null">
+            and agent_user.total_money=#{totalMoney}
+        </if>
+        <if test="totalTradeCount!=null">
+            and agent_user.total_trade_count=#{totalTradeCount}
+        </if>
+        <if test="createTime!=null">
+            and agent_user.create_time=#{createTime}
+        </if>
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.agentuser.entity.AgentUserBean">
+        SELECT
+        agent_user.user_id as userId,
+        agent_user.agent_id as agentId,
+        agent_user.total_money as totalMoney,
+        agent_user.total_trade_count as totalTradeCount,
+        agent_user.create_time as createTime
+        FROM
+    tb_agent_user agent_user
+        where _Id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_agent_user
+        (
+        user_id,
+        agent_id,
+        total_money,
+        total_trade_count,
+        create_time
+        )
+        VALUES(
+        #{userId},
+        #{agentId},
+        #{totalMoney},
+        #{totalTradeCount},
+        #{createTime}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_agent_user
+        <set>
+            user_id = #{userId},
+            agent_id = #{agentId},
+            total_money = #{totalMoney},
+            total_trade_count = #{totalTradeCount},
+            create_time = #{createTime}
+        </set>
+        WHERE _Id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        UPDATE
+    tb_agent_user
+        WHERE _Id= #{id}
+    </update>
+</mapper>

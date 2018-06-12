@@ -1,0 +1,63 @@
+.popCont {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 4.5rem;
+    height: 0;
+    transition: all 500ms;
+}
+.pop_bd {
+    width: 8.5rem;
+    background: #1e2227;
+    color:#fff;
+    height: 5rem;
+    margin: .8rem auto 0 auto;
+    border-radius: .3rem;
+}
+.tishi{
+    height:1.3rem;
+    padding-bottom: 1rem;
+    border-bottom:1px solid #000;
+}
+.tishi_text{
+    color: #fff;
+    font-size: 0.3rem;
+    line-height: 1.2rem;
+    padding-left: 1.3rem;
+}
+.tishi_text>i{
+    width: 0.6rem;
+    height: 0.6rem;
+    background: url(../../all/image/qqq_03.png) no-repeat center center;
+    background-size: 0.6rem 0.6rem;
+    position: absolute;
+    left: 1.6rem;
+    top: 0.3rem;
+}
+.tishi .close{
+    position: absolute;
+    width: 1.5rem;
+    top: 0.5rem;
+    right: 1rem;
+}
+.xiadan_num{
+    color: #fff;
+    font-size: 0.3rem;
+    text-align: center;
+    line-height: 0.8rem;
+    padding-top:0.3rem;
+    letter-spacing: 0.1rem;
+}
+.sure{
+    width: 2rem;
+    height: 1rem;
+    line-height: 1rem;
+    background: #5498d5;
+    border-radius: 0.2rem;
+    float: right;
+    margin-right: 0.5rem;
+    border: 0;
+    color: #fff;
+    font-size: 0.4rem;
+}

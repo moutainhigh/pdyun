@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.moneyrecord.dao.IMoneyRecordDao">
+    <select id="queryList" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+        money_record.id as id,
+        money_record.serial_no as serialNo,
+        money_record.user_id as userId,
+        money_record.money as money,
+        money_record.fee as fee,
+        money_record.type as type,
+        money_record.third_serial_no as thirdSerialNo,
+        money_record.status as status,
+        money_record.remark as remark,
+        money_record.create_time as createTime,
+        money_record.complete_time as completeTime,
+        money_record.chn_name as chnName,
+        money_record.bank_name as bankName,
+        money_record.open_bank_name AS openBankName,
+        money_record.bank_account as bankAccount,
+        money_record.failure_reason as failureReason
+        FROM
+    tb_money_record money_record
+        where 1=1
+        <if test="id!=null">
+            and money_record.id=#{id}
+        </if>
+        <if test="serialNo!=null">
+            and money_record.serial_no=#{serialNo}
+        </if>
+        <if test="userId!=null">
+            and money_record.user_id=#{userId}
+        </if>
+        <if test="money!=null">
+            and money_record.money=#{money}
+        </if>
+        <if test="fee!=null">
+            and money_record.fee=#{fee}
+        </if>
+        <if test="type!=null">
+            and money_record.type=#{type}
+        </if>
+        <if test="thirdSerialNo!=null">
+            and money_record.third_serial_no=#{thirdSerialNo}
+        </if>
+        <if test="status!=null">
+            and money_record.status=#{status}
+        </if>
+        <if test="remark!=null">
+            and money_record.remark=#{remark}
+        </if>
+        <if test="createTime!=null">
+            and money_record.create_time=#{createTime}
+        </if>
+        <if test="completeTime!=null">
+            and money_record.complete_time=#{completeTime}
+        </if>
+        <if test="chnName!=null">
+            and money_record.chn_name=#{chnName}
+        </if>
+        <if test="bankName!=null">
+            and money_record.bank_name=#{bankName}
+        </if>
+        <if test="bankAccount!=null">
+            and money_record.bank_account=#{bankAccount}
+        </if>
+        <if test="failureReason!=null">
+            and money_record.failure_reason=#{failureReason}
+        </if>
+    </select>
+    <!--入金列表数据-->
+    <select id="moneyInList" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+        money_record.id as id,
+        money_record.serial_no as serialNo,
+        money_record.user_id as userId,
+        money_record.money as money,
+        money_record.fee as fee,
+        money_record.type as type,
+        money_record.third_serial_no as thirdSerialNo,
+        money_record.status as status,
+        money_record.remark as remark,
+        money_record.create_time as createTime,
+        money_record.complete_time as completeTime,
+        money_record.chn_name as chnName,
+        money_record.bank_name as bankName,
+        money_record.open_bank_name AS openBankName,
+        money_record.bank_account as bankAccount,
+        money_record.failure_reason as failureReason,
+        money_record.channel AS channel,
+		users.chn_name as uname,
+        users.mobile as mobile
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 0
+        <if test="id!=null">
+            and money_record.id=#{id}
+        </if>
+        <if test="serialNo!=null">
+            and money_record.serial_no=#{serialNo}
+        </if>
+        <if test="userId!=null">
+            and money_record.user_id=#{userId}
+        </if>
+        <if test="money!=null">
+            and money_record.money=#{money}
+        </if>
+        <if test="fee!=null">
+            and money_record.fee=#{fee}
+        </if>
+        <if test="type!=null">
+            and money_record.type=#{type}
+        </if>
+        <if test="thirdSerialNo!=null">
+            and money_record.third_serial_no=#{thirdSerialNo}
+        </if>
+        <if test="status!=null">
+            and money_record.status=#{status}
+        </if>
+        <if test="remark!=null">
+            and money_record.remark=#{remark}
+        </if>
+        <if test="createTime!=null">
+            and money_record.create_time=#{createTime}
+        </if>
+        <if test="completeTime!=null">
+            and money_record.complete_time=#{completeTime}
+        </if>
+        <if test="chnName!=null">
+            and money_record.chn_name=#{chnName}
+        </if>
+        <if test="bankName!=null">
+            and money_record.bank_name=#{bankName}
+        </if>
+        <if test="bankAccount!=null">
+            and money_record.bank_account=#{bankAccount}
+        </if>
+        <if test="failureReason!=null">
+            and money_record.failure_reason=#{failureReason}
+        </if>
+        <if test="uname!=null">
+            and users.chn_name like  '%' #{uname} '%'
+        </if>
+        <if test="mobile!=null">
+            and users.mobile like '%' #{mobile} '%'
+        </if>
+        <if test="createTimeMin!=null ">
+            and money_record.create_time &gt; #{createTimeMin}
+        </if>
+        <if test="createTimeMax!=null ">
+            and money_record.create_time &lt; #{createTimeMax}
+        </if>
+        ORDER BY create_time desc
+    </select>
+    <!--入金总额统计-->
+    <select id="moneyInTotal"
+            resultType="java.math.BigDecimal">
+        SELECT
+        sum(money_record.money)
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 0
+        <include refid="moneyInColumns"/>
+    </select>
+    <!--已入金总额-->
+    <select id="alreadyMoneyInTotal"
+            resultType="java.math.BigDecimal">
+        SELECT
+        sum(money_record.money)
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 0 AND money_record.status = 1
+        <include refid="moneyInColumns"/>
+    </select>
+    <!--未入金总额-->
+    <select id="noMoneyInTotal"
+            resultType="java.math.BigDecimal">
+        SELECT
+        sum(money_record.money)
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 0 AND money_record.status != 1
+        <include refid="moneyInColumns"/>
+    </select>
+    <sql id="moneyInColumns">
+        <if test="id!=null">
+            and money_record.id=#{id}
+        </if>
+        <if test="serialNo!=null">
+            and money_record.serial_no=#{serialNo}
+        </if>
+        <if test="userId!=null">
+            and money_record.user_id=#{userId}
+        </if>
+        <if test="money!=null">
+            and money_record.money=#{money}
+        </if>
+        <if test="fee!=null">
+            and money_record.fee=#{fee}
+        </if>
+        <if test="type!=null">
+            and money_record.type=#{type}
+        </if>
+        <if test="thirdSerialNo!=null">
+            and money_record.third_serial_no=#{thirdSerialNo}
+        </if>
+        <if test="remark!=null">
+            and money_record.remark=#{remark}
+        </if>
+        <if test="createTime!=null">
+            and money_record.create_time=#{createTime}
+        </if>
+        <if test="completeTime!=null">
+            and money_record.complete_time=#{completeTime}
+        </if>
+        <if test="chnName!=null">
+            and money_record.chn_name=#{chnName}
+        </if>
+        <if test="bankName!=null">
+            and money_record.bank_name=#{bankName}
+        </if>
+        <if test="bankAccount!=null">
+            and money_record.bank_account=#{bankAccount}
+        </if>
+        <if test="failureReason!=null">
+            and money_record.failure_reason=#{failureReason}
+        </if>
+        <if test="uname!=null">
+            and users.chn_name like  '%' #{uname} '%'
+        </if>
+        <if test="mobile!=null">
+            and users.mobile like '%' #{mobile} '%'
+        </if>
+        <if test="createTimeMin!=null ">
+            and money_record.create_time &gt; #{createTimeMin}
+        </if>
+        <if test="createTimeMax!=null ">
+            and money_record.create_time &lt; #{createTimeMax}
+        </if>
+    </sql>
+    <!--出金列表数据-->
+    <select id="moneyOutList" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+        money_record.id as id,
+        money_record.serial_no as serialNo,
+        money_record.user_id as userId,
+        money_record.money as money,
+        money_record.fee as fee,
+        money_record.type as type,
+        money_record.third_serial_no as thirdSerialNo,
+        money_record.status as status,
+        money_record.review_status as reviewStatus,
+        money_record.remark as remark,
+        money_record.create_time as createTime,
+        money_record.complete_time as completeTime,
+        money_record.chn_name as chnName,
+        money_record.bank_name as bankName,
+        money_record.open_bank_name AS openBankName,
+        money_record.bank_account as bankAccount,
+        money_record.failure_reason as failureReason,
+
+        users.chn_name as uname,
+        users.mobile as mobile
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 1
+        <if test="id!=null">
+            and money_record.id=#{id}
+        </if>
+        <if test="serialNo!=null">
+            and money_record.serial_no=#{serialNo}
+        </if>
+        <if test="userId!=null">
+            and money_record.user_id=#{userId}
+        </if>
+        <if test="money!=null">
+            and money_record.money=#{money}
+        </if>
+        <if test="fee!=null">
+            and money_record.fee=#{fee}
+        </if>
+        <if test="type!=null">
+            and money_record.type=#{type}
+        </if>
+        <if test="thirdSerialNo!=null">
+            and money_record.third_serial_no=#{thirdSerialNo}
+        </if>
+        <if test="reviewStatus!=null">
+            and money_record.review_status=#{reviewStatus}
+        </if>
+        <if test="status!=null">
+            and money_record.status=#{status}
+        </if>
+        <if test="remark!=null">
+            and money_record.remark=#{remark}
+        </if>
+        <if test="createTime!=null">
+            and money_record.create_time=#{createTime}
+        </if>
+        <if test="completeTime!=null">
+            and money_record.complete_time=#{completeTime}
+        </if>
+        <if test="chnName!=null">
+            and money_record.chn_name=#{chnName}
+        </if>
+        <if test="bankName!=null">
+            and money_record.bank_name=#{bankName}
+        </if>
+        <if test="bankAccount!=null">
+            and money_record.bank_account=#{bankAccount}
+        </if>
+        <if test="failureReason!=null">
+            and money_record.failure_reason=#{failureReason}
+        </if>
+        <if test="uname!=null">
+            and users.chn_name like  '%' #{uname} '%'
+        </if>
+        <if test="mobile!=null">
+            and users.mobile like '%' #{mobile} '%'
+        </if>
+        <if test="createTimeMin!=null ">
+            and money_record.create_time &gt; #{createTimeMin}
+        </if>
+        <if test="createTimeMax!=null ">
+            and money_record.create_time &lt; #{createTimeMax}
+        </if>
+        ORDER BY create_time desc
+    </select>
+    <!--出金总金额统计-->
+    <select id="moneyOutTotal"
+            resultType="java.math.BigDecimal">
+        SELECT
+        sum(money_record.money)
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 1
+        <include refid="moneyOutColumns"/>
+    </select>
+    <!--未出金总金额统计-->
+    <select id="noMoneyOutTotal"
+            resultType="java.math.BigDecimal">
+        SELECT
+        sum(money_record.money)
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 1 AND money_record.status != 1
+        <include refid="moneyOutColumns"/>
+    </select>
+    <!--已金总金额统计-->
+    <select id="alreadyMoneyOutTotal"
+            resultType="java.math.BigDecimal">
+        SELECT
+        sum(money_record.money)
+        FROM
+        tb_money_record money_record INNER JOIN tb_user users on users.id = money_record.user_id
+        where type = 1 AND money_record.status = 1
+        <if test="id!=null">
+            and money_record.id=#{id}
+        </if>
+        <include refid="moneyOutColumns"/>
+    </select>
+    <sql id="moneyOutColumns">
+        <if test="id!=null">
+            and money_record.id=#{id}
+        </if>
+        <if test="serialNo!=null">
+            and money_record.serial_no=#{serialNo}
+        </if>
+        <if test="userId!=null">
+            and money_record.user_id=#{userId}
+        </if>
+        <if test="money!=null">
+            and money_record.money=#{money}
+        </if>
+        <if test="fee!=null">
+            and money_record.fee=#{fee}
+        </if>
+        <if test="type!=null">
+            and money_record.type=#{type}
+        </if>
+        <if test="thirdSerialNo!=null">
+            and money_record.third_serial_no=#{thirdSerialNo}
+        </if>
+        <if test="remark!=null">
+            and money_record.remark=#{remark}
+        </if>
+        <if test="createTime!=null">
+            and money_record.create_time=#{createTime}
+        </if>
+        <if test="completeTime!=null">
+            and money_record.complete_time=#{completeTime}
+        </if>
+        <if test="chnName!=null">
+            and money_record.chn_name=#{chnName}
+        </if>
+        <if test="bankName!=null">
+            and money_record.bank_name=#{bankName}
+        </if>
+        <if test="bankAccount!=null">
+            and money_record.bank_account=#{bankAccount}
+        </if>
+        <if test="failureReason!=null">
+            and money_record.failure_reason=#{failureReason}
+        </if>
+        <if test="uname!=null">
+            and users.chn_name like  '%' #{uname} '%'
+        </if>
+        <if test="mobile!=null">
+            and users.mobile like '%' #{mobile} '%'
+        </if>
+        <if test="createTimeMin!=null ">
+            and money_record.create_time &gt; #{createTimeMin}
+        </if>
+        <if test="createTimeMax!=null ">
+            and money_record.create_time &lt; #{createTimeMax}
+        </if>
+    </sql>
+    <select id="get" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+        money_record.id as id,
+        money_record.serial_no as serialNo,
+        money_record.user_id as userId,
+        money_record.money as money,
+        money_record.fee as fee,
+        money_record.type as type,
+        money_record.third_serial_no as thirdSerialNo,
+        money_record.status as status,
+        money_record.review_status AS reviewStatus,
+        money_record.remark as remark,
+        money_record.create_time as createTime,
+        money_record.review_time as reviewTime,
+        money_record.complete_time as completeTime,
+        money_record.chn_name as chnName,
+        money_record.bank_name as bankName,
+        money_record.open_bank_name AS openBankName,
+        money_record.bank_account as bankAccount,
+        money_record.failure_reason as failureReason,
+        money_record.province AS province,
+        money_record.city AS city
+        FROM
+    tb_money_record money_record
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_money_record
+        (
+        id,
+        serial_no,
+        user_id,
+        money,
+        fee,
+        type,
+        third_serial_no,
+        status,
+        remark,
+        create_time,
+        complete_time,
+        chn_name,
+        bank_name,
+        bank_account,
+        failure_reason,
+        channel
+        )
+        VALUES(
+        #{id},
+        #{serialNo},
+        #{userId},
+        #{money},
+        #{fee},
+        #{type},
+        #{thirdSerialNo},
+        #{status},
+        #{remark},
+        #{createTime},
+        #{completeTime},
+        #{chnName},
+        #{bankName},
+        #{bankAccount},
+        #{failureReason},
+        #{channel}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_money_record
+        <set>
+            id = #{id},
+            serial_no = #{serialNo},
+            user_id = #{userId},
+            money = #{money},
+            fee = #{fee},
+            type = #{type},
+            third_serial_no = #{thirdSerialNo},
+            status = #{status},
+            remark = #{remark},
+            create_time = #{createTime},
+            complete_time = #{completeTime},
+            chn_name = #{chnName},
+            bank_name = #{bankName},
+            bank_account = #{bankAccount},
+            failure_reason = #{failureReason}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+    tb_money_record
+        WHERE id= #{id}
+    </update>
+    <update id="outPast" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        UPDATE tb_money_record SET status = #{status}, complete_time = now(),failure_reason = #{failureReason}
+        WHERE id = #{id} AND status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         = 1
+    </update>
+    <update id="outPastIn" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        UPDATE tb_money_record SET status = #{status}, complete_time = now()
+        WHERE id = #{id} AND status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          = 1
+    </update>
+
+    <!-- 威鹏支付出金时，修改审核状态，状态 -->
+    <update id="outPastInStatusAndReviewStatus" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        UPDATE tb_money_record
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="thirdSerialNo != null">
+                third_serial_no = #{thirdSerialNo},
+            </if>
+            <if test="reviewStatus != null">
+                review_status = #{reviewStatus},
+            </if>
+            <if test="failureReason != null">
+                failure_reason = #{failureReason},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            review_time = now()
+        </set>
+        WHERE id = #{id} AND status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          = 1
+    </update>
+    <!-- 威鹏支付出金成功时，收到异步通知时修改 -->
+    <update id="updateDaiPayOutPastInStatus" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        UPDATE tb_money_record
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="thirdSerialNo != null">
+                third_serial_no = #{thirdSerialNo},
+            </if>
+            <if test="failureReason != null">
+                failure_reason = #{failureReason},
+            </if>
+            complete_time = now()
+        </set>
+        WHERE serial_no = #{serialNo} AND review_status = 1 AND status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        = 1
+    </update>
+    <!-- 威鹏支付出金成功时，收到异步通知,根据订单号查询数据 -->
+    <select id="getDaiPayByserialNo" parameterType="string" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+        money_record.id as id,
+        money_record.serial_no as serialNo,
+        money_record.user_id as userId,
+        money_record.money as money,
+        money_record.fee as fee,
+        money_record.type as type,
+        money_record.third_serial_no as thirdSerialNo,
+        money_record.status as status,
+        money_record.remark as remark,
+        money_record.create_time as createTime,
+        money_record.complete_time as completeTime,
+        money_record.chn_name as chnName,
+        money_record.bank_name as bankName,
+        money_record.open_bank_name AS openBankName,
+        money_record.bank_account as bankAccount,
+        money_record.failure_reason as failureReason
+        FROM
+        tb_money_record money_record
+        WHERE money_record.serial_no = #{serialNo} AND review_status = 1 AND status = 0
+    </select>
+
+    <select id="findNoResult2Check" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+            id as id,
+            serial_no as serialNo,
+            user_id as userId,
+            money as money,
+            fee as fee,
+            type as type,
+            third_serial_no as thirdSerialNo,
+            status as status,
+            remark as remark,
+            create_time as createTime,
+            review_time AS reviewTime,
+            complete_time as completeTime,
+            chn_name as chnName,
+            bank_name as bankName,
+            open_bank_name AS openBankName,
+            bank_account as bankAccount,
+            failure_reason as failureReason
+        FROM tb_money_record WHERE status = 0 AND review_status = 1 AND type = 1 AND third_serial_no is not null
+    </select>
+
+    <update id="updateSuccess" parameterType="string">
+        UPDATE tb_money_record SET status = 1,review_status = 1,complete_time = now() WHERE id = #{id}
+    </update>
+
+    <update id="updateTimeOut" parameterType="string">
+        UPDATE tb_money_record SET status = 0,review_status = 1,complete_time = now() WHERE id = #{id}
+    </update>
+
+    <update id="updateFailure" parameterType="string">
+        UPDATE tb_money_record SET status = 2, review_status = if(review_status = 0, 1, review_status), review_time = if(review_time is null, now(), review_time), complete_time = now() WHERE id = #{id}
+    </update>
+
+    <update id="updateFailureMap" parameterType="java.util.Map">
+        UPDATE tb_money_record SET status = 2, review_status = if(review_status = 0, 1, review_status), review_time = if(review_time is null, now(), review_time), complete_time = now(),failure_reason = #{failureReason} WHERE id = #{id}
+    </update>
+
+
+    <select id="queryInfoForOut" parameterType="java.util.List" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+            id as id,
+            serial_no as serialNo,
+            user_id as userId,
+            money as money,
+            fee as fee,
+            type as type,
+            third_serial_no as thirdSerialNo,
+            status as status,
+            remark as remark,
+            create_time as createTime,
+            complete_time as completeTime,
+            bank_name as bankName,
+            bank_account AS bankAccount,
+            chn_name as chnName,
+            open_bank_name AS openBankName,
+            province AS province,
+            city AS city,
+            lian_hang_no AS lianHangNo,
+            id_card AS idCard,
+            phone AS phone
+        FROM tb_money_record WHERE `status` = 0 AND review_status = 0 AND id in
+        <foreach collection="list" open="(" close=")" separator="," item="it">
+            #{it}
+        </foreach>
+    </select>
+
+    <select id="queryUserMoney" parameterType="string" resultType="com.rmkj.microcap.modules.user.entity.UserBean">
+        SELECT
+            id,
+            money
+        FROM tb_user
+        WHERE id = #{id}
+    </select>
+
+    <update id="returnMoney2User" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.ReturnMoney2User">
+        UPDATE tb_user SET money = #{money} + #{difMoney} WHERE id = #{id} AND money = #{money}
+    </update>
+
+    <insert id="addMoneyChange" parameterType="com.rmkj.microcap.modules.moneychange.entity.MoneyChangeBean">
+        INSERT INTO tb_money_change (id, user_id, dif_money, type, before_money, after_money, create_time, remark) VALUES
+         (#{id}, #{userId}, #{difMoney}, #{type}, #{beforeMoney}, #{afterMoney}, now(), #{remark})
+    </insert>
+
+    <update id="pass" parameterType="java.util.List">
+        UPDATE tb_money_record SET review_status = 1, review_time = now()
+        WHERE review_status = 0 AND type = 1 AND id in
+        <foreach collection="list" open="(" close=")" separator="," item="it">
+            #{it}
+        </foreach>
+    </update>
+
+    <update id="nopass" parameterType="java.util.Map">
+        UPDATE tb_money_record SET review_status = 2, status = 2, failure_reason = #{failureReason}, review_time = now(), complete_time = now()
+        WHERE review_status = 0 AND type = 1 AND id in
+        <foreach collection="ids" open="(" close=")" separator="," item="it">
+            #{it}
+        </foreach>
+    </update>
+
+    <update id="review" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        UPDATE tb_money_record SET review_status = 1, review_time = now(), third_serial_no = #{thirdSerialNo}
+        WHERE review_status = 0 AND type = 1 AND id = #{id}
+    </update>
+
+    <!-- 根据id查询出金未审核的数据 -->
+    <select id="findByIds" parameterType="java.util.List" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+            m.id as id,
+            m.serial_no as serialNo,
+            m.user_id as userId,
+            m.money as money,
+            m.fee as fee,
+            m.type as type,
+            m.third_serial_no as thirdSerialNo,
+            m.review_status as reviewStatus,
+            m.status as status,
+            m.review_status as reviewStatus,
+            m.remark as remark,
+            m.create_time as createTime,
+            m.complete_time as completeTime,
+            m.bank_name as bankName,
+            m.bank_account AS bankAccount,
+            m.chn_name as chnName,
+            m.open_bank_name AS openBankName
+        FROM tb_money_record m
+        WHERE m.status = 0 AND m.type = 1 AND id in
+        <foreach collection="list" open="(" close=")" item="it" separator=",">
+            #{it}
+        </foreach>
+    </select>
+
+    <!--威鹏代付 查询代付异常订单-->
+    <select id="findNoResultCheck" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean">
+        SELECT
+        id as id,
+        serial_no as serialNo,
+        user_id as userId,
+        money as money,
+        fee as fee,
+        type as type,
+        third_serial_no as thirdSerialNo,
+        review_time as reviewTime,
+        review_status as reviewStatus,
+        status as status,
+        remark as remark,
+        create_time as createTime,
+        complete_time as completeTime,
+        chn_name as chnName,
+        bank_name as bankName,
+        bank_account as bankAccount,
+        failure_reason as failureReason
+        FROM tb_money_record WHERE status = 0 AND review_status = 1 AND type = 1 AND TIMESTAMPDIFF(MINUTE,review_time,now()) &gt;10
+    </select>
+
+    <!-- 优化入金列表查询 -->
+    <select id="queryMoneyRecordPage" resultType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyRecordBean" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyInRecordPageBean">
+        SELECT
+            T.*,
+            units.`name` AS unitsName,
+            users.chn_name AS uname,
+            users.mobile AS mobile
+        FROM(
+            SELECT
+                money_record.id as id,
+                money_record.serial_no as serialNo,
+                money_record.user_id as userId,
+                money_record.money as money,
+                money_record.fee as fee,
+                money_record.type as type,
+                money_record.third_serial_no as thirdSerialNo,
+                money_record.status as status,
+                money_record.remark as remark,
+                money_record.create_time as createTime,
+                money_record.complete_time as completeTime,
+                money_record.chn_name as chnName,
+                money_record.bank_name as bankName,
+                money_record.open_bank_name AS openBankName,
+                money_record.bank_account as bankAccount,
+                money_record.failure_reason as failureReason,
+                money_record.channel AS channel
+            FROM
+                tb_money_record money_record
+                <where>
+                    money_record.type = 0
+                    <if test="serialNo!=null">
+                        and money_record.serial_no=#{serialNo}
+                    </if>
+                    <if test="type!=null">
+                        and money_record.type=#{type}
+                    </if>
+                    <if test="thirdSerialNo!=null">
+                        and money_record.third_serial_no=#{thirdSerialNo}
+                    </if>
+                    <if test="status!=null">
+                        and money_record.status=#{status}
+                    </if>
+                    <if test="createTimeMin!=null ">
+                        and money_record.create_time &gt; #{createTimeMin}
+                    </if>
+                    <if test="createTimeMax!=null ">
+                        and money_record.create_time &lt; #{createTimeMax}
+                    </if>
+                    <if test="channel != null">
+                        AND money_record.channel = #{channel}
+                    </if>
+                </where>
+        )T LEFT JOIN tb_user users ON users.id = T.userId
+        LEFT JOIN tb_ml3_agent agent ON agent.agent_invite_code = users.agent_invite_code
+        LEFT JOIN tb_ml3_member_units units ON units.id = agent.units_id
+        LEFT JOIN tb_ml3_operate_center center ON center.id = units.id
+        <where>
+            <if test="uname!=null">
+                AND users.chn_name like  CONCAT(CONCAT('%', #{uname}), '%')
+            </if>
+            <if test="mobile!=null">
+                AND users.mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+            </if>
+            <if test="unitsName != null">
+                AND units.name LIKE CONCAT(CONCAT('%', #{unitsName}), '%')
+            </if>
+        </where>
+        ORDER BY T.createTime DESC
+        LIMIT #{start},#{rows}
+    </select>
+
+    <select id="queryMoneyRecordTotal" resultType="java.lang.Long" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyInRecordPageBean">
+        SELECT
+            COUNT(*)
+        FROM(
+            SELECT
+            money_record.id as id,
+            money_record.serial_no as serialNo,
+            money_record.user_id as userId,
+            money_record.money as money,
+            money_record.fee as fee,
+            money_record.type as type,
+            money_record.third_serial_no as thirdSerialNo,
+            money_record.status as status,
+            money_record.remark as remark,
+            money_record.create_time as createTime,
+            money_record.complete_time as completeTime,
+            money_record.chn_name as chnName,
+            money_record.bank_name as bankName,
+            money_record.open_bank_name AS openBankName,
+            money_record.bank_account as bankAccount,
+            money_record.failure_reason as failureReason,
+            money_record.channel AS channel
+            FROM
+            tb_money_record money_record
+            <where>
+                money_record.type = 0
+                <if test="serialNo!=null">
+                    and money_record.serial_no=#{serialNo}
+                </if>
+                <if test="type!=null">
+                    and money_record.type=#{type}
+                </if>
+                <if test="thirdSerialNo!=null">
+                    and money_record.third_serial_no=#{thirdSerialNo}
+                </if>
+                <if test="status!=null">
+                    and money_record.status=#{status}
+                </if>
+                <if test="createTimeMin!=null ">
+                    and money_record.create_time &gt; #{createTimeMin}
+                </if>
+                <if test="createTimeMax!=null ">
+                    and money_record.create_time &lt; #{createTimeMax}
+                </if>
+                <if test="channel != null">
+                    AND money_record.channel = #{channel}
+                </if>
+            </where>
+            ORDER BY money_record.create_time DESC
+        )T LEFT JOIN tb_user users ON users.id = T.userId
+        LEFT JOIN tb_ml3_agent agent ON agent.agent_invite_code = users.agent_invite_code
+        LEFT JOIN tb_ml3_member_units units ON units.id = agent.units_id
+        LEFT JOIN tb_ml3_operate_center center ON center.id = units.id
+        <where>
+            <if test="uname!=null">
+                AND users.chn_name like  CONCAT(CONCAT('%', #{uname}), '%')
+            </if>
+            <if test="mobile!=null">
+                AND users.mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+            </if>
+            <if test="unitsName != null">
+                AND units.name LIKE CONCAT(CONCAT('%', #{unitsName}), '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 优化入金列表查询-根据状态查询入金成功，失败情况 -->
+    <select id="queryMoneyRecordByStatus" resultType="java.math.BigDecimal" parameterType="com.rmkj.microcap.modules.moneyrecord.entity.MoneyInRecordPageBean">
+        SELECT
+            SUM(T.money)
+        FROM(
+        SELECT
+        money_record.id as id,
+        money_record.serial_no as serialNo,
+        money_record.user_id as userId,
+        money_record.money as money,
+        money_record.fee as fee,
+        money_record.type as type,
+        money_record.third_serial_no as thirdSerialNo,
+        money_record.status as status,
+        money_record.remark as remark,
+        money_record.create_time as createTime,
+        money_record.complete_time as completeTime,
+        money_record.chn_name as chnName,
+        money_record.bank_name as bankName,
+        money_record.open_bank_name AS openBankName,
+        money_record.bank_account as bankAccount,
+        money_record.failure_reason as failureReason,
+        money_record.channel AS channel
+        FROM
+        tb_money_record money_record
+        <where>
+            money_record.type = 0
+            <if test="serialNo!=null">
+                and money_record.serial_no=#{serialNo}
+            </if>
+            <if test="type!=null">
+                and money_record.type=#{type}
+            </if>
+            <if test="thirdSerialNo!=null">
+                and money_record.third_serial_no=#{thirdSerialNo}
+            </if>
+            <if test="status!=null">
+                and money_record.status=#{status}
+            </if>
+            <if test="createTimeMin!=null ">
+                and money_record.create_time &gt; #{createTimeMin}
+            </if>
+            <if test="createTimeMax!=null ">
+                and money_record.create_time &lt; #{createTimeMax}
+            </if>
+            <if test="channel != null">
+                AND money_record.channel = #{channel}
+            </if>
+        </where>
+        ORDER BY money_record.create_time DESC
+        )T LEFT JOIN tb_user users ON users.id = T.userId
+        LEFT JOIN tb_ml3_agent agent ON agent.agent_invite_code = users.agent_invite_code
+        LEFT JOIN tb_ml3_member_units units ON units.id = agent.units_id
+        LEFT JOIN tb_ml3_operate_center center ON center.id = units.id
+        <where>
+            <if test="uname!=null">
+                AND users.chn_name like  CONCAT(CONCAT('%', #{uname}), '%')
+            </if>
+            <if test="mobile!=null">
+                AND users.mobile like CONCAT(CONCAT('%', #{mobile}), '%')
+            </if>
+            <if test="unitsName != null">
+                AND units.name LIKE CONCAT(CONCAT('%', #{unitsName}), '%')
+            </if>
+        </where>
+        LIMIT #{start},#{rows}
+    </select>
+
+    <!-- 查询入金通道 -->
+    <select id="queryRechargeChannel" resultType="java.lang.String">
+        SELECT channel FROM tb_money_record WHERE channel IS NOT NULL GROUP BY channel
+    </select>
+</mapper>

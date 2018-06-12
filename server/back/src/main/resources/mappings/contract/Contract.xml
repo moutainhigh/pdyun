@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.contract.dao.IContractDao">
+    <select id="queryList" resultType="com.rmkj.microcap.modules.contract.entity.ContractBean">
+        SELECT
+            contract.id as id,
+            contract.name as name,
+            contract.code as code,
+            contract.order_no as orderNo,
+            contract.status as status,
+            contract.step_moneys as stepMoneys,
+            contract.off_times as offTimes,
+            contract.off_points as offPoints,
+            contract.percent_profits as percentProfits,
+            contract.point_moneys as pointMoneys,
+            contract.fees as fees,
+            contract.profit_percentages as profitPercentages,
+            contract.loss_percentages as lossPercentages,
+            contract.create_time as createTime,
+            contract.update_time as updateTime,
+            contract.begin_time as beginTime,
+            contract.end_time as endTime,
+            model AS model
+        FROM
+    tb_contract contract
+        where 1=1
+        <if test="id!=null">
+            and contract.id=#{id}
+        </if>
+        <if test="name!=null">
+            and contract.name like '%' #{name} '%'
+        </if>
+        <if test="code!=null">
+            and contract.code like '%' #{code} '%'
+        </if>
+        <if test="orderNo!=null">
+            and contract.order_no=#{orderNo}
+        </if>
+        <if test="status!=null">
+            and contract.status=#{status}
+        </if>
+        <if test="stepMoneys!=null">
+            and contract.step_moneys=#{stepMoneys}
+        </if>
+        <if test="pointMoneys!=null">
+            and contract.point_moneys=#{pointMoneys}
+        </if>
+        <if test="fees!=null">
+            and contract.fees=#{fees}
+        </if>
+        <if test="profitPercentages!=null">
+            and contract.profit_percentages=#{profitPercentages}
+        </if>
+        <if test="lossPercentages!=null">
+            and contract.loss_percentages=#{lossPercentages}
+        </if>
+        <if test="createTime!=null">
+            and contract.create_time=#{createTime}
+        </if>
+        <if test="updateTime!=null">
+            and contract.update_time=#{updateTime}
+        </if>
+        ORDER BY order_no
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.contract.entity.ContractBean">
+        SELECT
+        contract.id as id,
+        contract.name as name,
+        contract.code as code,
+        contract.order_no as orderNo,
+        contract.status as status,
+        contract.step_moneys as stepMoneys,
+        contract.point_moneys as pointMoneys,
+        contract.fees as fees,
+        contract.profit_percentages as profitPercentages,
+        contract.loss_percentages as lossPercentages,
+        contract.create_time as createTime,
+        contract.update_time as updateTime,
+        contract.begin_time as beginTime,
+        contract.end_time as endTime,
+        contract.off_times as offTimes,
+        contract.off_points as offPoints,
+        contract.percent_profits as percentProfits
+        FROM
+    tb_contract contract
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_contract
+        (
+        id,
+        name,
+        code,
+        order_no,
+        status,
+        step_moneys,
+        point_moneys,
+        fees,
+        profit_percentages,
+        loss_percentages,
+        create_time,
+        create_by,
+        update_time,
+        update_by,
+        )
+        VALUES(
+        #{id},
+        #{name},
+        #{code},
+        #{orderNo},
+        #{status},
+        #{stepMoneys},
+        #{pointMoneys},
+        #{fees},
+        #{profitPercentages},
+        #{lossPercentages},
+        #{createTime},
+        #{createBy.id},
+        #{updateTime},
+        #{updateBy.id}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_contract
+        <set>
+            id = #{id},
+            name = #{name},
+            code = #{code},
+            order_no = #{orderNo},
+            status = #{status},
+            update_time = #{updateTime},
+            begin_time = #{beginTime},
+            end_time = #{endTime},
+            off_times = #{offTimes},
+            off_points = #{offPoints},
+            percent_profits = #{percentProfits},
+            profit_percentages = #{profitPercentages},
+            loss_percentages = #{lossPercentages},
+            step_moneys = #{stepMoneys},
+            point_moneys = #{pointMoneys},
+            fees = #{fees},
+            model = #{model}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+    tb_contract
+        WHERE id= #{id}
+    </update>
+    <update id="open" parameterType="com.rmkj.microcap.modules.contract.entity.ContractBean">
+        update tb_contract set status = 0 where id = #{id}
+    </update>
+
+    <update id="close" parameterType="com.rmkj.microcap.modules.contract.entity.ContractBean">
+        update tb_contract set status = 1 where id = #{id}
+    </update>
+</mapper>
