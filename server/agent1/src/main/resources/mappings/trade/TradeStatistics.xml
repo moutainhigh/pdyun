@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.modules.trade.dao.TradeStatisticsDao">
+    <sql id="statisticsWhereSQL">
+        <if test="couponType != null">
+            AND t.coupon_type = #{couponType}
+        </if>
+        <if test="centerId != null and centerId != ''">
+            AND t.center_id = #{centerId}
+        </if>
+        <if test="unitsId != null and unitsId != ''">
+            AND t.units_id = #{unitsId}
+        </if>
+        <if test="agentId != null and agentId != ''">
+            AND t.agent_id = #{agentId}
+        </if>
+        <if test="junId != null and junId != ''">
+            AND (t.parent1_id = #{junId} or t.parent2_id = #{junId} or t.parent3_id = #{junId})
+        </if>
+        <if test="userId != null and userId != ''">
+            AND t.user_id = #{userId}
+        </if>
+        <if test="centerId != null and centerId != ''">
+            AND t.center_id = #{centerId}
+        </if>
+        <if test="startDate != null and startDate != ''">
+            AND DATE_FORMAT(t.buy_time, '%Y-%m-%d %H:%i:%s') &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE_FORMAT(t.buy_time, '%Y-%m-%d %H:%i:%s') &lt;= #{endDate}
+        </if>
+        <if test="model != null">
+            AND t.model = #{model}
+        </if>
+        <if test="chnName != null and chnName != ''">
+            AND tu.chn_name LIKE concat(concat('%',#{chnName}),'%')
+        </if>
+    </sql>
+    <!-- t.sell_type != 2 AND  t.sell_type != 3 -->
+    <select id="findTrades" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams" resultType="com.rmkj.microcap.modules.trade.entity.TradeStatistics">
+        SELECT
+        t.*,
+        tu.chn_name AS uname,
+        tu.mobile AS mobile,
+        tma.mobile AS agentMobile,
+        tma.account AS agentAccount,
+        tmmu. NAME AS unitsName
+        FROM
+        (
+        SELECT
+        t.id AS id,
+        t.serial_no AS serialNo,
+        t.user_id AS userId,
+        t.money AS money,
+        t.coupon_money AS couponMoney,
+        t.coupon_type AS couponType,
+        t.type AS type,
+        t.fee AS fee,
+        t. CODE AS CODE,
+        t.contract_name AS contractName,
+        t.point_value AS pointValue,
+        t.profit_max AS profitMax,
+        t.loss_max AS lossMax,
+        t.buy_up_down AS buyUpDown,
+        t. STATUS AS STATUS,
+        t.buy_time AS buyTime,
+        t.buy_point AS buyPoint,
+        t.sell_point AS sellPoint,
+        t.dif_money AS difMoney,
+        t.sell_type AS sellType,
+        t.sell_time AS sellTime,
+        t.off_point AS offPoint,
+        t.off_time AS offTime,
+        <!-- 品道新添字段 -->
+        t.hold_num AS holdNum,
+        t.service_fee AS serviceFee,
+        t.goods_name AS goodsName,
+        t.goods_id AS goodsId,
+        t.fee_buy AS feeBuy,
+        t.fee_sell AS feeSell
+        FROM
+        tb_trade t
+        LEFT JOIN tb_user tu ON tu.id = t.user_id
+        WHERE t.`status` != 1 AND t.`status` != 2
+        <!-- t.sell_type != 2 AND
+        t.sell_type != 3 -->
+        <include refid="statisticsWhereSQL"></include>
+        ORDER BY
+        t.buy_time DESC limit #{start},#{rows}
+        ) t
+        LEFT JOIN tb_user tu ON t.userId = tu.id
+        LEFT JOIN tb_ml3_agent tma ON tma.agent_invite_code = tu.agent_invite_code
+        LEFT JOIN tb_ml3_member_units tmmu ON tma.units_id = tmmu.id
+    </select>
+
+    <select id="findTradesTotal" resultType="long" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams">
+        SELECT count(*) FROM
+        tb_trade t LEFT JOIN tb_user tu ON tu.id = t.user_id
+        WHERE <!-- t.sell_type != 2 AND t.sell_type != 3 --> t.`status` != 1 AND t.`status` != 2
+        <include refid="statisticsWhereSQL"></include>
+    </select>
+
+    <select id="getFeesCount" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams" resultType="com.rmkj.microcap.modules.trade.entity.FeesBean">
+        SELECT
+            sum(t.service_fee) AS serviceFeeSum,
+            sum(t.fee_buy) AS buyFeeSum,
+            sum(t.fee_sell) AS sellFeeSum
+        FROM tb_trade t LEFT JOIN tb_user tu ON t.user_id = tu.id
+        WHERE t.`status` != '4'
+        <include refid="statisticsWhereSQL"></include>
+    </select>
+
+    <!-- 查询总建仓笔数、有效流水、平仓笔数、总盈亏、平局笔数、亏损笔数、盈利笔数 -->
+    <select id="tradeStatistics" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams" resultType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsResult1">
+        SELECT
+        count(t.id) AS allPens,
+        <!--<if test="unitsId != null">-->
+        <!--sum(t.money) AS validMoney,-->
+        <!--</if>-->
+        <!--<if test="agentId != null">-->
+        <!--sum(t.money) AS validMoney,-->
+        <!--</if>-->
+        <!--<if test="junId != null">-->
+        <!--sum(if(t.dif_money != 0, money, 0)) AS validMoney,-->
+        <!--</if>-->
+        sum(if(buy_point != sell_point, t.money, 0)) AS validMoney,
+        sum(t.`status`) AS sellPens,
+        sum(t.dif_money) AS winAndLoseMoney,
+        FORMAT(sum(if(buy_point != sell_point, t.fee, 0)), 2) AS tradeManageMoney,
+        sum(t.service_fee) AS serviceFeeSum,
+        sum(t.fee_buy) AS feeBuySum,
+        sum(t.fee_sell) AS feeSellSum,
+        <!-- FORMAT(sum(fee), 2) AS tradeManageMoney, -->
+        <!-- FORMAT(sum(t.dif_money) - (sum(if(buy_point != sell_point, t.money, 0)) * 0.02), 2) AS bonus, -->
+        <if test="junId != null">
+            sum(
+            if(t.parent2_id = #{junId} , t.return2_money, 0)
+            +
+            if(t.parent3_id = #{junId} , t.return3_money, 0)
+            ) AS extensionMoney,
+        </if>
+        <if test="junId == null">
+            sum(
+            if(t.parent2_id is not null , t.return2_money, 0)
+            +
+            if(t.parent3_id is not null , t.return3_money, 0)
+            ) AS extensionMoney,
+        </if>
+        sum(if(t.buy_point = t.sell_point, 1, 0)) AS drawPens,
+        sum(if(t.buy_point = t.sell_point or t.dif_money &gt; 0, 0, 1)) AS losePens,
+        sum(if(t.dif_money &gt; 0, 1, 0)) AS winPens
+        FROM tb_trade t LEFT JOIN tb_user tu ON t.user_id = tu.id
+        WHERE <!-- t.sell_type != 2 AND t.sell_type != 3 --> t.`status` != 1 AND t.`status` != 2
+        <include refid="statisticsWhereSQL"></include>
+    </select>
+
+    <!-- 查询持仓总额 -->
+    <select id="tradeHoldStatistics" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams" resultType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsResult4">
+        SELECT
+        IFNULL(sum(if(t.`status`=1, t.money, 0)), 0) AS holdMoney
+        FROM tb_trade t
+        LEFT JOIN tb_user tu ON tu.id = t.user_id
+        WHERE t.status = 1
+        <include refid="statisticsWhereSQL"></include>
+    </select>
+
+    <!-- 查询客户余额、充值总额 -->
+    <select id="userStatistics" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams" resultType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsResult2">
+        SELECT
+        sum(t.money) AS money,
+        sum(t.recharge_money) AS inMoney
+        FROM tb_user t, tb_ml3_agent tm
+        WHERE t.agent_invite_code = tm.agent_invite_code
+        <if test="centerId != null">
+            AND tm.center_id = #{centerId}
+        </if>
+        <if test="unitsId != null">
+            AND tm.units_id = #{unitsId}
+        </if>
+        <if test="agentId != null">
+            AND tm.id = #{agentId}
+        </if>
+        <if test="junId != null">
+            AND (t.parent1_id = #{junId} or t.parent2_id = #{junId} or t.parent3_id = #{junId})
+        </if>
+        <!--<if test="startDate != null">
+            AND DATE_FORMAT(tr.create_time, '%Y-%m-%d') &gt; #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE_FORMAT(tr.create_time, '%Y-%m-%d') &lt; #{endDate}
+        </if>-->
+        <if test="userId != null">
+            AND t.id = #{userId}
+        </if>
+    </select>
+
+    <!-- 查询充值成功总额 -->
+    <select id="queryRechargeSum" resultType="java.math.BigDecimal" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams">
+        SELECT
+        SUM(record.money)
+        FROM tb_money_record record, tb_user t, tb_ml3_agent tm
+        <where>
+            record.user_id = t.id AND t.agent_invite_code = tm.agent_invite_code AND record.type = 0 AND record.`status` = 1
+            <if test="unitsId != null">
+                AND tm.units_id = #{unitsId}
+            </if>
+            <if test="agentId != null">
+                AND tm.id = #{agentId}
+            </if>
+            <if test="centerId != null">
+                AND tm.center_id = #{centerId}
+            </if>
+            <if test="junId != null">
+                AND (t.parent1_id = #{junId} or t.parent2_id = #{junId} or t.parent3_id = #{junId})
+            </if>
+            <if test="userId != null">
+                AND t.id = #{userId}
+            </if>
+            <if test="startDate != null">
+                AND DATE_FORMAT(record.create_time, '%Y-%m-%d %H:%i:%s') &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND DATE_FORMAT(record.create_time, '%Y-%m-%d %H:%i:%s') &lt;= #{endDate}
+            </if>
+            <if test="chnName != null and chnName != ''">
+                AND t.chn_name LIKE concat(concat('%',#{chnName}),'%')
+            </if>
+
+        </where>
+    </select>
+
+    <!-- 查询提现总额 -->
+    <select id="moneyRecordStatistics" parameterType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsParams" resultType="com.rmkj.microcap.modules.trade.entity.TradeStatisticsResult3">
+        SELECT
+        sum(tr.money+tr.fee) AS outMoney
+        FROM tb_money_record tr, tb_user t, tb_ml3_agent tm
+        WHERE tr.user_id = t.id AND t.agent_invite_code = tm.agent_invite_code AND tr.`status` != 2 AND tr.`type` = 1
+        <if test="centerId != null">
+            AND tm.center_id = #{centerId}
+        </if>
+        <if test="unitsId != null">
+            AND tm.units_id = #{unitsId}
+        </if>
+        <if test="agentId != null">
+            AND tm.id = #{agentId}
+        </if>
+        <if test="junId != null">
+            AND (t.parent1_id = #{junId} or t.parent2_id = #{junId} or t.parent3_id = #{junId})
+        </if>
+        <if test="startDate != null">
+            AND DATE_FORMAT(tr.create_time, '%Y-%m-%d %H:%i:%s') &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE_FORMAT(tr.create_time, '%Y-%m-%d %H:%i:%s') &lt;= #{endDate}
+        </if>
+        <if test="userId != null">
+            AND t.id = #{userId}
+        </if>
+        <if test="chnName != null and chnName != ''">
+            AND t.chn_name LIKE concat(concat('%',#{chnName}),'%')
+        </if>
+    </select>
+
+    <select id="findUserIdByMobile" parameterType="string" resultType="string">
+        SELECT id from tb_user where mobile = #{mobile}
+    </select>
+
+    <select id="findAgentIdByMobile" parameterType="string" resultType="java.lang.String">
+        SELECT id from tb_ml3_agent where mobile = #{agentMobile}
+    </select>
+
+    <select id="findUnits" resultType="com.rmkj.microcap.modules.trade.entity.Units">
+        SELECT id, name FROM tb_ml3_member_units
+    </select>
+
+    <select id="findUserRoleById" parameterType="string" resultType="com.rmkj.microcap.modules.user.entity.RoleBean">
+        SELECT tr.id, tr.name
+         FROM tb_ml3_agent_role tm, tb_ml3_role tr
+          WHERE tr.id = tm.role_id AND tm.agent_id = #{id}
+    </select>
+
+    <!-- 根据会员单位id查询全部代理 -->
+    <select id="findMl3AgentList" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        select
+        agent.id AS id,
+        agent.account as account,
+        agent.real_name as realName
+        from tb_ml3_agent agent LEFT JOIN tb_ml3_agent_role agentRole ON agentRole.agent_id = agent.id
+        LEFT JOIN tb_ml3_role role ON role.id = agentRole.role_id
+        WHERE agent.units_id = #{unitsId} AND role.id = '4';
+    </select>
+</mapper>

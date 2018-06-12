@@ -1,0 +1,49 @@
+
+.user_top{
+    margin-top:0.3rem;
+    margin-bottom: 0.2rem;
+    overflow: hidden;
+    padding: 0.8rem 0.8rem 0.2rem 0.5rem;
+    background: #2c2f38;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius:0.2rem;
+    line-height:0.9rem;
+}
+.w-item {
+    width: 8.8rem;
+    border-color: #c1c1c1;
+    position: relative;
+    float: left;
+    line-height: 1.5rem;
+    font-size: 0.45rem;
+    background: #101419;
+    border-radius:0.2rem;
+    padding-left: 0.3rem;
+    margin-bottom: 0.3rem;
+    color:#fff;
+}
+.w-item input{
+    /*float: left;*/
+    text-align: left;
+    height: 1.3rem;
+    width: 6rem;
+    line-height:1.3rem;
+    border-radius: .2rem;
+    font-size: .45rem;
+    background: #101419;
+    color:#fff;
+}
+.login {
+    /* display: block; */
+    font-size: 0.5rem;
+    color: #fff;
+    width: 8.8rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 3rem;
+    background: #cf372d;
+    border: 0;
+    border-radius: 0.2rem;
+}

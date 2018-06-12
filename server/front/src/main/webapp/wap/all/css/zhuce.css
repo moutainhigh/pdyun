@@ -1,0 +1,118 @@
+
+.user_top{
+    margin-top:0.3rem;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+    padding: 0.8rem 0.8rem 0.2rem 0.5rem;
+    background: #2c2f38;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius:0.2rem;
+    line-height:0.9rem;
+}
+.w-item {
+    width: 8.8rem;
+    /*border-color: #c1c1c1;*/
+    position: relative;
+    float: left;
+    line-height: 1rem;
+    font-size: 0.4rem;
+    background: #101419;
+    border-radius:0.2rem;
+    padding-left: 0.3rem;
+    margin-bottom: 0.3rem;
+    color: #fff;
+}
+
+.w-item input{
+    /*float: left;*/
+    text-align: left;
+    height: 1rem;
+    width: 6rem;
+    line-height:1rem;
+    border-radius: .2rem;
+    font-size: .45rem;
+    background: #101419;
+    color:#fff;
+}
+.w-item input.copy {
+    width: 5rem;
+    height: 1rem;
+    padding: 0.6rem;
+    text-align: center;
+    border-radius: .2rem;
+    font-size: .35rem;
+    background: #000c1a;
+    color:#fff;
+}
+.w-item input.fill,.w-item input.green {
+    float: right;
+    width: 3rem;
+    height: 1rem;
+    text-align: center;
+    background: #bfa4a4;
+    border-radius: 8px;
+    border: 0;
+    font-size: 0.4rem;
+    color: #FFFFFF;
+    padding-left: 0.4rem;
+    padding-right: 0.5rem;
+    margin-left: 0.3rem;
+}
+.login {
+    /*display: block;*/
+    font-size: 0.5rem;
+    color: #fff;
+    width: 8.8rem;
+    height: 1rem;
+    line-height: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    background: #cf372d;
+    border:0;
+    border-radius: 0.2rem;
+}
+.w-item input{
+    font-size:0.4rem;
+}
+.w-item input.green{
+    width: 2.2rem;
+    text-align: left;
+    padding-left: 0.1rem;
+    background: #3e78bc;
+}
+.tianxie,.huoqu{
+    background: transparent;
+    padding-left: 0rem;
+}
+.tianxie .yanzhen{
+    width: 5.5rem;
+}
+.huoqu .yanduanx{
+    width: 6rem;
+}
+.huoqu .yanduanx input{
+    width: 3.2rem;
+    font-size: 0.3rem;
+}
+.tianxie .yanzhen input{
+    width: 2.5rem;
+    font-size: 0.3rem;
+}
+.huoqu input.copy{
+    width: 6rem;
+}
+.fuxuan{
+    font-size:0.4rem;
+    color: #999;
+}
+.fuxuan .checkbox{
+    margin-right: 0.3rem;
+    border:1px solid #fff;
+    background: transparent;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+.fuxuan>span{
+    color:#0d89f2;
+}

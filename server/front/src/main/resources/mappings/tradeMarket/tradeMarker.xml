@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.modules.tradeMarket.dao.TradeMarketDao">
+
+    <insert id="make" parameterType="com.rmkj.microcap.modules.trade.entity.Trade">
+        INSERT INTO tb_trade_hold
+        (
+        id,
+        serial_no,
+        model,
+        user_id,
+        money,
+        `type`,
+        fee,
+        code,
+        contract_name,
+        point_value,
+        profit_max,
+        loss_max,
+        buy_up_down,
+        `status`,
+        buy_time,
+        buy_point,
+        profit_max_point,
+        loss_max_point,
+        <if test="sellTime != null">
+            sell_time,
+        </if>
+        <if test="balanceStatus != null">
+            balance_status,
+        </if>
+        <if test="offTime != null">
+            off_time,
+        </if>
+        parent1_id,
+        parent2_id,
+        parent3_id,
+        <if test="return2Ratio != null">
+            return2_ratio,
+        </if>
+        <if test="return3Ratio != null">
+            return3_ratio
+        </if>
+        broker_id
+        )
+        VALUES
+        (
+        #{id},
+        #{serialNo},
+        #{model},
+        #{userId},
+        #{money},
+        #{type},
+        #{fee},
+        #{code},
+        #{contractName},
+        #{pointValue},
+        #{profitMax},
+        #{lossMax},
+        #{buyUpDown},
+        0,
+        #{buyTime},
+        #{buyPoint},
+        #{profitMaxPoint},
+        #{lossMaxPoint},
+        <if test="sellTime != null">
+            #{sellTime},
+        </if>
+        <if test="balanceStatus != null">
+            #{balanceStatus},
+        </if>
+        <if test="offTime != null">
+            #{offTime},
+        </if>
+        #{parent1Id},
+        #{parent2Id},
+        #{parent3Id},,
+        <if test="return2Ratio != null">
+            #{return2Ratio},
+        </if>
+        <if test="return3Ratio != null">
+            #{return3Ratio},
+        </if>
+        #{brokerId}
+        )
+    </insert>
+
+    <!-- 三级分销系统 -->
+    <insert id="make3" parameterType="com.rmkj.microcap.modules.trade.entity.Agent3Trade">
+        INSERT INTO tb_trade_hold
+        (
+        id,
+        serial_no,
+        model,
+        user_id,
+        money,
+        `type`,
+        fee,
+        code,
+        contract_name,
+        point_value,
+        profit_max,
+        loss_max,
+        buy_up_down,
+        `status`,
+        buy_time,
+        buy_point,
+        profit_max_point,
+        loss_max_point,
+        agent_id,
+        units_id,
+        center_id,
+        <if test="sellPoint != null">
+            sell_point,
+        </if>
+        <if test="balanceStatus != null">
+            balance_status,
+        </if>
+        <if test="offPoint != null">
+            off_point,
+        </if>
+        parent1_id,
+        parent2_id,
+        parent3_id,
+        <if test="return2Ratio != null">
+            return2_ratio,
+        </if>
+        <if test="return3Ratio != null">
+            return3_ratio,
+        </if>
+        broker_id
+        )
+        VALUES
+        (
+        #{id},
+        #{serialNo},
+        #{model},
+        #{userId},
+        #{money},
+        #{type},
+        #{fee},
+        #{code},
+        #{contractName},
+        #{pointValue},
+        #{profitMax},
+        #{lossMax},
+        #{buyUpDown},
+        0,
+        #{buyTime},
+        #{buyPoint},
+        #{profitMaxPoint},
+        #{lossMaxPoint},
+        #{agentId},
+        #{unitsId},
+        #{centerId},
+        <if test="sellPoint != null">
+            #{sellPoint},
+        </if>
+        <if test="balanceStatus != null">
+            #{balanceStatus},
+        </if>
+        <if test="offPoint != null">
+            #{offPoint},
+        </if>
+        #{parent1Id},
+        #{parent2Id},
+        #{parent3Id},
+        <if test="return2Ratio != null">
+            #{return2Ratio},
+        </if>
+        <if test="return3Ratio != null">
+            #{return3Ratio},
+        </if>
+        #{brokerId}
+        )
+    </insert>
+
+    <!-- 止盈止损平仓 -->
+    <select id="findStopProfixOrLoss" parameterType="com.rmkj.microcap.common.modules.trademarket.MarketPointBean" resultType="com.rmkj.microcap.modules.trade.bean.UserTradeBean">
+        SELECT
+            t.id,
+            t.serial_no AS serialNo,
+            t.user_id AS userId,
+            t.money,
+            t.`type`,
+            t.model,
+            t.fee,
+            t.code,
+            t.contract_name AS contractName,
+            t.point_value AS pointValue,
+            t.profit_max AS profitMax,
+            t.loss_max AS lossMax,
+            t.profit_max_point AS profitMaxPoint,
+            t.loss_max_point AS lossMaxPoint,
+            t.buy_up_down AS buyUpDown,
+            t.`status`,
+            t.buy_time AS buyTime,
+            t.buy_point AS buyPoint,
+            t.sell_point AS sellPoint,
+            t.dif_money AS difMoney,
+            t.sell_type AS sellType,
+            t.sell_time AS sellTime,
+            if(t.type = 0, u.money, u.coupon_money) AS userMoney
+        <![CDATA[
+        FROM tb_trade_hold t, tb_user u
+        WHERE t.user_id = u.id AND t.`status` = 0 AND t.code = #{code}
+         AND ( if(t.buy_up_down = 1, t.profit_max_point - #{price}, #{price} - t.profit_max_point) >= 0
+          or if(t.buy_up_down = 0, t.loss_max_point - #{price}, #{price} - t.loss_max_point) >= 0) AND t.model = 0
+        ]]>
+    </select>
+
+    <!-- 到点结算平仓 -->
+    <select id="findNoSellForSettlement" resultType="com.rmkj.microcap.modules.trade.bean.UserTradeBean">
+        SELECT
+         t.id,
+         t.serial_no AS serialNo,
+         t.user_id AS userId,
+         t.money,
+         t.`type`,
+         t.fee,
+         t.code,
+         t.contract_name AS contractName,
+         t.point_value AS pointValue,
+         t.profit_max AS profitMax,
+         t.loss_max AS lossMax,
+         t.profit_max_point AS profitMaxPoint,
+         t.loss_max_point AS lossMaxPoint,
+         t.buy_up_down AS buyUpDown,
+         t.`status`,
+         t.buy_time AS buyTime,
+         t.buy_point AS buyPoint,
+         t.sell_point AS sellPoint,
+         t.dif_money AS difMoney,
+         t.sell_type AS sellType,
+         t.sell_time AS sellTime,
+         t.win_money AS winMoney,
+         if(t.type = 0, u.money, u.coupon_money) AS userMoney
+        <![CDATA[
+        FROM tb_trade_hold t, tb_user u
+          WHERE t.user_id = u.id AND t.`status` = 0 AND t.model = 0
+        ]]>
+    </select>
+
+    <insert id="moveTrade">
+        INSERT INTO tb_trade SELECT * FROM tb_trade_hold WHERE `status` = 1 AND model = 0
+    </insert>
+    <delete id="deleteHasMove" parameterType="java.util.Date">
+        <![CDATA[
+          DELETE FROM tb_trade_hold WHERE id in (SELECT id FROM tb_trade WHERE sell_time > #{date}) AND `status` = 1 AND model = 0
+        ]]>
+    </delete>
+
+    <!-- 查询当前用户持仓订单 -->
+    <select id="findHoldByUser" parameterType="com.rmkj.microcap.modules.tradeMarket.entity.TradeMarketBean" resultType="com.rmkj.microcap.modules.trade.bean.UserTradeBean">
+      SELECT
+         t.id,
+         t.serial_no AS serialNo,
+         t.user_id AS userId,
+         t.money,
+         t.`type`,
+         t.fee,
+         t.code,
+         t.contract_name AS contractName,
+         t.point_value AS pointValue,
+         t.profit_max AS profitMax,
+         t.loss_max AS lossMax,
+         t.profit_max_point AS profitMaxPoint,
+         t.loss_max_point AS lossMaxPoint,
+         t.buy_up_down AS buyUpDown,
+         t.`status`,
+         t.buy_time AS buyTime,
+         t.buy_point AS buyPoint,
+         t.sell_point AS sellPoint,
+         t.dif_money AS difMoney,
+         t.sell_type AS sellType,
+         t.sell_time AS sellTime,
+         t.win_money AS winMoney
+        FROM tb_trade_hold t
+        WHERE id = #{id} AND user_id = #{userId} AND status = 0
+    </select>
+
+    <update id="updateProfitMaxOrLossMaxByUser" parameterType="com.rmkj.microcap.modules.trade.bean.UserTradeBean">
+        UPDATE tb_trade_hold
+        <set>
+            <if test="profitMax != null and profitMax != 0 and profitMaxPoint != null">
+                profit_max = #{profitMax}, profit_max_point = #{profitMaxPoint},
+            </if>
+            <if test="lossMax != null and lossMax != 0 and lossMaxPoint != null">
+                loss_max = #{lossMax}, loss_max_point = #{lossMaxPoint}
+            </if>
+            <!--<if test="profitMaxPoint != null">-->
+                 <!--AND-->
+            <!--</if>-->
+            <!--<if test=" != null">-->
+                <!---->
+            <!--</if>-->
+        </set>
+        WHERE id = #{id} AND status = 0
+    </update>
+
+    <!-- 查询用户盈利订单 -->
+    <select id="queryWinProfitRecord" resultType="com.rmkj.microcap.modules.trade.bean.UserTradeBean">
+        SELECT
+            users.chn_name AS chnName,
+            trade.id AS  id,
+            trade.contract_name AS contractName,
+            ((trade.dif_money / trade.money) * 100) + 100 AS winProfit
+        FROM
+            tb_trade trade	LEFT JOIN tb_user users ON users.id = trade.user_id
+        WHERE trade.dif_money > 0 AND trade.model = 0 ORDER BY sell_time DESC
+    </select>
+</mapper>

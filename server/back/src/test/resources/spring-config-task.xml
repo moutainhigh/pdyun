@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         ">
+
+    <!--调度工厂-->
+    <bean id="quartzScheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="startupDelay" value="1"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="triggers">
+            <list>
+                <!--<ref bean="orderCancelTaskTrigger"/>-->
+                <!--<ref bean="orderNoPayPushTaskTrigger"/>-->
+                <!--<ref bean="orderAutoReceiptTaskTrigger"/>-->
+            </list>
+        </property>
+    </bean>
+
+    <!--5分钟执行一次，自动取消订单-->
+    <!--<bean name="orderCancelTaskJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+        <!--<property name="jobClass" value="com.miyan.modules.order.task.OrderCancelTask"/>-->
+    <!--</bean>-->
+    <!--<bean id="orderCancelTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="orderCancelTaskJob"/>-->
+        <!--<property name="cronExpression" value="0 0/5 * * * ?"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;5分钟执行一次，给未支付的订单推送&ndash;&gt;-->
+    <!--<bean name="orderNoPayPushTaskJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+        <!--<property name="jobClass" value="com.miyan.modules.order.task.OrderNoPayPushTask"/>-->
+    <!--</bean>-->
+    <!--<bean id="orderNoPayPushTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="orderNoPayPushTaskJob"/>-->
+        <!--<property name="cronExpression" value="0 0/5 * * * ?"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;5分钟执行一次，给待收货的订单自动确认收货&ndash;&gt;-->
+    <!--<bean name="orderAutoReceiptTaskJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+        <!--<property name="jobClass" value="com.miyan.modules.order.task.OrderAutoReceiptTask"/>-->
+    <!--</bean>-->
+    <!--<bean id="orderAutoReceiptTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--<property name="jobDetail" ref="orderAutoReceiptTaskJob"/>-->
+        <!--<property name="cronExpression" value="0 0/5 * * * ?"/>-->
+    <!--</bean>-->
+</beans>

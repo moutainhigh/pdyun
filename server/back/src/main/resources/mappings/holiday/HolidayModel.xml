@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.holiday.dao.IHolidayModelDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.holiday.entity.HolidayModelBean">
+        SELECT
+        holiday_model.id as id,
+        holiday_model.name as name,
+        holiday_model.start_date as startDate,
+        holiday_model.end_date as endDate,
+        holiday_model.create_time as createTime,
+        holiday_model.update_time as updateTime
+        FROM
+    tb_holiday_model holiday_model
+        where 1=1
+        <if test="id!=null">
+            and holiday_model.id=#{id}
+        </if>
+        <if test="name!=null">
+            and holiday_model.name=#{name}
+        </if>
+        <if test="startDate!=null">
+            and holiday_model.start_date=#{startDate}
+        </if>
+        <if test="endDate!=null">
+            and holiday_model.end_date=#{endDate}
+        </if>
+        <if test="createTime!=null">
+            and holiday_model.create_time=#{createTime}
+        </if>
+        <if test="updateTime!=null">
+            and holiday_model.update_time=#{updateTime}
+        </if>
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.holiday.entity.HolidayModelBean">
+        SELECT
+        holiday_model.id as id,
+        holiday_model.name as name,
+        holiday_model.start_date as startDate,
+        holiday_model.end_date as endDate,
+        holiday_model.create_time as createTime,
+        holiday_model.update_time as updateTime
+        FROM
+    tb_holiday_model holiday_model
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_holiday_model
+        (
+        id,
+        name,
+        start_date,
+        end_date,
+        create_time,
+        create_by,
+        update_time,
+        update_by
+        )
+        VALUES(
+        #{id},
+        #{name},
+        #{startDate},
+        #{endDate},
+        #{createTime},
+        #{createBy.id},
+        #{updateTime},
+        #{updateBy.id}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_holiday_model
+        <set>
+            id = #{id},
+            name = #{name},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            create_time = #{createTime},
+            update_time = #{updateTime},
+            update_by = #{updateBy.id}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+    tb_holiday_model
+        WHERE id= #{id}
+    </update>
+</mapper>

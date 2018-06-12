@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.trade.dao.ITradeDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        select
+        `user`.chn_name as chnName,
+        `user`.mobile as mobile,
+        agent.real_name as realName,
+        trade.buy_time as buyTime,
+        trade.buy_up_down as butUpDown,
+        trade.point_value as pointValue,
+        trade.buy_point as buyPoint,
+        trade.model as model
+        from tb_trade trade
+        inner join tb_user user on `user`.id = trade.user_id
+        inner join tb_ml3_agent agent on agent.id = trade.agent_id
+        where trade.units_id =#{id} and trade.status = 0
+        <if test="chnName!=null">
+            and `user`.chn_name like '%' #{chnName} '%'
+        </if>
+        <if test="realName!=null">
+            and agent.real_name like '%' #{realName} '%'
+        </if>
+      order by trade.buy_time desc
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        trade.id as id,
+        trade.model as model,
+        trade.serial_no as serialNo,
+        trade.user_id as userId,
+        trade.money as money,
+        trade.type as type,
+        trade.fee as fee,
+        trade.code as code,
+        trade.contract_name as contractName,
+        trade.point_value as pointValue,
+        trade.profit_max as profitMax,
+        trade.loss_max as lossMax,
+        trade.off_time as offTime,
+        trade.off_point as offPoint,
+        trade.buy_up_down as buyUpDown,
+        trade.status as status,
+        trade.buy_time as buyTime,
+        trade.buy_point as buyPoint,
+        trade.profit_max_point as profitMaxPoint,
+        trade.loss_max_point as lossMaxPoint,
+        trade.sell_point as sellPoint,
+        trade.dif_money as difMoney,
+        trade.sell_type as sellType,
+        trade.sell_time as sellTime,
+        trade.agent_id as agentId,
+        trade.units_id as unitsId,
+        trade.center_id as centerId,
+        trade.broker_id as brokerId
+        FROM
+    tb_trade trade
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_trade
+        (
+        id,
+        model,
+        serial_no,
+        user_id,
+        money,
+        type,
+        fee,
+        code,
+        contract_name,
+        point_value,
+        profit_max,
+        loss_max,
+        off_time,
+        off_point,
+        buy_up_down,
+        status,
+        buy_time,
+        buy_point,
+        profit_max_point,
+        loss_max_point,
+        sell_point,
+        dif_money,
+        sell_type,
+        sell_time,
+        agent_id,
+        units_id,
+        center_id,
+        broker_id
+        )
+        VALUES(
+        #{id},
+        #{model},
+        #{serialNo},
+        #{userId},
+        #{money},
+        #{type},
+        #{fee},
+        #{code},
+        #{contractName},
+        #{pointValue},
+        #{profitMax},
+        #{lossMax},
+        #{offTime},
+        #{offPoint},
+        #{buyUpDown},
+        #{status},
+        #{buyTime},
+        #{buyPoint},
+        #{profitMaxPoint},
+        #{lossMaxPoint},
+        #{sellPoint},
+        #{difMoney},
+        #{sellType},
+        #{sellTime},
+        #{agentId},
+        #{unitsId},
+        #{centerId},
+        #{brokerId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_trade
+        <set>
+            id = #{id},
+            model = #{model},
+            serial_no = #{serialNo},
+            user_id = #{userId},
+            money = #{money},
+            type = #{type},
+            fee = #{fee},
+            code = #{code},
+            contract_name = #{contractName},
+            point_value = #{pointValue},
+            profit_max = #{profitMax},
+            loss_max = #{lossMax},
+            off_time = #{offTime},
+            off_point = #{offPoint},
+            buy_up_down = #{buyUpDown},
+            status = #{status},
+            buy_time = #{buyTime},
+            buy_point = #{buyPoint},
+            profit_max_point = #{profitMaxPoint},
+            loss_max_point = #{lossMaxPoint},
+            sell_point = #{sellPoint},
+            dif_money = #{difMoney},
+            sell_type = #{sellType},
+            sell_time = #{sellTime},
+            agent_id = #{agentId},
+            units_id = #{unitsId},
+            center_id = #{centerId},
+            broker_id = #{brokerId}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+    tb_trade
+        WHERE id= #{id}
+    </update>
+    <select id="tradeList" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        select
+            trade.user_id as userId,
+            `user`.chn_name as chnName,
+            `user`.mobile as mobile,
+            `user`.money as money1,
+            sum(trade.dif_money) as difMoney,
+            `user`.recharge_money as rechargeMoney,
+            `user`.out_money as outMoney,
+            `user`.register_time as registerTime
+            from
+            tb_trade trade
+            inner join tb_user user on `user`.id = trade.user_id
+            where trade.agent_id = #{id}
+        <if test="mobile!=null">
+            and `user`.mobile = #{mobile}
+        </if>
+        <if test="createTimeMin!=null ">
+            and `user`.register_time &gt; #{createTimeMin}
+        </if>
+        <if test="createTimeMax!=null ">
+            and `user`.register_time &lt; #{createTimeMax}
+        </if>
+        order by `user`.register_time desc
+    </select>
+    <select id="holdList" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        select
+        `user`.chn_name as chnName,
+        `user`.mobile as mobile,
+        agent.real_name as realName,
+        trade.buy_time as buyTime,
+        trade.buy_up_down as butUpDown,
+        trade.point_value as pointValue,
+        trade.buy_point as buyPoint,
+        trade.model as model
+        from tb_trade trade
+        inner join tb_user user on `user`.id = trade.user_id
+        inner join tb_ml3_agent agent on agent.id = trade.agent_id
+        where agent.id = #{id} and trade.status = 0
+        <if test="chnName!=null">
+            and `user`.chn_name like '%' #{chnName} '%'
+        </if>
+        <if test="mobile!=null">
+            and `user`.mobile = #{mobile}
+        </if>
+        order by trade.buy_time desc
+    </select>
+    <select id="fanyongTotal" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+            SELECT
+            sum(dif_money) as totalMoney,
+            sum(IF (
+            parent1_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+            return1_money,
+
+            IF (
+            parent2_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+            return2_money,
+
+            IF (
+            parent3_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+            return3_money,
+            0
+            )
+            )
+            )) AS totalReturn
+            FROM
+            tb_trade
+            WHERE
+            dif_money != 0
+            and(
+            parent1_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+            OR parent2_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+            OR parent3_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+            OR agent_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}) )
+    </select>
+    <select id="fanyongMl3Agent" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        sum(trade.dif_money) as difMoney
+        FROM
+        tb_trade trade
+        inner join tb_ml3_agent agent on agent.id = trade.agent_id
+        inner join tb_user user on user.id = trade.user_id
+        WHERE
+        dif_money != 0 and agent_id = (select id from tb_ml3_agent agent1 where agent1.user_id = #{id})
+    </select>
+    <!--当前持仓列表数据-->
+    <select id="tradeHoldList"
+            resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        trade.id as id,
+        trade.serial_no as serialNo,
+        trade.user_id as userId,
+        trade.money as money,
+        trade.type as type,
+        trade.fee as fee,
+        trade.code as code,
+        trade.contract_name as contractName,
+        trade.point_value as pointValue,
+        trade.profit_max as profitMax,
+        trade.loss_max as lossMax,
+        trade.buy_up_down as buyUpDown,
+        trade.status as status,
+        trade.buy_time as buyTime,
+        trade.buy_point as buyPoint,
+        trade.off_time as offTime,
+        trade.off_point as offPoint,
+        trade.goods_name as goodsName,
+        trade.hold_num as holdNum,
+        users.chn_name as uname,
+        users.mobile as mobile
+        FROM
+        tb_trade trade inner join tb_user users on users.id = trade.user_id
+        where trade.status = 1
+        <if test="id!=null">
+            and users.agent_invite_code=#{id}
+        </if>
+        <if test="uname!=null">
+            and users.chn_name like  '%' #{uname} '%'
+        </if>
+        <if test="mobile!=null">
+            and users.mobile like '%' #{mobile} '%'
+        </if>
+        order by buy_time desc
+    </select>
+    <select id="tradeHoldInnerUnitsList" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        trade.id as id,
+        trade.serial_no as serialNo,
+        trade.user_id as userId,
+        trade.money as money,
+        trade.type as type,
+        trade.fee as fee,
+        trade.code as code,
+        trade.contract_name as contractName,
+        trade.point_value as pointValue,
+        trade.profit_max as profitMax,
+        trade.loss_max as lossMax,
+        trade.buy_up_down as buyUpDown,
+        trade.status as status,
+        trade.buy_time as buyTime,
+        trade.buy_point as buyPoint,
+        trade.off_time as offTime,
+        trade.off_point as offPoint,
+        trade.goods_name as goodsName,
+        trade.hold_num as holdNum,
+        `user`.chn_name as uname,
+        `user`.mobile as mobile
+        FROM
+        tb_trade trade
+        inner join tb_user user on `user`.id = trade.user_id
+        where trade.`status` = 1 and trade.units_id = #{id}
+        <if test="uname!=null">
+            and `user`.chn_name like  '%' #{uname} '%'
+        </if>
+        <if test="mobile!=null">
+            and `user`.mobile like '%' #{mobile} '%'
+        </if>
+        order by buy_time desc
+    </select>
+    <select id="tradeHoldOperateCenter" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+            trade.id as id,
+            trade.serial_no as serialNo,
+            trade.user_id as userId,
+            trade.money as money,
+            trade.type as type,
+            trade.fee as fee,
+            trade.code as code,
+            trade.contract_name as contractName,
+            trade.point_value as pointValue,
+            trade.profit_max as profitMax,
+            trade.loss_max as lossMax,
+            trade.buy_up_down as buyUpDown,
+            trade.status as status,
+            trade.buy_time as buyTime,
+            trade.buy_point as buyPoint,
+            trade.off_point as offPoint,
+            trade.off_time as offTime,
+            `user`.chn_name as uname,
+            `user`.mobile as mobile,
+            <!-- 品道新增参数 -->
+            trade.hold_num AS holdNum,
+            trade.service_fee AS serviceFee,
+            trade.goods_name AS goodsName,
+            trade.goods_id AS goodsId,
+            trade.fee_buy AS feeBuy,
+            trade.fee_sell AS feeSell
+        FROM
+        tb_trade trade
+        inner join tb_user user on `user`.id = trade.user_id
+        where trade.`status` = #{status} and trade.center_id = #{id}
+        <if test="uname!=null">
+            and `user`.chn_name like  '%' #{uname} '%'
+        </if>
+        <if test="mobile!=null">
+            and `user`.mobile like '%' #{mobile} '%'
+        </if>
+        order by buy_time desc
+    </select>
+    <select id="fanYongMingXiList" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        (select user1.chn_name from tb_user user1 where id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})) as junTuanChnName,
+        (select user2.mobile from tb_user user2 where id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})) as junTuanMobile,
+        `user`.chn_name as userChnName,
+        user.mobile as userMobile,
+        trade.return1_money as return1Money,
+        trade.return2_money as return2Money,
+        trade.return3_money as return3Money,
+        trade.sell_time as sellTime,
+        trade.money as money,
+        trade.serial_no as serialNo,
+        trade.dif_money as difMoney,
+        IF (
+        trade.parent1_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+        '炮兵团',
+
+        IF (
+        trade.parent2_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+        '骑兵团',
+
+        IF (
+        trade.parent3_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+        '步兵团',
+        '代理'
+        )
+        )
+        ) AS jType
+        FROM
+        tb_trade trade
+        inner join tb_user user on `user`.id = trade.user_id
+        WHERE
+        trade.dif_money != 0
+        and(
+        trade.parent1_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+        OR trade.parent2_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+        OR trade.parent3_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+        OR trade.agent_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}))
+        and (
+        `user`.parent1_id = #{id}
+        OR
+        `user`.parent2_id = #{id}
+        OR
+        `user`.parent3_id = #{id}
+        )
+        <if test="userMobile!=null">
+            and user1.mobile=#{userMobile}
+        </if>
+        <if test="userChnName!=null">
+            and user.chn_name like '%' #{userChnName} '%'
+        </if>
+        <if test="serialNo!=null">
+            and trade.serial_no=#{serialNo}
+        </if>
+        <if test="sellTimeMin!=null ">
+            and trade.sell_time &gt; #{sellTimeMin}
+        </if>
+        <if test="sellTimeMax!=null ">
+            and trade.sell_time &lt; #{sellTimeMax}
+        </if>
+        <if test="difMoney!=null">
+            and trade.dif_money=#{difMoney}
+        </if>
+        <if test="money!=null ">
+            and trade.money = #{money}
+        </if>
+    </select>
+    <select id="fanYongMl3AgentList" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        agent.real_name as agentRealName,
+        agent.mobile as agentMobile,
+        `user`.chn_name as userChnName,
+        `user`.mobile as userMobile,
+        trade.money as money,
+        trade.serial_no as serialNo,
+        trade.dif_money as difMoney,
+        trade.sell_time as sellTime,
+        '代理' AS jType
+        FROM
+        tb_trade trade
+        inner join tb_ml3_agent agent on agent.id = trade.agent_id
+        inner join tb_user user on user.id = trade.user_id
+        WHERE
+            agent_id = #{agentId}
+          <!-- trade.sell_type = 1 -->
+            and (trade.`status` = 3 OR trade.`status` = 2  OR trade.`status` = 1)
+        <if test="userMobile!=null">
+            and user.mobile=#{userMobile}
+        </if>
+        <if test="userChnName!=null">
+            and user.chn_name like '%' #{userChnName} '%'
+        </if>
+        <if test="serialNo!=null">
+            and trade.serial_no=#{serialNo}
+        </if>
+        <if test="sellTimeMin!=null ">
+            and trade.sell_time &gt; #{sellTimeMin}
+        </if>
+        <if test="sellTimeMax!=null ">
+            and trade.sell_time &lt; #{sellTimeMax}
+        </if>
+        <if test="difMoney!=null">
+            and trade.dif_money=#{difMoney}
+        </if>
+        <if test="money!=null ">
+            and trade.money = #{money}
+        </if>
+    </select>
+    <select id="fanyongMl3AgentTotal" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+            sum(if(buy_point != sell_point, money, 0)) AS totalMoney,
+            sum(dif_money) AS totalDifMoney
+        FROM tb_trade
+        WHERE agent_id = #{agentId} AND sell_type = 1
+    </select>
+    <select id="fanyongInnerUnits" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        (select user1.chn_name from tb_user user1 where id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})) as junTuanChnName,
+        (select user2.mobile from tb_user user2 where id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})) as junTuanMobile,
+        `user`.chn_name as userChnName,
+        user.mobile as userMobile,
+        `user`.id as id,
+        trade.return1_money as return1Money,
+        trade.return2_money as return2Money,
+        trade.return3_money as return3Money,
+        trade.sell_time as sellTime,
+        trade.money as money,
+        trade.serial_no as serialNo,
+        trade.dif_money as difMoney,
+        IF (
+        trade.parent1_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+        '炮兵团',
+
+        IF (
+        trade.parent2_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+        '骑兵团',
+
+        IF (
+        trade.parent3_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}),
+        '步兵团',
+        '代理'
+        )
+        )
+        ) AS jType
+        FROM
+        tb_trade trade
+        inner join tb_user user on `user`.id = trade.user_id
+        WHERE
+        trade.dif_money != 0
+        and(
+        trade.parent1_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+        OR trade.parent2_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+        OR trade.parent3_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile})
+        OR trade.agent_id = (select user3.id from tb_user user3 where user3.mobile = #{jtMobile}))
+        <if test="userMobile!=null">
+            and user1.mobile=#{userMobile}
+        </if>
+        <if test="userChnName!=null">
+            and user.chn_name like '%' #{userChnName} '%'
+        </if>
+        <if test="serialNo!=null">
+            and trade.serial_no=#{serialNo}
+        </if>
+        <if test="sellTimeMin!=null ">
+            and trade.sell_time &gt; #{sellTimeMin}
+        </if>
+        <if test="sellTimeMax!=null ">
+            and trade.sell_time &lt; #{sellTimeMax}
+        </if>
+        <if test="difMoney!=null">
+            and trade.dif_money=#{difMoney}
+        </if>
+        <if test="money!=null ">
+            and trade.money = #{money}
+        </if>
+    </select>
+    <select id="fanyong" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        agent.real_name as agentRealName,
+        agent.mobile as agentMobile,
+        `user`.chn_name as userChnName,
+        `user`.mobile as userMobile,
+        trade.money as money,
+        trade.serial_no as serialNo,
+        trade.dif_money as difMoney,
+        trade.sell_time as sellTime,
+        '代理' AS jType
+        FROM
+        tb_trade trade
+        inner join tb_ml3_agent agent on agent.id = trade.agent_id
+        inner join tb_user user on user.id = trade.user_id
+        WHERE
+        dif_money != 0 and agent_id in (select agent.id as id from tb_ml3_agent agent inner join tb_user user on `user`.id = agent.user_id where agent.units_id = #{unitsId} and agent.user_id is not null)
+        <if test="agentRealName!=null">
+            and agent.real_name=#{agentRealName}
+        </if>
+        <if test="agentMobile!=null">
+            and agent.mobile=#{agentMobile}
+        </if>
+        <if test="sellTimeMin!=null ">
+            and trade.sell_time &gt; #{sellTimeMin}
+        </if>
+        <if test="sellTimeMax!=null ">
+            and trade.sell_time &lt; #{sellTimeMax}
+        </if>
+    </select>
+    <select id="fanyongTotal01" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        select
+        sum(t.totalMoney) as totalMoney,
+        sum(t.totalDifMoney) as totalDifMoney,
+        t.sellTime as sellTime
+        from (
+        select
+        sum(trade.dif_money) as totalDifMoney,
+        sum(trade.money) as totalMoney,
+        trade.sell_time as sellTime
+        from
+        tb_trade trade
+        inner join tb_ml3_agent agent on agent.id = trade.agent_id
+        inner join tb_user user on user.id = trade.user_id
+        WHERE
+        dif_money != 0 and agent_id in (select agent.id as id from tb_ml3_agent agent inner join tb_user user on `user`.id = agent.user_id where agent.units_id = #{unitsId} and agent.user_id is not null)
+        <if test="agentRealName!=null">
+            and agent.real_name=#{agentRealName}
+        </if>
+        <if test="agentMobile!=null">
+            and agent.mobile=#{agentMobile}
+        </if>
+        <if test="sellTimeMin!=null ">
+            and trade.sell_time &gt; #{sellTimeMin}
+        </if>
+        <if test="sellTimeMax!=null ">
+            and trade.sell_time &lt; #{sellTimeMax}
+        </if>
+        ) t
+    </select>
+
+
+
+
+
+
+
+    <!-- 代码分水岭 -->
+    <select id="fanyongMl3AgentUnits" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        t1.real_name as agentRealName,
+        t1.mobile as agentMobile,
+        t2.chn_name as userChnName,
+        t2.mobile as userMobile,
+        t.money as money,
+        t.serial_no as serialNo,
+        t.dif_money as difMoney,
+        t.sell_time as sellTime,
+        '代理' AS jType
+        FROM tb_trade t
+        LEFT JOIN tb_user t2 ON t.user_id = t2.id
+        LEFT JOIN tb_ml3_agent t1 ON t.agent_id = t1.id
+        WHERE 1 = 1 AND t.units_id = #{unitsId} AND t.status = 1 AND t.sell_type = 1
+        <trim suffixOverrides=",">
+            <if test="agentMobile != null and agentMobile != ''">
+                AND t1.mobile = #{agentMobile}
+            </if>
+            <if test="agentRealName != null and agentRealName != ''">
+                AND t1.real_name = #{agentRealName}
+            </if>
+            <if test="sellTimeMin!=null ">
+                AND t.sell_time &gt; #{sellTimeMin}
+            </if>
+            <if test="sellTimeMax!=null ">
+                AND t.sell_time &lt; #{sellTimeMax}
+            </if>
+        </trim>
+        ORDER BY t.sell_time DESC
+    </select>
+    <select id="fanyongUnitsTotal" resultType="com.rmkj.microcap.modules.trade.entity.TradeBean">
+        SELECT
+        sum(t.money) as totalMoney,
+        sum(t.dif_money) as totalDifMoney
+        FROM tb_trade t
+        <if test="agentMobile != null and agentMobile != ''">
+            LEFT JOIN tb_ml3_agent t1 ON t.agent_id = t1.id
+        </if>
+        WHERE 1 = 1 AND t.units_id = #{unitsId} AND t.status = 1 AND t.sell_type = 1 AND t.buy_point != t.sell_point
+        <if test="agentMobile != null and agentMobile != ''">
+            AND t1.mobile = #{agentMobile}
+        </if>
+        <if test="sellTimeMin!=null ">
+            AND t.sell_time &gt; #{sellTimeMin}
+        </if>
+        <if test="sellTimeMax!=null ">
+            AND t.sell_time &lt; #{sellTimeMax}
+        </if>
+    </select>
+
+
+</mapper>

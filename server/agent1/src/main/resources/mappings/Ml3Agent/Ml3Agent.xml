@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.Ml3Agent.dao.IMl3AgentDao">
+
+    <select id="getMl3AgentInfo"
+            resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+    SELECT
+    ml3_agent.id as id,
+    ml3_agent.units_id as unitsId,
+    ml3_agent.account as account,
+    ml3_agent.mobile as mobile,
+    ml3_agent.safe_password as safePassword,
+    ml3_agent.agent_invite_code as agentInviteCode,
+    ml3_agent.real_name as realName,
+    ml3_agent.agent_header as agentHeader,
+    ml3_agent.money as money,
+    ml3_agent.total_money as totalMoney,
+    ml3_agent.status as status,
+    ml3_agent.review_status as reviewStatus,
+    ml3_agent.create_time as createTime,
+    ml3_agent.last_login_time as lastLoginTime,
+    ml3_agent.last_login_ip as lastLoginIp,
+    ml3_agent.bank_account_name as bankAccountName,
+    ml3_agent.bank_account as bankAccount,
+    ml3_agent.bank_name as bankName,
+    ml3_agent.bank_child_name as bankChildName,
+    ml3_agent.id_card as idCard
+    FROM
+    tb_ml3_agent ml3_agent
+    WHERE ml3_agent.id = #{0}
+    </select>
+
+    <update id="updMl3AgentUserInfo" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        UPDATE tb_ml3_agent
+        SET account = #{account},
+            real_name = #{realName},
+            mobile = #{mobile}
+        WHERE id = #{id}
+    </update>
+
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        SELECT
+        ml3_agent.id as id,
+        ml3_agent.units_id as unitsId,
+        ml3_agent.account as account,
+        ml3_agent.mobile as mobile,
+        ml3_agent.safe_password as safePassword,
+        ml3_agent.agent_invite_code as agentInviteCode,
+        ml3_agent.real_name as realName,
+        ml3_agent.agent_header as agentHeader,
+        ml3_agent.money as money,
+        ml3_agent.total_money as totalMoney,
+        ml3_agent.status as status,
+        ml3_agent.review_status as reviewStatus,
+        ml3_agent.create_time as createTime,
+        ml3_agent.last_login_time as lastLoginTime,
+        ml3_agent.last_login_ip as lastLoginIp,
+        ml3_agent.bank_account_name as bankAccountName,
+        ml3_agent.bank_account as bankAccount,
+        ml3_agent.bank_name as bankName,
+        ml3_agent.bank_child_name as bankChildName,
+        ml3_agent.id_card as idCard
+        FROM
+        tb_ml3_agent ml3_agent
+        <where>
+            <if test="id != null">
+                ml3_agent.units_id = #{id}
+            </if>
+            <if test="unitsId != null">
+                AND ml3_agent.units_id = #{unitsId}
+            </if>
+            <if test="mobile!=null">
+                and ml3_agent.mobile=#{mobile}
+            </if>
+            <if test="realName!=null">
+                and ml3_agent.real_name=#{realName}
+            </if>
+        </where>
+        order by ml3_agent.create_time desc
+    </select>
+    <select id="getMl3AgentInnerUnits" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        select
+            agent.account as account,
+            agent.real_name as realName,
+            units.name as unitsName,
+            agent.mobile as mobile,
+            agent.agent_header as agentHeader,
+            agent.id as id,
+            agent.sub_times as subTimes,
+            agent.agent_invite_code as agentInviteCode,
+            agent.`status` as status,
+            agent.create_time as createTime,
+            agent.last_login_time as lastLoginTime,
+            ifnull(agent.agent_return_fee_money,0) AS agentReturnFeeMoney,
+            ifnull(agent.agent_return_fee_total_money,0) AS agentReturnFeeTotalMoney,
+            ifnull(agent.agent_return_fee_percent,0) AS agentReturnFeePercent,
+            ifnull(`user`.totalRechargeMoney,0) as totalRechargeMoney,
+            ifnull(trade.money,0) as totalTradeCount,
+            ifnull(`user`.totalCount,0) as totalCount,
+            ifnull(agent.agent_return_service_money,0) AS agentReturnServiceMoney,
+            ifnull(agent.agent_return_service_total_money,0) AS agentReturnServiceTotalMoney,
+            ifnull(agent.agent_return_service_percent,0) AS agentReturnServicePercent
+        from tb_ml3_agent agent
+        LEFT JOIN
+        tb_ml3_member_units units
+        ON
+        units.id = agent.units_id
+        LEFT JOIN
+        (
+            SELECT
+                SUM(recharge_money) AS totalRechargeMoney,
+                count(*) AS totalCount,
+                agent_invite_code
+            FROM
+                tb_user WHERE agent_invite_code is not NULL
+              GROUP BY agent_invite_code
+        ) user
+        ON
+        `user`.agent_invite_code = agent.agent_invite_code
+        left JOIN
+        (
+        SELECT
+        SUM(money) as money,
+        agent_id
+        FROM
+        tb_trade
+        WHERE
+        `status` = 1 AND buy_point != sell_point AND sell_type = 1 AND agent_id is not null
+        GROUP BY
+        agent_id
+        ) trade
+        on
+        trade.agent_id = agent.id
+        LEFT JOIN tb_ml3_agent_role agentRole ON agentRole.agent_id = agent.id
+        LEFT JOIN tb_ml3_role role ON role.id = agentRole.role_id
+        where agent.units_id = #{id}  AND role.id = 4 and agent.mobile is not null
+        <trim suffixOverrides=",">
+            <if test="mobile!=null">
+                and agent.mobile=#{mobile}
+            </if>
+            <if test="account != null">
+                and agent.account = #{account}
+            </if>
+            <if test="realName!=null">
+                and agent.real_name=#{realName}
+            </if>
+        </trim>
+        <if test="orderKey == null and orderValue ==null">
+            ORDER BY agent.create_time desc
+        </if>
+        <if test="orderKey != null and orderValue !=null">
+            ORDER BY ${orderKey} ${orderValue}
+        </if>
+    </select>
+    <select id="get" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        SELECT
+            ml3_agent.id as id,
+            ml3_agent.center_id as centerId,
+            ml3_agent.units_id as unitsId,
+            ml3_agent.user_id as userId,
+            ml3_agent.account as account,
+            ml3_agent.mobile as mobile,
+            ml3_agent.safe_password as safePassword,
+            ml3_agent.agent_invite_code as agentInviteCode,
+            ml3_agent.real_name as realName,
+            ml3_agent.agent_header as agentHeader,
+            ml3_agent.money as money,
+            ml3_agent.total_money as totalMoney,
+            ml3_agent.status as status,
+            ml3_agent.review_status as reviewStatus,
+            ml3_agent.create_time as createTime,
+            ml3_agent.last_login_time as lastLoginTime,
+            ml3_agent.last_login_ip as lastLoginIp,
+            ml3_agent.bank_account_name as bankAccountName,
+            ml3_agent.bank_account as bankAccount,
+            ml3_agent.bank_name as bankName,
+            ml3_agent.bank_child_name as bankChildName,
+            ml3_agent.id_card as idCard,
+            ml3_agent.agent_return_fee_money AS agentReturnFeeMoney,
+            ml3_agent.agent_return_fee_total_money AS agentReturnFeeTotalMoney,
+            ml3_agent.agent_return_fee_percent AS agentReturnFeePercent,
+            ml3_agent.agent_return_service_money AS agentReturnServiceMoney,
+            ml3_agent.agent_return_service_total_money AS agentReturnServiceTotalMoney,
+            ml3_agent.agent_return_service_percent AS agentReturnServicePercent
+        FROM
+          tb_ml3_agent ml3_agent
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_ml3_agent
+        (
+        id,
+        center_id,
+        units_id,
+        account,
+        mobile,
+        safe_password,
+        agent_invite_code,
+        real_name,
+        agent_header,
+        money,
+        total_money,
+        status,
+        review_status,
+        create_time,
+        last_login_time,
+        last_login_ip,
+        bank_account_name,
+        bank_account,
+        bank_name,
+        bank_child_name,
+        id_card
+        )
+        VALUES(
+        #{id},
+        #{centerId},
+        #{unitsId},
+        #{account},
+        #{mobile},
+        #{safePassword},
+        #{agentInviteCode},
+        #{realName},
+        #{agentHeader},
+        #{money},
+        #{totalMoney},
+        #{status},
+        #{reviewStatus},
+        #{createTime},
+        #{lastLoginTime},
+        #{lastLoginIp},
+        #{bankAccountName},
+        #{bankAccount},
+        #{bankName},
+        #{bankChildName},
+        #{idCard}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+        tb_ml3_agent
+        <set>
+            safe_password = #{safePassword}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        DELETE FROM
+    tb_ml3_agent
+        WHERE id= #{id}
+    </update>
+    <update id="open" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        update tb_ml3_agent set status = 0 where id = #{id}
+    </update>
+
+    <update id="close" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        update tb_ml3_agent set status = 1 where id = #{id}
+    </update>
+    <update id="updatePwd" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        update tb_ml3_agent set safe_password = #{safePassword} where id = #{id}
+    </update>
+    <update id="updatePwdByAgent" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        update tb_ml3_agent set safe_password = #{safePassword} where id = #{id}
+    </update>
+    <update id="updateUserInviteCode" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        update tb_user set agent_invite_code = #{agentInviteCode} where parent1_id in (select a.id from(select * from tb_user)a where a.mobile = #{mobile}) or parent2_id in (select a.id from(select * from tb_user)a where a.mobile = #{mobile}) or parent3_id in (select a.id from(select * from tb_user)a where a.mobile = #{mobile})
+    </update>
+    <select id="userList" resultType="com.rmkj.microcap.modules.user.entity.UserBean" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        select
+				`user`.id as id,
+				`user`.chn_name as chnName,
+				`user`.mobile as mobile,
+				agent.real_name as realName,
+				user.money as money,
+				`user`.register_time as registerTime,
+				`user`.`status` as status
+				from tb_ml3_agent agent
+				INNER join tb_user user on agent.agent_invite_code = `user`.agent_invite_code
+				where agent.id = #{id}
+        order by user.register_time desc
+    </select>
+    <select id="getAllAgent" resultType="java.lang.String">
+        SELECT
+        ml3_agent.mobile as mobile
+        FROM
+    tb_ml3_agent ml3_agent
+    </select>
+    <select id="getAllAgentAccount" resultType="java.lang.String">
+        SELECT
+        ml3_agent.account as account
+        FROM
+        tb_ml3_agent ml3_agent
+    </select>
+    <select id="getAllUserId"  resultType="java.lang.String">
+      select user_id from tb_ml3_agent where user_id is not null
+    </select>
+    <select id="getShouYiList" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        select
+        agent.id as id,
+        agent.real_name as realName,
+        agent.mobile as mobile,
+        sum(trade.dif_money) as difMoney,
+        sum(user.recharge_money) as rechargeMoney,
+        sum(user.out_money) as outMoney,
+        sum(`user`.money) as money1,
+        agent.create_time as createTime
+        from
+        tb_ml3_agent agent
+        inner join tb_trade trade on trade.agent_id = agent.id
+        inner join tb_user user on `user`.id = trade.user_id
+        where trade.units_id = #{id}
+        <if test="realName!=null">
+            and agent.real_name LIKE '%' #{realName} '%'
+        </if>
+        <if test="createTimeMin!=null ">
+            and agent.create_time &gt; #{createTimeMin}
+        </if>
+        <if test="createTimeMax!=null ">
+            and agent.create_time &lt; #{createTimeMax}
+        </if>
+    </select>
+    <select id="getOneAgent" resultType="com.rmkj.microcap.modules.Ml3MemberUnits.entity.Ml3MemberUnitsBean">
+SELECT
+        ml3_member_units.id as id,
+				agent.account as account,
+				agent.agent_invite_code as code,
+        ml3_member_units.name as name,
+        ml3_member_units.money as money,
+        ml3_member_units.bond_money as bondMoney,
+        ml3_member_units.real_name as realName,
+        ml3_member_units.id_card as idCard,
+        ml3_member_units.bank_account_name as bankAccountName,
+        ml3_member_units.bank_account as bankAccount,
+        ml3_member_units.bank_name as bankName,
+        ml3_member_units.bank_child_name as bankChildName,
+        ml3_member_units.status as status
+        FROM
+        tb_ml3_member_units ml3_member_units
+        LEFT JOIN tb_ml3_agent agent on agent.units_id = ml3_member_units.id
+        where agent.id = #{id}
+    </select>
+    <select id="getAgent" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        SELECT
+            ml3_agent.id as id,
+            ml3_agent.units_id as unitsId,
+            ml3_agent.account as account,
+            ml3_agent.mobile as mobile,
+            ml3_agent.safe_password as safePassword,
+            ml3_agent.agent_invite_code as agentInviteCode,
+            ml3_agent.real_name as realName,
+            ml3_agent.agent_header as agentHeader,
+            ml3_agent.money as money,
+            ml3_agent.total_money as totalMoney,
+            ml3_agent.status as status,
+            ml3_agent.review_status as reviewStatus,
+            ml3_agent.create_time as createTime,
+            ml3_agent.last_login_time as lastLoginTime,
+            ml3_agent.last_login_ip as lastLoginIp,
+            ml3_agent.bank_account_name as bankAccountName,
+            ml3_agent.bank_account as bankAccount,
+            ml3_agent.bank_name as bankName,
+            ml3_agent.bank_child_name as bankChildName,
+            ml3_agent.id_card as idCard,
+            ml3_agent.agent_return_fee_money AS agentReturnFeeMoney,
+            ml3_agent.agent_return_fee_total_money AS agentReturnFeeTotalMoney,
+            ml3_agent.agent_return_fee_percent AS agentReturnFeePercent,
+            ml3_agent.agent_return_service_money AS agentReturnServiceMoney,
+            ml3_agent.agent_return_service_total_money AS agentReturnServiceTotalMoney,
+            ml3_agent.agent_return_service_percent AS agentReturnServicePercent
+        FROM
+    tb_ml3_agent ml3_agent
+        where id= #{id}
+    </select>
+    <select id="getAgentInnerUnits" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        SELECT
+        ml3_agent.id as id,
+        ml3_agent.units_id as unitsId,
+        ml3_agent.account as account,
+        ml3_agent.mobile as mobile,
+        ml3_agent.safe_password as safePassword,
+        ml3_agent.real_name as realName,
+        ml3_agent.agent_header as agentHeader,
+        ml3_agent.money as money,
+        ml3_agent.total_money as totalMoney,
+        ml3_agent.status as status,
+        ml3_agent.review_status as reviewStatus,
+        ml3_agent.create_time as createTime,
+        ml3_agent.last_login_time as lastLoginTime,
+        ml3_agent.last_login_ip as lastLoginIp,
+        ml3_agent.bank_account_name as bankAccountName,
+        ml3_agent.bank_account as bankAccount,
+        ml3_agent.bank_name as bankName,
+        ml3_agent.bank_child_name as bankChildName,
+        ml3_agent.id_card as idCard,
+		units.agent_invite_code as unitsCode
+        FROM
+    tb_ml3_agent ml3_agent
+inner join tb_ml3_member_units units on ml3_agent.units_id = units.id
+        where ml3_agent.id= #{id}
+    </select>
+    <select id="getAgentOperateCenter" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        SELECT
+            ml3_agent.id as id,
+            ml3_agent.units_id as unitsId,
+            ml3_agent.account as account,
+            ml3_agent.mobile as mobile,
+            ml3_agent.safe_password as safePassword,
+            ml3_agent.real_name as realName,
+            ml3_agent.agent_header as agentHeader,
+            ml3_agent.money as money,
+            ml3_agent.total_money as totalMoney,
+            ml3_agent.status as status,
+            ml3_agent.review_status as reviewStatus,
+            ml3_agent.create_time as createTime,
+            ml3_agent.last_login_time as lastLoginTime,
+            ml3_agent.last_login_ip as lastLoginIp,
+            ml3_agent.bank_account_name as bankAccountName,
+            ml3_agent.bank_account as bankAccount,
+            ml3_agent.bank_name as bankName,
+            ml3_agent.bank_child_name as bankChildName,
+            ml3_agent.id_card as idCard,
+            center.bank_account AS centerBankAccount,
+            center.bank_name AS centerBankName,
+            center.real_name AS centerRealName,
+            center.id_card AS centerIdCard,
+            center.bank_account_name AS centerBankAccountName,
+            center.bank_child_name AS centerBankChildName,
+            center.return_fee_percent AS agentReturnFeePercent,
+            IFNULL(center.return_fee_money, 0) AS agentReturnFeeMoney,
+            center.return_fee_total_money AS agentReturnFeeTotalMoney,
+            center.return_service_percent AS agentReturnServicePercent,
+            center.return_service_money AS agentReturnServiceMoney,
+            center.return_service_total_money AS agentReturnServiceTotalMoney
+        FROM
+          tb_ml3_agent ml3_agent inner join tb_ml3_operate_center center on ml3_agent.center_id = center.id
+        where ml3_agent.id= #{id}
+    </select>
+    <select id="getPwdById" parameterType="java.lang.String" resultType="java.lang.String">
+        select
+          ml3_agent.safe_password as safePassword
+        FROM
+          tb_ml3_agent ml3_agent
+        where id= #{id}
+    </select>
+    <update id="updateInfo" parameterType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        update
+          tb_ml3_agent
+        set
+          id_card = #{idCard},
+          bank_account_name = #{bankAccountName},
+          bank_account = #{bankAccount},
+          bank_name = #{bankName},
+          bank_child_name = #{bankChildName}
+          where id = #{id}
+    </update>
+    <select id="getUnitsInfo" resultType="com.rmkj.microcap.modules.Ml3MemberUnits.entity.Ml3MemberUnitsBean">
+        SELECT
+            ml3_member_units.id as id,
+            ml3_member_units.name as name,
+            ml3_member_units.money as money,
+            ml3_member_units.bond_money as bondMoney,
+            ml3_member_units.real_name as realName,
+            ml3_member_units.id_card as idCard,
+            ml3_member_units.bank_account_name as bankAccountName,
+            ml3_member_units.bank_account as bankAccount,
+            ml3_member_units.bank_name as bankName,
+            ml3_member_units.bank_child_name as bankChildName,
+            ml3_member_units.status as status,
+            ml3_member_units.agent_invite_code as agentInviteCode,
+            ml3_member_units.units_return_fee_money as unitsReturnFeeMoney,
+            ml3_member_units.units_return_fee_total_money as unitsReturnFeeTotalMoney,
+            ml3_member_units.units_return_fee_percent as unitsReturnFeePercent,
+            ml3_member_units.units_return_service_money as unitsReturnServiceMoney,
+            ml3_member_units.units_return_service_total_money as unitsReturnServiceTotalMoney,
+            ml3_member_units.units_return_service_percent as unitsReturnServicePercent
+        FROM
+        tb_ml3_member_units ml3_member_units
+        where ml3_member_units.id = #{id}
+    </select>
+    <select id="innerUnitsList" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean">
+        SELECT
+        ml3_agent.id AS id,
+        ml3_agent.units_id AS unitsId,
+        units.name AS unitsName,
+        ml3_agent.account AS account,
+        ml3_agent.mobile AS mobile,
+        ml3_agent.safe_password AS safePassword,
+        ml3_agent.agent_invite_code AS agentInviteCode,
+        ml3_agent.real_name AS realName,
+        ml3_agent.agent_header AS agentHeader,
+        ml3_agent.money AS money,
+        ml3_agent.total_money AS totalMoney,
+        ml3_agent. STATUS AS STATUS,
+        ml3_agent.review_status AS reviewStatus,
+        ml3_agent.create_time AS createTime,
+        ml3_agent.last_login_time AS lastLoginTime,
+        ml3_agent.last_login_ip AS lastLoginIp,
+        ml3_agent.bank_account_name AS bankAccountName,
+        ml3_agent.bank_account AS bankAccount,
+        ml3_agent.bank_name AS bankName,
+        ml3_agent.bank_child_name AS bankChildName,
+        ml3_agent.id_card AS idCard
+        FROM
+        tb_ml3_agent ml3_agent,
+        tb_ml3_agent_role agentRole,
+        tb_ml3_member_units units
+        WHERE
+        ml3_agent.center_id = #{centerId}
+        AND ml3_agent.id = agentRole.agent_id
+        AND agentRole.role_id = 5
+        AND units.center_id = #{centerId}
+        AND units.id = ml3_agent.units_id
+        <if test="id!=null">
+            and ml3_agent.id=#{id}
+        </if>
+        <if test="account!=null">
+            and ml3_agent.account=#{account}
+        </if>
+        <if test="mobile!=null">
+            and ml3_agent.mobile=#{mobile}
+        </if>
+        <if test="safePassword!=null">
+            and ml3_agent.safe_password=#{safePassword}
+        </if>
+        <if test="agentInviteCode!=null">
+            and ml3_agent.agent_invite_code=#{agentInviteCode}
+        </if>
+        <if test="realName!=null">
+            and ml3_agent.real_name=#{realName}
+        </if>
+        <if test="agentHeader!=null">
+            and ml3_agent.agent_header=#{agentHeader}
+        </if>
+        <if test="money!=null">
+            and ml3_agent.money=#{money}
+        </if>
+        <if test="totalMoney!=null">
+            and ml3_agent.total_money=#{totalMoney}
+        </if>
+        <if test="status!=null">
+            and ml3_agent.status=#{status}
+        </if>
+        <if test="reviewStatus!=null">
+            and ml3_agent.review_status=#{reviewStatus}
+        </if>
+        <if test="createTime!=null">
+            and ml3_agent.create_time=#{createTime}
+        </if>
+        <if test="lastLoginTime!=null">
+            and ml3_agent.last_login_time=#{lastLoginTime}
+        </if>
+        <if test="lastLoginIp!=null">
+            and ml3_agent.last_login_ip=#{lastLoginIp}
+        </if>
+        <if test="bankAccountName!=null">
+            and ml3_agent.bank_account_name=#{bankAccountName}
+        </if>
+        <if test="bankAccount!=null">
+            and ml3_agent.bank_account=#{bankAccount}
+        </if>
+        <if test="bankName!=null">
+            and ml3_agent.bank_name=#{bankName}
+        </if>
+        <if test="bankChildName!=null">
+            and ml3_agent.bank_child_name=#{bankChildName}
+        </if>
+        <if test="idCard!=null">
+            and ml3_agent.id_card=#{idCard}
+        </if>
+        order by ml3_agent.create_time desc
+    </select>
+    <select id="getAgentMobile" resultType="java.lang.String">
+        select mobile from tb_ml3_agent
+    </select>
+    <select id="getAgentAccount" resultType="java.lang.String">
+        select account from tb_ml3_agent
+    </select>
+
+    <!-- 代理商提现手续费时，修改代理商返手续费余额 -->
+    <update id="updateReturnFeeMoneyAgent" parameterType="com.rmkj.microcap.modules.tradeReturnFeeWithdraw.entity.TradeReturnFeeRecord">
+      UPDATE tb_ml3_agent SET agent_return_fee_money = agent_return_fee_money - #{money} WHERE id = #{agentId}
+    </update>
+
+    <update id="updateReturnServiceFeeMoneyAgent" parameterType="com.rmkj.microcap.modules.tradeReturnFeeWithdraw.entity.TradeReturnFeeRecord">
+        UPDATE tb_ml3_agent SET agent_return_service_money = agent_return_service_money - #{money} WHERE id = #{agentId}
+    </update>
+
+    <update id="updateMl3AgentPercent" parameterType="com.rmkj.microcap.modules.tradeReturnFeeWithdraw.entity.TradeReturnFeeRecord">
+        UPDATE tb_ml3_agent
+        <set>
+            <if test="agentReturnFeePercent != null and agentReturnFeePercent != ''">
+                agent_return_fee_percent = #{agentReturnFeePercent},
+            </if>
+            <if test="agentReturnServicePercent != null and agentReturnServicePercent != ''">
+                agent_return_service_percent = #{agentReturnServicePercent}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据会员单位id查询代理商 -->
+    <select id="findMl3AgentUserListByUnitsId" resultType="com.rmkj.microcap.modules.Ml3Agent.entity.Ml3AgentBean" parameterType="java.lang.String">
+        SELECT
+        role.`name`,
+        agent.real_name AS realName,
+        agent.id AS id
+        FROM
+        tb_ml3_role role
+        LEFT JOIN tb_ml3_agent_role agentRole ON agentRole.role_id = role.id
+        LEFT JOIN tb_ml3_agent agent ON agent.id = agentRole.agent_id
+        WHERE role.id = '4' AND agent.units_id = #{unitsId} AND agent.agent_invite_code IS NOT NULL
+    </select>
+</mapper>

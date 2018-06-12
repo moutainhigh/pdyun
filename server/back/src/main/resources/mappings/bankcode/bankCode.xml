@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.common.modules.money.out.weipeng.dao.BankCodeDao">
+
+    <!-- 根据支行名称查询支行信息 -->
+    <select id="findBankCodeByName" parameterType="string" resultType="com.rmkj.microcap.common.modules.money.out.weipeng.bean.BankCodeBean">
+      SELECT
+          id AS  id,
+          aa as aa,
+          bankno AS bankNo,
+          settQsBankCode AS settQsBankCode,
+          name AS name,
+          settAreaCode AS settAreaCode,
+          note AS note
+      FROM bank_code WHERE name = #{bankName} limit 0,1
+    </select>
+</mapper>

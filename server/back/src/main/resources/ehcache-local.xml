@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache>
+
+    <diskStore path="../temp/sample/ehcache"/>
+
+	<!-- 默认缓存配置. -->
+	<defaultCache maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+	<!--
+    <cache name="sysCache"
+
+           maxElementsInMemory="10000"
+
+           eternal="false"
+
+           overflowToDisk="false"
+
+           timeToIdleSeconds="900"
+
+           timeToLiveSeconds="1800"
+
+           memoryStoreEvictionPolicy="LFU"/>
+       -->
+	<!-- 系统缓存 -->
+	<cache name="sysCache" maxElementsInMemory="10000" eternal="true" overflowToDisk="true"/>
+	
+	<!-- 用户缓存 -->
+	<cache name="userCache" maxElementsInMemory="10000" eternal="true" overflowToDisk="true"/>
+	
+
+    <cache name="activeSessionsCache" maxElementsInMemory="10000" eternal="true" overflowToDisk="true" timeToIdleSeconds="0" timeToLiveSeconds="0" />
+</ehcache>

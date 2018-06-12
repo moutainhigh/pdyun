@@ -1,0 +1,115 @@
+
+.user_top{
+    margin-top:0.3rem;
+    margin-bottom: 0.2rem;
+    overflow: hidden;
+    padding: 0 0.5rem 0.5rem 0.5rem;
+    background: #2c2f38;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 0.2rem;
+    line-height: 0.9rem;
+}
+a.buy_chic ,a.buy_dd,a.buy_sy{
+    width: 4rem;
+    height: 1rem;
+    background: #101419;
+    border-radius: 0.2rem;
+    position: relative;
+    padding-left: 1.6rem;
+    color: #fff;
+    font-size: .35rem;
+    text-align: left;
+    line-height: 1rem;
+    margin-bottom: .3rem;
+}
+a.buy_sy{
+    margin-bottom: 0;
+}
+.user_top a i{
+    width: 0.6rem;
+    height:0.6rem;
+    left:0.8rem;
+    top:0.2rem;
+    position: absolute;
+}
+.blance{
+    font-size: .4rem;
+}
+.ti_money{
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+a.buy_dd{
+    background: #101419;
+
+}
+.buy_chic i{
+    background: url("../../all/image/qww_03.png") no-repeat center center;
+    background-size: 0.6rem 0.6rem;
+}
+a.buy_dd i {
+
+    background: url("../../all/image/qw1wq_06.png") no-repeat;
+    background-size: 0.6rem 0.6rem;
+}
+a.buy_sy i{
+    width: 0.65rem;
+    height: 0.65rem;
+    background: url("../../all/image/qianbao.png") no-repeat;
+    background-size: 0.63rem 0.63rem;
+}
+.ti_money_text{
+    line-height: .8rem;
+    font-size: 0.4rem;
+    color: #fff;
+    padding-bottom: .3rem;
+}
+.w-item {
+    width: 8.8rem;
+    border-color: #c1c1c1;
+    position: relative;
+    float: left;
+    /*margin-top: 0.5rem;*/
+    line-height: 1.5rem;
+    font-size: 0.45rem;
+    background: #101419;
+    border-radius: 0.2rem;
+    padding-left: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+.w-item input {
+    /* float: left; */
+    text-align: left;
+    /*height: 1.3rem;*/
+    width: 7rem;
+    line-height: 1.5rem;
+    border-radius: .2rem;
+    font-size: .45rem;
+    background: #101419;
+    color: #fff;
+}
+.login {
+    /* display: block; */
+    font-size: 0.5rem;
+    color: #fff;
+    width: 8.8rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+     margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: #ff8400;
+    border: 0;
+    border-radius: 0.2rem;
+}
+.user_top p {
+    line-height: 0.7rem;
+    color: #fff;
+    font-size: 0.4rem;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #fff;
+}
+.user_top p span{
+    padding-left: 0.85rem;
+}

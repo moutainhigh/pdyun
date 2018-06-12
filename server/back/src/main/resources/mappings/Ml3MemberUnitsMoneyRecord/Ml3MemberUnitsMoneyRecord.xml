@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.dao.Ml3MemberUnitsMoneyRecordDao">
+    <insert id="insert" parameterType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord">
+        INSERT INTO tb_ml3_member_units_money_record
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="unitsId != null" >
+                units_id,
+            </if>
+            <if test="unitsName != null" >
+                units_name,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="money != null" >
+                money,
+            </if>
+            <if test="fee != null" >
+                fee,
+            </if>
+            <if test="beforeMoney != null" >
+                before_money,
+            </if>
+            <if test="afterMoney != null" >
+                after_money,
+            </if>
+            <if test="province != null" >
+                province,
+            </if>
+            <if test="city != null" >
+                city,
+            </if>
+            <if test="bankName != null" >
+                bank_name,
+            </if>
+            <if test="openBankName != null" >
+                open_bank_name,
+            </if>
+            <if test="bankAccount != null" >
+                bank_account,
+            </if>
+            <if test="realName != null" >
+                real_name,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="reviewStatus != null" >
+                review_status,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="completeTime != null" >
+                complete_time,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="unitsId != null" >
+                #{unitsId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitsName != null" >
+                #{unitsName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null" >
+                #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null" >
+                #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="beforeMoney != null" >
+                #{beforeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="afterMoney != null" >
+                #{afterMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="province != null" >
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null" >
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="bankName != null" >
+                #{bankName,jdbcType=VARCHAR},
+            </if>
+            <if test="openBankName != null" >
+                #{openBankName,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAccount != null" >
+                #{bankAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null" >
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewStatus != null" >
+                #{reviewStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="completeTime != null" >
+                #{completeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null" >
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findMemberUnitsMoneyRecordList" resultType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord" parameterType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord">
+        SELECT
+            id AS id,
+            units_id AS unitsId,
+            units_name AS unitsName,
+            type AS type,
+            money AS money,
+            fee AS fee,
+            before_money AS beforeMoney,
+            after_money AS afterMoney,
+            province AS province,
+            city AS city,
+            bank_name AS bankName,
+            open_bank_name AS openBankName,
+            bank_account AS bankAccount,
+            real_name AS realName,
+            STATUS AS status,
+            review_status AS reviewStatus,
+            create_time AS createTime,
+            complete_time AS completeTime,
+            remark AS remark
+        FROM
+            tb_ml3_member_units_money_record
+             <where>
+                 <if test="unitsName != null">
+                    units_name = #{unitsName}
+                 </if>
+                 <if test="createTime != null">
+                    AND DATE_FORMAT(create_time, '%Y-%m-%d') &gt;= #{createTime}
+                 </if>
+                 <if test="endTime != null">
+                    AND DATE_FORMAT(create_time, '%Y-%m-%d') &lt;= #{endTime}
+                 </if>
+                 <if test="reviewStatus == 0">
+                     AND review_status = '0'
+                 </if>
+                 <if test="reviewStatus == 1">
+                     AND review_status = '1'
+                 </if>
+                 <if test="reviewStatus == 2">
+                     AND review_status = '2'
+                 </if>
+             </where>
+             ORDER BY create_time DESC
+    </select>
+
+    <select id="get"  parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord">
+        select
+            id AS id,
+            units_id AS unitsId,
+            units_name AS unitsName,
+            type AS type,
+            money AS money,
+            fee AS fee,
+            before_money AS beforeMoney,
+            after_money AS afterMoney,
+            province AS province,
+            city AS city,
+            bank_name AS bankName,
+            open_bank_name AS openBankName,
+            bank_account AS bankAccount,
+            real_name AS realName,
+            STATUS AS status,
+            review_status AS reviewStatus,
+            create_time AS createTime,
+            complete_time AS completeTime,
+            remark AS remark
+        from tb_ml3_member_units_money_record
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord" >
+        update tb_ml3_member_units_money_record
+        <set >
+            <if test="unitsId != null" >
+                units_id = #{unitsId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitsName != null" >
+                units_name = #{unitsName,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null" >
+                money = #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="fee != null" >
+                fee = #{fee,jdbcType=DECIMAL},
+            </if>
+            <if test="beforeMoney != null" >
+                before_money = #{beforeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="afterMoney != null" >
+                after_money = #{afterMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="province != null" >
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null" >
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="bankName != null" >
+                bank_name = #{bankName,jdbcType=VARCHAR},
+            </if>
+            <if test="openBankName != null" >
+                open_bank_name = #{openBankName,jdbcType=VARCHAR},
+            </if>
+            <if test="bankAccount != null" >
+                bank_account = #{bankAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null" >
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewStatus != null" >
+                review_status = #{reviewStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="completeTime != null" >
+                complete_time = #{completeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <!--查询会员单位已出金额-->
+    <select id="unitsMoneyOutTotal" resultType="java.math.BigDecimal" parameterType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord">
+      SELECT
+            IFNULL(SUM(money),0)
+      FROM
+            tb_ml3_member_units_money_record
+        <where>
+            type = '1' AND `status` = '1'
+            <if test="unitsName != null">
+                AND units_name = #{unitsName}
+            </if>
+            <if test="createTime != null">
+                AND DATE_FORMAT(create_time, '%Y-%m-%d') &gt;= #{createTime}
+            </if>
+            <if test="endTime != null">
+                AND DATE_FORMAT(create_time, '%Y-%m-%d') &lt;= #{endTime}
+            </if>
+            <if test="reviewStatus == 0">
+                AND review_status = '0'
+            </if>
+            <if test="reviewStatus == 1">
+                AND review_status = '1'
+            </if>
+            <if test="reviewStatus == 2">
+                AND review_status = '2'
+            </if>
+        </where>
+    </select>
+    <!-- 查询会员单位未出金总额 -->
+    <select id="unitsNoMoneyOutTotal" resultType="java.math.BigDecimal" parameterType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord">
+        SELECT
+            IFNULL(SUM(money),0)
+        FROM
+            tb_ml3_member_units_money_record
+        <where>
+            (type = '1') AND `status` IN ('0', '2')
+            <if test="unitsName != null">
+                AND units_name = #{unitsName}
+            </if>
+            <if test="createTime != null">
+                AND DATE_FORMAT(create_time, '%Y-%m-%d') &gt;= #{createTime}
+            </if>
+            <if test="endTime != null">
+                AND DATE_FORMAT(create_time, '%Y-%m-%d') &lt;= #{endTime}
+            </if>
+            <if test="reviewStatus == 0">
+                AND review_status = '0'
+            </if>
+            <if test="reviewStatus == 1">
+                AND review_status = '1'
+            </if>
+            <if test="reviewStatus == 2">
+                AND review_status = '2'
+            </if>
+        </where>
+    </select>
+    <!-- 查询出金总额 -->
+    <select id="unitsMoneySum" resultType="java.math.BigDecimal" parameterType="com.rmkj.microcap.modules.Ml3MemberUnitsMoneyRecord.entity.Ml3MemberUnitsMoneyRecord">
+      SELECT
+            IFNULL(SUM(money),0)
+        FROM
+            tb_ml3_member_units_money_record
+        <where>
+            type = '1'
+            <if test="unitsName != null">
+                AND units_name = #{unitsName}
+            </if>
+            <if test="createTime != null">
+                AND DATE_FORMAT(create_time, '%Y-%m-%d') &gt;= #{createTime}
+            </if>
+            <if test="endTime != null">
+                AND DATE_FORMAT(create_time, '%Y-%m-%d') &lt;= #{endTime}
+            </if>
+            <if test="reviewStatus == 0">
+                AND review_status = '0'
+            </if>
+            <if test="reviewStatus == 1">
+                AND review_status = '1'
+            </if>
+            <if test="reviewStatus == 2">
+                AND review_status = '2'
+            </if>
+        </where>
+    </select>
+</mapper>

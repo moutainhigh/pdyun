@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.Ml3OperateCenter.dao.IMl3OperateCenterDao">
+    <select id="queryList" resultType="com.rmkj.microcap.modules.Ml3OperateCenter.entity.Ml3OperateCenterBean">
+        SELECT
+        ml3_operate_center.id as id,
+        ml3_operate_center.name as name,
+        ml3_operate_center.money as money,
+        ml3_operate_center.bond_money as bondMoney,
+        ml3_operate_center.real_name as realName,
+        ml3_operate_center.id_card as idCard,
+        ml3_operate_center.bank_account_name as bankAccountName,
+        ml3_operate_center.bank_account as bankAccount,
+        ml3_operate_center.bank_name as bankName,
+        ml3_operate_center.bank_child_name as bankChildName,
+        ml3_operate_center.status as status,
+        ml3_operate_center.return_fee_percent as returnFeePercent,
+        ml3_operate_center.return_fee_money as returnFeeMoney,
+        ml3_operate_center.return_fee_total_money as returnFeeTotalMoney,
+        ml3_operate_center.sub_times as subTimes,
+        ml3_operate_center.return_service_percent AS returnServicePercent,
+        ml3_operate_center.return_service_money AS returnServiceMoney,
+        ml3_operate_center.return_service_total_money AS returnServiceTotalMoney
+        FROM
+    tb_ml3_operate_center ml3_operate_center
+        where 1=1
+        <if test="id!=null">
+            and ml3_operate_center.id=#{id}
+        </if>
+        <if test="name!=null">
+            and ml3_operate_center.name like '%' #{name} '%'
+        </if>
+        <if test="money!=null">
+            and ml3_operate_center.money=#{money}
+        </if>
+        <if test="bondMoney!=null">
+            and ml3_operate_center.bond_money=#{bondMoney}
+        </if>
+        <if test="realName!=null">
+            and ml3_operate_center.real_name=#{realName}
+        </if>
+        <if test="idCard!=null">
+            and ml3_operate_center.id_card=#{idCard}
+        </if>
+        <if test="bankAccountName!=null">
+            and ml3_operate_center.bank_account_name=#{bankAccountName}
+        </if>
+        <if test="bankAccount!=null">
+            and ml3_operate_center.bank_account=#{bankAccount}
+        </if>
+        <if test="bankName!=null">
+            and ml3_operate_center.bank_name=#{bankName}
+        </if>
+        <if test="bankChildName!=null">
+            and ml3_operate_center.bank_child_name=#{bankChildName}
+        </if>
+        <if test="status!=null">
+            and ml3_operate_center.status=#{status}
+        </if>
+    </select>
+    <select id="get" resultType="com.rmkj.microcap.modules.Ml3OperateCenter.entity.Ml3OperateCenterBean">
+        SELECT
+        ml3_operate_center.id as id,
+        ml3_operate_center.name as name,
+        ml3_operate_center.money as money,
+        ml3_operate_center.bond_money as bondMoney,
+        ml3_operate_center.real_name as realName,
+        ml3_operate_center.id_card as idCard,
+        ml3_operate_center.bank_account_name as bankAccountName,
+        ml3_operate_center.bank_account as bankAccount,
+        ml3_operate_center.bank_name as bankName,
+        ml3_operate_center.bank_child_name as bankChildName,
+        ml3_operate_center.status as status,
+        ml3_operate_center.return_fee_percent as returnFeePercent,
+        ml3_operate_center.return_service_percent as returnServicePercent,
+        ml3_operate_center.return_fee_money as returnFeeMoney,
+        ml3_operate_center.return_fee_total_money as returnFeeTotalMoney
+        FROM
+    tb_ml3_operate_center ml3_operate_center
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_ml3_operate_center
+        (
+        id,
+        name,
+        money,
+        bond_money,
+        real_name,
+        id_card,
+        bank_account_name,
+        bank_account,
+        bank_name,
+        bank_child_name,
+        status,
+        return_fee_percent,
+        return_service_percent
+        )
+        VALUES(
+        #{id},
+        #{name},
+        #{money},
+        #{bondMoney},
+        #{realName},
+        #{idCard},
+        #{bankAccountName},
+        #{bankAccount},
+        #{bankName},
+        #{bankChildName},
+        #{status},
+        #{returnFeePercent},
+        #{returnServicePercent}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+          tb_ml3_operate_center
+        <set>
+            <if test="id != null and id != ''">
+                id = #{id},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="money != null and money != ''">
+                money = #{money},
+            </if>
+            <if test="bondMoney != null and bondMoney != ''">
+                bond_money = #{bondMoney},
+            </if>
+            <if test="realName != null and realName != ''">
+                real_name = #{realName},
+            </if>
+            <if test="idCard != null and idCard != ''">
+                id_card = #{idCard},
+            </if>
+            <if test="bankAccountName != null and bankAccountName != ''">
+                bank_account_name = #{bankAccountName},
+            </if>
+            <if test="bankAccount != null and bankAccount != ''">
+                bank_account = #{bankAccount},
+            </if>
+            <if test="bankName != null and bankName != ''">
+                bank_name = #{bankName},
+            </if>
+            <if test="bankChildName != null and bankChildName != ''">
+                bank_child_name = #{bankChildName},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="returnFeePercent != null">
+                return_fee_percent = #{returnFeePercent},
+            </if>
+            <if test="returnServicePercent != null">
+                return_service_percent = #{returnServicePercent}
+            </if>
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+    tb_ml3_operate_center
+        WHERE id= #{id}
+    </update>
+    <update id="open" parameterType="com.rmkj.microcap.modules.Ml3OperateCenter.entity.Ml3OperateCenterBean">
+        update tb_ml3_operate_center set status = 0 where id = #{id}
+    </update>
+
+    <update id="close" parameterType="com.rmkj.microcap.modules.Ml3OperateCenter.entity.Ml3OperateCenterBean">
+        update tb_ml3_operate_center set status = 1 where id = #{id}
+    </update>
+    <select id="OcList" resultType="com.rmkj.microcap.modules.Ml3OperateCenter.entity.Ml3OperateCenterBean">
+        select id,name from tb_ml3_operate_center
+    </select>
+
+    <!-- 选择性查询 -->
+    <select id="getOperateCenterSelective" resultType="com.rmkj.microcap.modules.Ml3OperateCenter.entity.Ml3OperateCenterBean">
+        SELECT
+            ml3_operate_center.id as id,
+            ml3_operate_center.name as name,
+            ml3_operate_center.money as money,
+            ml3_operate_center.bond_money as bondMoney,
+            ml3_operate_center.real_name as realName,
+            ml3_operate_center.id_card as idCard,
+            ml3_operate_center.bank_account_name as bankAccountName,
+            ml3_operate_center.bank_account as bankAccount,
+            ml3_operate_center.bank_name as bankName,
+            ml3_operate_center.bank_child_name as bankChildName,
+            ml3_operate_center.status as status
+        FROM
+        tb_ml3_operate_center ml3_operate_center
+        where 1=1
+        <if test="id!=null">
+            and ml3_operate_center.id=#{id}
+        </if>
+        <if test="name!=null">
+            and ml3_operate_center.name like '%' #{name} '%'
+        </if>
+        <if test="money!=null">
+            and ml3_operate_center.money=#{money}
+        </if>
+        <if test="bondMoney!=null">
+            and ml3_operate_center.bond_money=#{bondMoney}
+        </if>
+        <if test="realName!=null">
+            and ml3_operate_center.real_name=#{realName}
+        </if>
+        <if test="idCard!=null">
+            and ml3_operate_center.id_card=#{idCard}
+        </if>
+        <if test="bankAccountName!=null">
+            and ml3_operate_center.bank_account_name=#{bankAccountName}
+        </if>
+        <if test="bankAccount!=null">
+            and ml3_operate_center.bank_account=#{bankAccount}
+        </if>
+        <if test="bankName!=null">
+            and ml3_operate_center.bank_name=#{bankName}
+        </if>
+        <if test="bankChildName!=null">
+            and ml3_operate_center.bank_child_name=#{bankChildName}
+        </if>
+        <if test="status!=null">
+            and ml3_operate_center.status=#{status}
+        </if>
+    </select>
+
+</mapper>

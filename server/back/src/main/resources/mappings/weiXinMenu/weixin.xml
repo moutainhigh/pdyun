@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.weiXinMenu.dao.WeiXinDao">
+    <delete id="deleteEventClick" parameterType="string">
+        DELETE FROM tb_weixin_event_click WHERE id = #{id}
+    </delete>
+
+    <insert id="addEventClick" parameterType="com.rmkj.microcap.modules.weiXinMenu.entity.EventClick">
+        INSERT INTO tb_weixin_event_click
+        (id, content)
+        VALUES
+        (#{id}, #{content})
+    </insert>
+
+    <select id="getContentById" parameterType="string" resultType="string">
+        SELECT content FROM tb_weixin_event_click WHERE id = #{id}
+    </select>
+</mapper>

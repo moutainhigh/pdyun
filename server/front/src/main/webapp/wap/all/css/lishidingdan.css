@@ -1,0 +1,151 @@
+.wrap-page {
+    overflow-y: auto;
+}
+.user_top {
+    margin-top: 0.2rem;
+    /* margin-bottom: 0.2rem; */
+    overflow: hidden;
+    padding: 0 0.5rem 0.2rem 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 0.2rem;
+    line-height: 0.6rem;
+}
+.user_top .icon{
+    /*line-height: 0.8rem;*/
+    background: #282828;
+    border-radius: 0.2rem;
+    text-align: center;
+    font-size: 0.3rem;
+    margin-left: 0.7rem;
+    margin-right: 0.3rem;
+    color:#fff;
+}
+.his_date{
+    width: 1.3rem;
+    height: 0.6rem;
+    line-height:0.6rem;
+}
+.his_time{
+    width: 3rem;
+    height: 0.6rem;
+    margin-left: 0.4rem;
+}
+.his_chaxun{
+    width: 1.5rem;
+    height: 0.6rem;
+}
+.pinzhong{
+    line-height:1rem;
+    width: 10rem;
+    background: #282828;
+    /*margin-top: 0.3rem;*/
+    margin-bottom: 0.2rem;
+    margin-left: 0.5rem;
+}
+.tong{
+    line-height:1rem;
+    width: 10rem;
+    background: #002b54;
+
+    margin-left: 0.5rem;
+}
+.tong_three{
+    margin-top: 0.05rem;
+}
+ul.dis {
+    overflow: hidden;
+    display: block;
+    height: 1rem;
+    line-height: 1rem;
+    color:#fff;
+}
+ul.dis li img{
+    width:0.45rem;
+    height:0.45rem;
+}
+ul.dis li.red{
+    color:#fc0f01;
+}
+ul.dis li.green{
+    color:#2fd902;
+}
+ul.dis li.grey{
+    color:#999;
+}
+.tong{
+    overflow: hidden;
+    line-height:0.8rem;
+    background: #282828;
+    border-bottom:1px solid #101419;
+}
+.pinzhong .dis li,.tong .dis li{
+    position: relative;
+    float: left;
+    width: 20%;
+    /*padding-top: 0.1rem;*/
+    text-align: center;
+    font-size:0.4rem;
+}
+.tong .dis li:nth-child(3){
+    line-height:0.9rem;
+}
+.pinzhong .dis li i,.tong .dis li i{
+    background: url(../../all/image/shuxian.png) no-repeat center center;
+    width: 0.03rem;
+    height: 0.5rem;
+    background-size: 0.03rem 0.5rem;
+    position: absolute;
+    top: 0.3rem;
+    left: 2rem;
+}
+.tong .dis li i{
+    width: 0.03rem;
+    height: 0.6rem;
+    background-size: 0.05rem 0.6rem;
+    top: 0.2rem;
+}
+.dis_list{
+    background: #101419;
+    overflow: hidden;
+    color:#fff;
+}
+.dis_list_bianhao{
+    padding-left: 0.5rem;
+    letter-spacing: 0.03rem;
+    font-size:0.25rem;
+    height:0.65rem;
+    line-height:0.65rem;
+}
+.bianhao_img{
+    display: block;
+    width: 10rem;
+}
+ul.kaicang_list li:first-child{
+    padding-left: 0.5rem;
+}
+ul.kaicang_list li{
+    width: 50%;
+    float:left;
+    text-align: center;
+    position: relative;
+    font-size:0.26rem;
+}
+ul.kaicang_list li i{
+    background: url(../../all/image/pinglist.png) no-repeat center center;
+    width: 0.03rem;
+    height: 0.6rem;
+    background-size: 0.03rem 0.6rem;
+    position: absolute;
+    top: 0.15rem;
+    left: 5rem;
+}
+.kaicang_img{
+    display: block;
+    width: 9.6rem;
+    margin-left: 0.3rem;
+}
+li.kctime{
+    line-height:0.5rem;
+    padding-top:0.1rem;
+}

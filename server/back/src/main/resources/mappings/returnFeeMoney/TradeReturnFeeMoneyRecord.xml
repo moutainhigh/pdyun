@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.modules.returnFeeMoney.dao.ReturnFeeMoneyDao">
+
+    <sql id="where_returnFee_center">
+        <where>
+            <trim suffixOverrides=",">
+                returnFee.agent_id IS NULL AND returnFee.units_id IS NULL
+                <if test="serialNo != null">
+                    AND returnFee.serial_no = #{serialNo}
+                </if>
+                <if test="thirdSerialNo != null">
+                    AND returnFee.third_serial_no = #{thirdSerialNo}
+                </if>
+                <if test="startDate != null">
+                    AND returnFee.create_time &gt; #{startDate}
+                </if>
+                <if test="endDate != null">
+                    AND returnFee.create_time &lt; #{endDate}
+                </if>
+                <if test="reviewStatus != null">
+                    AND returnFee.review_status = #{reviewStatus}
+                </if>
+                <if test="status != null">
+                    AND returnFee.status = #{status}
+                </if>
+                <if test="centerName != null">
+                    AND center.name LIKE CONCAT(CONCAT('%', #{centerName}), '%')
+                </if>
+            </trim>
+        </where>
+    </sql>
+
+    <select id="queryReturnFeeMoneyByCenter" resultType="com.rmkj.microcap.modules.returnFeeMoney.entity.ReturnFeeOperateCenter">
+        SELECT
+            center.name AS centerName,
+            center.real_name AS realName,
+            returnFee.id AS id,
+            returnFee.serial_no AS serialNo,
+            returnFee.third_serial_no AS thirdSerialNo,
+            returnFee.money AS money,
+            returnFee.fee AS fee,
+            returnFee.chn_name AS chnName,
+            returnFee.bank_account AS bankAccount,
+            returnFee.bank_name AS bankName,
+            returnFee.open_bank_name AS openBankName,
+            returnFee.review_status AS reviewStatus,
+            returnFee.`status` AS status,
+            returnFee.review_time AS reviewTime,
+            returnFee.complete_time AS completeTime,
+            returnFee.create_time AS createTime,
+            returnFee.remark AS remark,
+            returnFee.failure_reason AS failureReason
+        FROM
+            tb_trade_return_fee_record returnFee LEFT JOIN tb_ml3_operate_center center ON center.id = returnFee.center_id
+        <include refid="where_returnFee_center"/>
+        ORDER BY returnFee.create_time DESC
+    </select>
+
+    <select id="queryReturnFeeMoneyByCenterTotal" resultType="java.lang.Long" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.ReturnFeeOperateCenter">
+        SELECT
+            count(*)
+        FROM
+            tb_trade_return_fee_record returnFee LEFT JOIN tb_ml3_operate_center center ON center.id = returnFee.center_id
+        <include refid="where_returnFee_center"/>
+        ORDER BY returnFee.create_time DESC
+    </select>
+
+    <sql id="where_returnFee_units">
+        <where>
+            <trim suffixOverrides=",">
+                returnFee.agent_id IS NULL AND returnFee.center_id IS NOT NULL AND returnFee.units_id IS NOT NULL
+                <if test="serialNo != null">
+                    AND returnFee.serial_no = #{serialNo}
+                </if>
+                <if test="thirdSerialNo != null">
+                    AND returnFee.third_serial_no = #{thirdSerialNo}
+                </if>
+                <if test="startDate != null">
+                    AND returnFee.create_time &gt; #{startDate}
+                </if>
+                <if test="endDate != null">
+                    AND returnFee.create_time &lt; #{endDate}
+                </if>
+                <if test="reviewStatus != null">
+                    AND returnFee.review_status = #{reviewStatus}
+                </if>
+                <if test="status != null">
+                    AND returnFee.status = #{status}
+                </if>
+                <if test="unitsName != null">
+                    AND units.name LIKE CONCAT(CONCAT('%', #{unitsName}), '%')
+                </if>
+            </trim>
+        </where>
+    </sql>
+
+    <!-- 查询会员单位手续费提现列表 -->
+    <select id="queryReturnFeeMoneyByUnits" resultType="com.rmkj.microcap.modules.returnFeeMoney.entity.ReturnFeeMemberUnits">
+         SELECT
+            units.name AS unitsName,
+            units.real_name AS realName,
+            returnFee.id AS id,
+            returnFee.serial_no AS serialNo,
+            returnFee.third_serial_no AS thirdSerialNo,
+            returnFee.money AS money,
+            returnFee.fee AS fee,
+            returnFee.chn_name AS chnName,
+            returnFee.bank_account AS bankAccount,
+            returnFee.bank_name AS bankName,
+            returnFee.open_bank_name AS openBankName,
+            returnFee.review_status AS reviewStatus,
+            returnFee.`status` AS status,
+            returnFee.review_time AS reviewTime,
+            returnFee.complete_time AS completeTime,
+            returnFee.create_time AS createTime,
+            returnFee.remark AS remark,
+            returnFee.failure_reason AS failureReason
+        FROM
+            tb_trade_return_fee_record returnFee LEFT JOIN tb_ml3_member_units units ON units.id = returnFee.units_id
+        <include refid="where_returnFee_units"/>
+        ORDER BY returnFee.create_time DESC
+    </select>
+
+    <select id="queryReturnFeeMoneyByUnitsTotal" resultType="java.lang.Long" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.ReturnFeeMemberUnits">
+        SELECT
+          count(*)
+        FROM
+        tb_trade_return_fee_record returnFee LEFT JOIN tb_ml3_member_units units ON units.id = returnFee.units_id
+        <include refid="where_returnFee_units"/>
+        ORDER BY returnFee.create_time DESC
+    </select>
+
+    <sql id="where_returnFee_agent">
+        <where>
+            <trim suffixOverrides=",">
+                  returnFee.agent_id IS NOT NULL
+                <if test="serialNo != null">
+                    AND returnFee.serial_no = #{serialNo}
+                </if>
+                <if test="thirdSerialNo != null">
+                    AND returnFee.third_serial_no = #{thirdSerialNo}
+                </if>
+                <if test="startDate != null">
+                    AND returnFee.create_time &gt; #{startDate}
+                </if>
+                <if test="endDate != null">
+                    AND returnFee.create_time &lt; #{endDate}
+                </if>
+                <if test="reviewStatus != null">
+                    AND returnFee.review_status = #{reviewStatus}
+                </if>
+                <if test="status != null">
+                    AND returnFee.status = #{status}
+                </if>
+                <if test="realName != null">
+                    AND agent.real_name = #{realName}
+                </if>
+                <if test="agentMobile != null">
+                    AND agent.mobile = #{agentMobile}
+                </if>
+            </trim>
+        </where>
+    </sql>
+
+    <!-- 查询代理手续费提现信息 -->
+    <select id="queryReturnFeeMoneyByAgent" resultType="com.rmkj.microcap.modules.returnFeeMoney.entity.ReturnFeeAgent" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.ReturnFeeAgent">
+        SELECT
+            agent.real_name AS realName,
+            agent.mobile AS agentMobile,
+            returnFee.id AS id,
+            returnFee.serial_no AS serialNo,
+            returnFee.third_serial_no AS thirdSerialNo,
+            returnFee.money AS money,
+            returnFee.fee AS fee,
+            returnFee.chn_name AS chnName,
+            returnFee.bank_account AS bankAccount,
+            returnFee.bank_name AS bankName,
+            returnFee.open_bank_name AS openBankName,
+            returnFee.review_status AS reviewStatus,
+            returnFee.`status` AS status,
+            returnFee.review_time AS reviewTime,
+            returnFee.complete_time AS completeTime,
+            returnFee.create_time AS createTime,
+            returnFee.remark AS remark,
+            returnFee.failure_reason AS failureReason
+        FROM
+            tb_trade_return_fee_record returnFee LEFT JOIN tb_ml3_agent agent ON agent.id = returnFee.agent_id
+          <include refid="where_returnFee_agent"/>
+        ORDER BY returnFee.create_time DESC
+    </select>
+    <!-- 查询代理手续费提现总条数 -->
+    <select id="queryReturnFeeMoneyByAgentTotal" resultType="java.lang.Long" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.ReturnFeeAgent">
+        SELECT
+          count(*)
+        FROM
+        tb_trade_return_fee_record returnFee LEFT JOIN tb_ml3_agent agent ON agent.id = returnFee.agent_id
+        <include refid="where_returnFee_agent"/>
+          ORDER BY returnFee.create_time DESC
+    </select>
+
+    <!-- 筛选未处理过的订单 -->
+    <select id="filterNoPassRecord" parameterType="java.util.List" resultType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+        SELECT
+            returnFee.id AS id,
+            returnFee.serial_no AS serialNo,
+            returnFee.third_serial_no AS thirdSerialNo,
+            returnFee.money AS money,
+            returnFee.fee AS fee,
+            returnFee.chn_name AS chnName,
+            returnFee.type AS type,
+            returnFee.bank_account AS bankAccount,
+            returnFee.bank_name AS bankName,
+            returnFee.open_bank_name AS openBankName,
+            returnFee.review_status AS reviewStatus,
+            returnFee.`status` AS status,
+            returnFee.review_time AS reviewTime,
+            returnFee.complete_time AS completeTime,
+            returnFee.create_time AS createTime,
+            returnFee.remark AS remark,
+            returnFee.failure_reason AS failureReason,
+            returnFee.center_id AS centerId,
+            returnFee.units_id AS unitsId,
+            returnFee.agent_id AS agentId,
+            returnFee.fee_type as feeType
+        from tb_trade_return_fee_record returnFee
+        <where>
+            id in
+            <foreach collection="list" item="it" open="(" close=")" index="index" separator=",">
+                #{it}
+            </foreach>
+            AND review_status = '0' AND status = '0'
+        </where>
+    </select>
+
+    <!-- 审核返手续费提现订单状态 -->
+    <update id="updateReviewStatusAndStatus" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+        UPDATE tb_trade_return_fee_record
+          <set>
+              <if test="reviewStatus != null">
+                  review_status = #{reviewStatus},
+              </if>
+              <if test="status != null">
+                  status = #{status},
+              </if>
+              <if test="completeTime != null">
+                  complete_time = #{completeTime},
+              </if>
+              <if test="failureReason != null">
+                  failure_reason = #{failureReason},
+              </if>
+              <if test="remark != null">
+                  remark = #{remark}
+              </if>
+          </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 审核不通过返还会员单位手续费 -->
+    <update id="returnWithDrawfeeMoneyByUnits" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+        UPDATE tb_ml3_member_units
+        <set>
+            <choose>
+                <when test='feeType=="1"'>
+                    units_return_fee_money = units_return_fee_money + #{money} + #{fee}
+                </when>
+                <otherwise>
+                    units_return_service_money = units_return_service_money + #{money} + #{fee}
+                </otherwise>
+            </choose>
+        </set>
+        WHERE id = #{unitsId}
+    </update>
+
+    <!-- 审核不通过返还代理商手续费 -->
+    <update id="returnWithDrawfeeMoneyByAgent" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+        UPDATE tb_ml3_agent
+        <set>
+            <choose>
+                <when test='feeType=="1"'>
+                    agent_return_fee_money = agent_return_fee_money + #{money} + #{fee}
+                </when>
+                <otherwise>
+                    agent_return_service_money = agent_return_service_money + #{money} + #{fee}
+                </otherwise>
+            </choose>
+        </set>
+        WHERE id = #{agentId}
+    </update>
+
+    <!-- 审核不通过返还市场管理部手续费 -->
+    <update id="returnWithDrawfeeMoneyByCenter" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+        UPDATE tb_ml3_operate_center
+        <set>
+            <choose>
+                <when test='feeType=="1"'>
+                    return_fee_money = return_fee_money + #{money} + #{fee}
+                </when>
+                <otherwise>
+                    return_service_money = return_service_money + #{money} + #{fee}
+                </otherwise>
+            </choose>
+        </set>
+        WHERE id = #{centerId}
+    </update>
+
+    <insert id="saveMoneyPlatRecord" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+        INSERT INTO tb_trade_return_fee_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            serial_no,
+            money,
+            fee,
+            fee_type,
+            type,
+            STATUS,
+            review_status,
+            create_time,
+            chn_name,
+            bank_account,
+            bank_name,
+            open_bank_name,
+            province,
+            city
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{id}, #{serialNo}, #{money}, #{fee}, #{feeType}, #{type}, #{status}, #{reviewStatus}, #{createTime}, #{chnName}, #{bankAccount}, #{bankName}, #{openBankName},
+            #{province}, #{city}
+        </trim>
+    </insert>
+
+    <update id="updatePlatMoney" parameterType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+        UPDATE  tb_parameter_set
+         SET
+          <choose>
+              <when test='feeType=="1"'>
+                  fee_money = fee_money - #{money}
+              </when>
+              <otherwise>
+                  service_fee_money = service_fee_money - #{money}
+              </otherwise>
+          </choose>
+    </update>
+
+    <select id="moneyPlatRecord" resultType="com.rmkj.microcap.modules.returnFeeMoney.entity.TradeReturnFeeRecord">
+            SELECT
+                 id,
+                serial_no as serialNo,
+                money,
+                fee,
+                fee_type as feeType,
+                type,
+                STATUS,
+                review_status as reviewStatus,
+                create_time as createTime,
+                chn_name as chnName,
+                bank_account as bankAccount,
+                bank_name as bankName,
+                open_bank_name as openBankName,
+                province,
+                city
+             FROM tb_trade_return_fee_record
+             WHERE type = '4'
+             ORDER BY create_time desc
+    </select>
+
+    <select id="countMoneyPlatRecord" resultType="java.lang.Integer">
+         SELECT
+                count(1)
+             FROM tb_trade_return_fee_record
+             WHERE type = '4'
+    </select>
+
+    <select id="getFeesBean" resultType="com.rmkj.microcap.modules.returnFeeMoney.entity.FeesBean">
+        select
+            service_fee_money as serviceFeeMoney,
+            service_fee_money_total as serviceFeeMoneyTotal,
+            fee_money as feeMoney,
+            fee_money_total as feeMoneyTotal
+        from tb_parameter_set
+        limit 1
+    </select>
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.syslog.dao.ISysLogDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.syslog.entity.SysLogBean">
+        SELECT
+        log._id as id,
+        users.login_name as loginName,
+        log.m_id as mId,
+        log.l_content as lContent,
+        log.l_type as lType,
+        log.l_create_time as lCreateTime
+        FROM
+        sys_log log
+        inner join sys_user users on users.id = log.m_id
+        where 1=1
+        <if test="id!=null">
+            and log._id=#{id}
+        </if>
+        <if test="mId!=null">
+            and log.m_id=#{mId}
+        </if>
+        <if test="lContent!=null">
+            and log.l_content=#{lContent}
+        </if>
+        <if test="lType!=null">
+            and log.l_type=#{lType}
+        </if>
+        <if test="lCreateTime!=null">
+            and log.l_create_time=#{lCreateTime}
+        </if>
+        order by l_create_time desc
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.syslog.entity.SysLogBean">
+        SELECT
+        log._id as id,
+        log.m_id as mId,
+        log.l_content as lContent,
+        log.l_type as lType,
+        log.l_create_time as lCreateTime
+        FROM
+    sys_log log
+        where _id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_log
+        (
+        _id,
+        m_id,
+        l_content,
+        l_type,
+        l_create_time
+        )
+        VALUES(
+        #{id},
+        #{mId},
+        #{lContent},
+        #{lType},
+        #{lCreateTime}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    sys_log
+        <set>
+            _id = #{id},
+            m_id = #{mId},
+            l_content = #{lContent},
+            l_type = #{lType},
+            l_create_time = #{lCreateTime}
+        </set>
+        WHERE _id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete FROM
+    sys_log
+        WHERE _id= #{id}
+    </update>
+</mapper>

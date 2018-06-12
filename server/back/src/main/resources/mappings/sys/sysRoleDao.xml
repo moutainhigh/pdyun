@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.common.modules.sys.dao.ISysRoleDao">
+
+	<resultMap id="roleResult" type="com.rmkj.microcap.common.modules.sys.bean.SysRoleBean">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="enname" column="enname" />
+		<result property="remarks" column="remarks" />
+		<result property="useable" column="useable" />
+		<collection property="menuList" ofType="com.rmkj.microcap.common.modules.sys.bean.SysMenuBean">
+			<id property="id" column="menuList.id" />
+		</collection>
+	</resultMap>
+
+	<sql id="roleColumns">
+		a.id,
+		a.name,
+		a.enname,
+		a.remarks,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.useable AS useable
+	</sql>
+
+	<select id="findList" resultMap="roleResult">
+		SELECT
+		<include refid="roleColumns"/>
+		FROM sys_role a
+		LEFT JOIN sys_user_role ur ON ur.role_id = a.id
+		LEFT JOIN sys_user u ON u.id = ur.user_id
+		WHERE a.del_flag = 0 AND a.useable=1
+		<if test="user != null and user.id != null and user.id != ''">
+			AND u.id = #{user.id}
+		</if>
+		<if test="user != null and user.loginName != null and user.loginName != ''">
+			AND u.login_name = #{user.loginName}
+		</if>
+	</select>
+	<!--删除角色与菜单权限关系-->
+	<delete id="deleteRoleMenu">
+		DELETE FROM sys_role_menu
+		WHERE role_id = #{roleId}
+	</delete>
+	<!-- 删除用户和角色关联表数据 -->
+	<delete id="deleteUserRole">
+		DELETE FROM sys_user_role WHERE 1=1
+		<if test="userId!=null and userId!=''">
+			AND  user_id = #{userId}
+		</if>
+		<if test="roleId!=null and roleId!=''">
+			AND role_id = #{roleId}
+		</if>
+	</delete>
+	<select id="queryList" resultType="com.rmkj.microcap.common.modules.sys.bean.SysRoleBean">
+		SELECT
+		role.id as id,
+		role.name as name,
+		role.enname as enname,
+		role.useable as useable,
+		role.remarks as remarks
+		FROM
+		sys_role role
+		where role.del_flag=0
+	</select>
+	<select id="get" resultMap="roleResult">
+		SELECT
+		<include refid="roleColumns"/>,
+		rm.menu_id AS "menuList.id"
+		FROM sys_role a
+		LEFT JOIN sys_role_menu rm ON rm.role_id = a.id
+		WHERE a.id = #{id}
+	</select>
+
+	<insert id="insert">
+		INSERT INTO sys_role(
+			id, 
+			name, 
+			enname, 
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date
+		) VALUES (
+			#{id}, 
+			#{name}, 
+			#{enname}, 
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE sys_role SET 
+			name = #{name}, 
+			enname = #{enname}, 
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE sys_role SET 
+			del_flag = 1
+		WHERE id = #{id}
+	</update>
+
+	<!--新增用户角色关系-->
+	<insert id="batchInsertUserRole" parameterType="java.util.List">
+		insert into sys_user_role(user_id, role_id)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			#{item.userId},
+			#{item.roleId}
+			)
+		</foreach>
+	</insert>
+
+	<select id="findSelectMenuByRoleId" resultType="string">
+		SELECT menu_id FROM sys_role_menu
+		WHERE role_id = #{roleId}
+	</select>
+	<!--新增角色菜单关系-->
+	<insert id="batchInsertRoleMenu" parameterType="java.util.List">
+		insert into sys_role_menu(role_id, menu_id)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			#{item.roleId},
+			#{item.menuId}
+			)
+		</foreach>
+	</insert>
+</mapper>

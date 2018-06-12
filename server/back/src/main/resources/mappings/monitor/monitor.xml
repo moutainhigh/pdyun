@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.modules.monitor.dao.MonitorDao">
+    <select id="selectUserMoney" resultType="java.math.BigDecimal">
+        SELECT SUM(money) AS result FROM tb_user WHERE mobile is not null
+    </select>
+
+    <select id="selectUserNumbers" resultType="java.lang.Long">
+        SELECT count(id) AS result FROM tb_user WHERE mobile is not null
+    </select>
+
+    <!--时间段查询注册人数-->
+    <select id="selectSectionUserNumbers" parameterType="com.rmkj.microcap.modules.monitor.entity.DataSummary" resultType="java.lang.Long">
+        SELECT count(id) AS result FROM tb_user
+        WHERE register_time &gt; #{createTimeMin} and register_time &lt; #{createTimeMax}
+         AND mobile is not null
+    </select>
+
+    <select id="selectUserProfitAndLoss" resultType="java.math.BigDecimal">
+        SELECT ifNull(SUM(dif_money),0) AS result FROM tb_trade where status = 3
+    </select>
+
+    <select id="getProfitAll" resultType="java.math.BigDecimal">
+         SELECT ifNull(SUM(dif_money),0) AS result FROM tb_trade where status = 3  AND dif_money &gt; 0
+    </select>
+
+    <select id="getLossAll" resultType="java.math.BigDecimal">
+          SELECT ifNull(SUM(dif_money),0) AS result FROM tb_trade where status = 3 AND dif_money &lt; 0
+    </select>
+
+    <!--时间段查询总盈亏-->
+    <select id="selectSectionUserProfitAndLoss" parameterType="com.rmkj.microcap.modules.monitor.entity.DataSummary" resultType="java.math.BigDecimal">
+        SELECT SUM(dif_money) AS result FROM tb_trade where status = 1
+        AND sell_time &gt; #{createTimeMin} AND sell_time &lt; #{createTimeMax}
+    </select>
+
+    <select id="selectUserRecharge" resultType="java.math.BigDecimal">
+        SELECT SUM(recharge_money) AS result FROM tb_user WHERE mobile is not null
+    </select>
+
+    <!--时间段查询充值总额-->
+    <select id="selectSectionUserRecharge" parameterType="com.rmkj.microcap.modules.monitor.entity.DataSummary" resultType="java.math.BigDecimal">
+        SELECT SUM(money) AS result FROM tb_money_record
+        WHERE type = 0 AND status = 1 AND complete_time &gt; #{createTimeMin} AND complete_time &lt; #{createTimeMax}
+    </select>
+
+    <select id="selectUserRechargePens" resultType="java.lang.Long">
+        SELECT COUNT(id) AS result FROM tb_money_record WHERE type = 0 AND status = 1
+    </select>
+
+    <!--时间段查询充值总笔数-->
+    <select id="selectSectionUserRechargePens" parameterType="com.rmkj.microcap.modules.monitor.entity.DataSummary" resultType="java.lang.Long">
+        SELECT COUNT(id) AS result FROM tb_money_record
+        WHERE type = 0 AND status = 1 AND complete_time &gt; #{createTimeMin} AND complete_time &lt; #{createTimeMax}
+    </select>
+
+    <select id="selectUserWithdrawalsNumbers" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT user_id) AS result FROM tb_money_record WHERE type = 1 AND status = 1
+    </select>
+
+    <select id="selectAllWithdrawalsMoney" resultType="java.math.BigDecimal">
+        SELECT SUM(money) FROM tb_money_record WHERE type = 1 AND status= 1
+    </select>
+
+    <!--时间段查询提现人数-->
+    <select id="selectSectionUserWithdrawalsNumbers" parameterType="com.rmkj.microcap.modules.monitor.entity.DataSummary" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT user_id) AS result FROM tb_money_record WHERE type = 1 AND status = 1
+        AND complete_time &gt; #{createTimeMin} AND complete_time &lt; #{createTimeMax}
+    </select>
+
+    <select id="selectUserWithdrawalsPens" resultType="java.lang.Long">
+        SELECT COUNT(id) AS result FROM tb_money_record WHERE type = 1 AND status = 1
+    </select>
+
+    <!--时间段查询提现总笔数-->
+    <select id="selectSectionUserWithdrawalsPens" parameterType="com.rmkj.microcap.modules.monitor.entity.DataSummary" resultType="java.lang.Long">
+        SELECT COUNT(id) AS result FROM tb_money_record WHERE type = 1 AND status = 1
+        AND complete_time &gt; #{createTimeMin} AND complete_time &lt; #{createTimeMax}
+    </select>
+
+    <!-- ********************************* 当天统计开始 ********************************* -->
+    <!-- 当天统计 -->
+    <select id="selectTodayRegisterNumbers" resultType="java.lang.Long">
+        SELECT COUNT(id) FROM tb_user WHERE mobile is not null
+         AND date(register_time) = date(now())
+    </select>
+    <!--某个时间段的统计-->
+    <!--<select id="selectSectionTimeRegisterNumbers" parameterType="com.rmkj.microcap.modules.monitor.entity.TodayDataSummary" resultType="java.lang.Long">-->
+        <!--SELECT COUNT(id) FROM tb_user-->
+        <!--WHERE register_time &gt; #{createTimeMin} and register_time &lt; #{createTimeMax}-->
+    <!--</select>-->
+
+    <select id="selectTodayRechargeMoney" resultType="java.math.BigDecimal">
+        SELECT SUM(money) FROM tb_money_record WHERE type = 0 AND status= 1
+         AND date(complete_time) = date(now())
+    </select>
+    <!--时间段充值金额统计-->
+    <!--<select id="selectSectionRechargeMoney" parameterType="com.rmkj.microcap.modules.monitor.entity.TodayDataSummary" resultType="java.math.BigDecimal">-->
+        <!--SELECT SUM(money) FROM tb_money_record WHERE type = 0 AND status= 1-->
+        <!--AND complete_time &gt; #{createTimeMin} and complete_time &lt; #{createTimeMax}-->
+    <!--</select>-->
+
+    <select id="selectTodayWithdrawalsPeoples" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT user_id) FROM tb_money_record WHERE type = 1 AND status = 1
+         AND date(complete_time) = date(now())
+    </select>
+    <!--时间段提现人数统计-->
+    <!--<select id="selectSectionWithdrawalsPeoples" parameterType="com.rmkj.microcap.modules.monitor.entity.TodayDataSummary" resultType="java.lang.Long">-->
+        <!--SELECT COUNT(id) FROM tb_money_record WHERE type = 1 AND status = 1-->
+        <!--AND complete_time &gt; #{createTimeMin} and complete_time &lt; #{createTimeMax}-->
+    <!--</select>-->
+
+    <!--今日提现金额-->
+    <select id="selectTodayWithdrawalsMoney" resultType="java.math.BigDecimal">
+        SELECT ifNull(SUM(money),0) FROM tb_money_record WHERE type = 1 AND status= 1
+        AND date(complete_time) = date(now())
+    </select>
+
+    <!--时间段提现金额统计-->
+    <!--<select id="selectSectionWithdrawalsMoney" parameterType="com.rmkj.microcap.modules.monitor.entity.TodayDataSummary" resultType="java.lang.Long">-->
+        <!--SELECT SUM(money) FROM tb_money_record WHERE type = 1 AND status= 1-->
+        <!--AND complete_time &gt; #{createTimeMin} and complete_time &lt; #{createTimeMax}-->
+    <!--</select>-->
+
+    <select id="selectTodayTradePens" resultType="java.lang.Long">
+        SELECT count(*) FROM tb_trade WHERE status = 1
+         AND date(sell_time) = date(now())
+    </select>
+
+    <!--时间段交易总笔数-->
+    <!--<select id="selectSectionTradePens" parameterType="com.rmkj.microcap.modules.monitor.entity.TodayDataSummary" resultType="java.lang.Long">-->
+        <!--SELECT SUM(c) FROM-->
+        <!--(-->
+        <!--SELECT COUNT(id) AS c FROM tb_trade-->
+         <!--WHERE buy_time &gt; #{createTimeMin} and buy_time &lt; #{createTimeMax}-->
+         <!--UNION-->
+        <!--SELECT COUNT(id) AS c FROM tb_trade-->
+         <!--WHERE sell_time &gt; #{createTimeMin} and sell_time &lt; #{createTimeMax}-->
+        <!--) a-->
+    <!--</select>-->
+
+    <select id="selectTodayProfitAndLossMoney" resultType="java.math.BigDecimal">
+        SELECT ifNull(SUM(dif_money),0) AS result FROM tb_trade WHERE status = 3
+         AND date(sell_time) = date(now())
+    </select>
+
+    <select id="getProfitToday" resultType="java.math.BigDecimal">
+        SELECT ifNull(SUM(dif_money),0) AS result FROM tb_trade WHERE status = 3
+        AND date(sell_time) = date(now()) AND dif_money &gt; 0
+    </select>
+
+    <select id="getLossToday" resultType="java.math.BigDecimal">
+        SELECT ifNull(SUM(dif_money),0) AS result FROM tb_trade WHERE status = 3
+        AND date(sell_time) = date(now()) AND dif_money &lt; 0
+    </select>
+
+
+
+
+    <!--时间段盈亏-->
+    <!--<select id="selectSectionProfitAndLossMoney" parameterType="com.rmkj.microcap.modules.monitor.entity.TodayDataSummary" resultType="java.math.BigDecimal">-->
+        <!--SELECT SUM(dif_money) AS result FROM tb_trade-->
+        <!--WHERE sell_time &gt; #{createTimeMin} and sell_time &lt; #{createTimeMax}-->
+    <!--</select>-->
+</mapper>

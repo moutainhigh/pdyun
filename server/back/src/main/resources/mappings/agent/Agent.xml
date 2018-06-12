@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.agent.dao.IAgentDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.agent.entity.AgentBean">
+        SELECT
+        agent.id as id,
+        agent.open_id as openId,
+        agent.agent_Header as agentHeader,
+        agent.mobile as mobile,
+        agent.agent_invite_code as agentInviteCode,
+        agent.real_name as realName,
+        agent.money as money,
+        agent.total_money as totalMoney,
+        agent.safe_password as safePassword,
+        agent.status as status,
+        agent.review_status as reviewStatus,
+        agent.register_time as registerTime,
+        agent.last_login_time as lastLoginTime,
+        (SELECT count(1) from tb_agent_user where agent_id = id) as count
+        FROM
+        tb_agent agent
+        where 1=1
+        <if test="id!=null">
+            and agent.id=#{id}
+        </if>
+        <if test="openId!=null">
+            and agent.open_id=#{openId}
+        </if>
+        <if test="agentHeader!=null">
+            and agent.agentHeader=#{agentHeader}
+        </if>
+        <if test="mobile!=null">
+            and agent.mobile=#{mobile}
+        </if>
+        <if test="agentInviteCode!=null">
+            and agent.agent_invite_code=#{agentInviteCode}
+        </if>
+        <if test="realName!=null">
+            and agent.real_name=#{realName}
+        </if>
+        <if test="money!=null">
+            and agent.money=#{money}
+        </if>
+        <if test="totalMoney!=null">
+            and agent.total_money=#{totalMoney}
+        </if>
+        <if test="safePassword!=null">
+            and agent.safe_password=#{safePassword}
+        </if>
+        <if test="status!=null">
+            and agent.status=#{status}
+        </if>
+        <if test="reviewStatus!=null">
+            and agent.review_status=#{reviewStatus}
+        </if>
+        <if test="registerTime!=null">
+            and agent.register_time=#{registerTime}
+        </if>
+        <if test="lastLoginTime!=null">
+            and agent.last_login_time=#{lastLoginTime}
+        </if>
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.agent.entity.AgentBean">
+        SELECT
+        agent.id as id,
+        agent.open_id as openId,
+        agent.agent_header as agentHeader,
+        agent.mobile as mobile,
+        agent.agent_invite_code as agentInviteCode,
+        agent.real_name as realName,
+        agent.money as money,
+        agent.total_money as totalMoney,
+        agent.safe_password as safePassword,
+        agent.status as status,
+        agent.review_status as reviewStatus,
+        agent.register_time as registerTime,
+        agent.last_login_time as lastLoginTime
+        FROM
+    tb_agent agent
+        where id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_agent
+        (
+        id,
+        open_id,
+        agent_header,
+        mobile,
+        agent_invite_code,
+        real_name,
+        money,
+        total_money,
+        safe_password,
+        status,
+        review_status,
+        register_time,
+        last_login_time
+        )
+        VALUES(
+        #{id},
+        #{openId},
+        #{agentHeader},
+        #{mobile},
+        #{agentInviteCode},
+        #{realName},
+        #{money},
+        #{totalMoney},
+        #{safePassword},
+        #{status},
+        #{reviewStatus},
+        #{registerTime},
+        #{lastLoginTime}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_agent
+        <set>
+            safe_password = #{safePassword}
+        </set>
+        WHERE id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from tb_agent
+        WHERE id= #{id}
+    </update>
+    <select id="getAgentUser" resultType="com.rmkj.microcap.modules.agentuser.entity.AgentUserBean" parameterType="com.rmkj.microcap.modules.agentuser.entity.AgentUserBean">
+        select users.chn_name as name,
+        users.mobile as mobile,
+        total_money as totalMoney,
+        total_trade_count as totalTradeCount,
+        create_time as createTime
+        from tb_agent_user agentuser
+        inner join tb_user users
+        on users.id = agentuser.user_id
+        WHERE agentuser.agent_id = #{id}
+        ORDER BY create_time desc
+    </select>
+    <select id="getAgentReview" resultType="com.rmkj.microcap.modules.agentreviewrecord.entity.AgentReviewRecordBean" parameterType="com.rmkj.microcap.modules.agentreviewrecord.entity.AgentReviewRecordBean">
+        SELECT
+        agent_review_record.id as id,
+				agent.real_name as name,
+        agent_review_record.agent_id as agentId,
+        agent_review_record.sys_user_id as sysUserId,
+				`user`.login_name as loginname,
+        agent_review_record.result_status as resultStatus,
+        agent_review_record.remark as remark,
+        agent_review_record.read_status as readStatus,
+        agent_review_record.create_time as createTime
+        FROM
+    tb_agent_review_record agent_review_record
+INNER JOIN tb_agent agent on agent.id = agent_review_record.agent_id
+INNER JOIN sys_user user on user.id = agent_review_record.sys_user_id
+ORDER BY agent_review_record.create_time desc
+    </select>
+    <update id="outPast" parameterType="com.rmkj.microcap.modules.agent.entity.AgentBean">
+        UPDATE tb_agent SET review_status = 2
+        WHERE id = #{id} AND review_status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         = 1
+    </update>
+    <update id="outPastIn" parameterType="com.rmkj.microcap.modules.agent.entity.AgentBean">
+        UPDATE tb_agent SET review_status = 1
+        WHERE id = #{id} AND review_status = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          = 1
+    </update>
+    <update id="open" parameterType="com.rmkj.microcap.modules.agent.entity.AgentBean">
+        update tb_agent set status = 0 where id = #{id}
+    </update>
+
+    <update id="close" parameterType="com.rmkj.microcap.modules.agent.entity.AgentBean">
+        update tb_agent set status = 1 where id = #{id}
+    </update>
+</mapper>

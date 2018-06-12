@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.sys.dao.IMl3AgentRoleDao">
+    <select id="queryList"
+            resultType="com.rmkj.microcap.modules.sys.bean.Ml3AgentRoleBean">
+        SELECT
+        ml3_agent_role.agent_id as agentId,
+        ml3_agent_role.role_id as roleId
+        FROM
+    tb_ml3_agent_role ml3_agent_role
+        where 1=1
+        <if test="agentId!=null">
+            and ml3_agent_role.agent_id=#{agentId}
+        </if>
+        <if test="roleId!=null">
+            and ml3_agent_role.role_id=#{roleId}
+        </if>
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.modules.sys.bean.Ml3AgentRoleBean">
+        SELECT
+        ml3_agent_role.agent_id as agentId,
+        ml3_agent_role.role_id as roleId
+        FROM
+    tb_ml3_agent_role ml3_agent_role
+        where _Id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_ml3_agent_role
+        (
+        agent_id,
+        role_id
+        )
+        VALUES(
+        #{agentId},
+        #{roleId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+    tb_ml3_agent_role
+        <set>
+            agent_id = #{agentId},
+            role_id = #{roleId}
+        </set>
+        WHERE _Id= #{id}
+    </update>
+    <update id="delete" parameterType="string">
+        delete from
+    tb_ml3_agent_role
+        WHERE agent_id= #{id}
+    </update>
+</mapper>

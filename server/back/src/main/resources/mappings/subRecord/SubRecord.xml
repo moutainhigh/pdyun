@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rmkj.microcap.modules.subRecord.dao.SubRecordDao">
+    
+    <select id="getSubGoodsById" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.subGoods.entity.SubGoods">
+        SELECT
+            id,
+            img_path as imgPath,
+            goods_name as goodsName,
+            goods_total_num as goodsTotalNum,
+            goods_left_num as goodsLeftNum,
+            sub_scale as subScale,
+            goods_sub_price as goodsSubPrice,
+            goods_cost as goodsCost,
+            sub_days as subDays,
+            status,
+            goods_code as goodsCode
+         FROM tb_sub_goods
+        WHERE id = #{0}
+    </select>
+
+    <insert id="saveSubRecord" parameterType="com.rmkj.microcap.modules.subRecord.entity.SubRecordBean">
+        INSERT INTO tb_sub_record(id,sub_role_id,sub_role,sub_role_name,sub_money,sub_total_num,goods_id,goods_name,create_time,agent_name,units_name,center_name)
+        VALUES (#{id},#{subRoleId},#{subRole},#{subRoleName},#{subMoney},#{subTotalNum},#{goodsId},#{goodsName},now(),#{agentName},#{unitsName},#{centerName})
+    </insert>
+
+    <select id="getAgentLeftTimes" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.subRecord.entity.SubParamBean">
+        SELECT
+            agent.account as agentName,
+            agent.sub_times as subTimes,
+            units.name as unitsName,
+            center.name as centerName
+        FROM
+            tb_ml3_agent agent  left join tb_ml3_member_units units on agent.units_id = units.id
+                                left join tb_ml3_operate_center center on agent.center_id = center.id
+        WHERE
+            agent.id = #{0}
+    </select>
+
+    <select id="getUnitsLeftTimes" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.subRecord.entity.SubParamBean">
+        SELECT
+            units.name as unitsName,
+            units.sub_times as subTimes,
+            center.name as centerName
+        FROM tb_ml3_member_units units left join tb_ml3_operate_center center on units.center_id = center.id
+        WHERE units.id = #{0}
+    </select>
+
+    <select id="getCenterLeftTimes" parameterType="java.lang.String" resultType="com.rmkj.microcap.modules.subRecord.entity.SubParamBean">
+         SELECT
+              sub_times as subTimes,
+              name as centerName
+          FROM tb_ml3_operate_center
+         WHERE id = #{0}
+    </select>
+
+    <update id="updSubGoodsLeftNum" parameterType="com.rmkj.microcap.modules.subRecord.entity.SubRecordBean">
+        UPDATE tb_sub_goods SET  goods_left_num = goods_left_num - #{subTotalNum} WHERE id = #{goodsId}
+    </update>
+
+    <update id="updAgentSubTimes" parameterType="java.lang.String">
+        UPDATE tb_ml3_agent SET sub_times = sub_times - 1 WHERE id = #{0}
+    </update>
+
+    <update id="updUnitsSubTimes" parameterType="java.lang.String">
+        UPDATE tb_ml3_member_units SET sub_times = sub_times - 1 WHERE id = #{0}
+    </update>
+
+    <update id="updCenterSubTimes" parameterType="java.lang.String">
+        UPDATE tb_ml3_operate_center SET sub_times = sub_times - 1 WHERE id = #{0}
+    </update>
+    
+    <select id="queryList" parameterType="com.rmkj.microcap.modules.subRecord.entity.SubRecordBean" resultType="com.rmkj.microcap.modules.subRecord.entity.SubRecordBean">
+        SELECT
+             id,
+             sub_role_id as subRoleId,
+             sub_role as subRole,
+             sub_money as subMoney,
+             sub_total_num as subTotalNum,
+             goods_id as goodsId,
+             goods_name as goodsName,
+             create_time as createTime,
+             sub_role_name as subRoleName,
+             agent_name as agentName,
+             units_name as unitsName,
+             center_name as centerName
+        FROM tb_sub_record
+        WHERE  1 = 1
+        <if test='userId!=null and userId!=""'>
+            AND sub_role_id = #{userId}
+        </if>
+        <if test=' agentId!=null and agentId!="" and (userId==null or userId=="")'>
+             AND sub_role_id = #{agentId}
+        </if>
+        <if test=' (agentId==null or agentId=="") and (userId==null or userId=="") and unitsId!=null and unitsId!="" '>
+            AND sub_role_id = #{unitsId}
+        </if>
+        <if test='(agentId==null or agentId=="") and (unitsId==null or unitsId=="") and (userId==null or userId=="") and centerId!=null and centerId!=""'>
+            AND sub_role_id = #{centerId}
+        </if>
+        <if test='goodsId!=null and goodsId!=""'>
+            AND goods_id = #{goodsId}
+        </if>
+
+    </select>
+
+</mapper>

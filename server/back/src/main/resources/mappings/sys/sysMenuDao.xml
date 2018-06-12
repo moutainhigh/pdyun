@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rmkj.microcap.common.modules.sys.dao.ISysMenuDao">
+
+    <sql id="menuColumns">
+		a.id,
+		a.parent_id AS "parent.id",
+		a.parent_id AS parentId,
+		a.parent_ids,
+		a.name,
+		a.href,
+		a.icon,
+		a.sort,
+		a.is_show as isShow,
+		a.permission,
+		a.remarks,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag as delFlag,
+		p.name AS "parent.name"
+	</sql>
+
+    <sql id="menuJoins">
+		LEFT JOIN sys_menu p ON p.id = a.parent_id
+    </sql>
+
+    <select id="findAllList" resultType="com.rmkj.microcap.common.modules.sys.bean.SysMenuBean">
+        SELECT
+        <include refid="menuColumns"/>
+        FROM sys_menu a
+        <include refid="menuJoins"/>
+        WHERE a.del_flag = 0
+        ORDER BY a.sort
+    </select>
+
+    <select id="findByParentIdsLike" resultType="com.rmkj.microcap.common.modules.sys.bean.SysMenuBean">
+        SELECT
+        a.id,
+        a.parent_id AS "parent.id",
+        a.parent_ids
+        FROM sys_menu a
+        WHERE a.del_flag = 0 AND a.parent_ids LIKE #{parentIds}
+        ORDER BY a.sort
+    </select>
+
+    <select id="findByUserId" resultType="com.rmkj.microcap.common.modules.sys.bean.SysMenuBean">
+        SELECT DISTINCT
+        <include refid="menuColumns"/>
+        FROM sys_menu a
+        LEFT JOIN sys_menu p ON p.id = a.parent_id
+        JOIN sys_role_menu rm ON rm.menu_id = a.id
+        JOIN sys_role r ON r.id = rm.role_id AND r.useable='1'
+        JOIN sys_user_role ur ON ur.role_id = r.id
+        JOIN sys_user u ON u.id = ur.user_id AND u.id = #{userId}
+        WHERE a.del_flag = 0 AND r.del_flag = 0 AND u.del_flag = 0
+        ORDER BY a.sort
+    </select>
+    <select id="queryList"
+            resultType="com.rmkj.microcap.common.modules.sys.bean.SysMenuBean">
+        SELECT
+        menu.id as id,
+        menu.parent_id as parentId,
+        menu.parent_ids as parentIds,
+        menu.name as name,
+        menu.sort as sort,
+        menu.href as href,
+        menu.icon as icon,
+        menu.is_show as isShow,
+        menu.permission as permission
+        FROM
+        sys_menu menu
+        where menu.del_flag=0
+        <if test='parentId!=null and parentId!=""'>
+            AND menu.parent_id = #{parentId}
+        </if>
+        ORDER BY menu.sort
+    </select>
+    <select id="get"
+            resultType="com.rmkj.microcap.common.modules.sys.bean.SysMenuBean">
+        SELECT
+        menu.id as id,
+        menu.parent_id as parentId,
+        menu.parent_ids as parentIds,
+        menu.name as name,
+        menu.sort as sort,
+        menu.href as href,
+        menu.icon as icon,
+        menu.is_show as isShow,
+        menu.permission as permission
+        FROM
+        sys_menu menu
+        where menu.del_flag=0
+        and id= #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_menu
+        (
+        id,
+        parent_id,
+        parent_ids,
+        name,
+        sort,
+        href,
+        icon,
+        is_show,
+        permission,
+        create_by,
+        create_date,
+        update_by,
+        update_date
+        )
+        VALUES(
+        #{id},
+        #{parentId},
+        #{parentIds},
+        #{name},
+        #{sort},
+        #{href},
+        #{icon},
+        #{isShow},
+        #{permission},
+        #{createBy.id},
+        #{createDate},
+        #{updateBy.id},
+        #{updateDate}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+        sys_menu
+        <set>
+            id = #{id},
+            name = #{name},
+            icon = #{icon},
+            sort = #{sort},
+            href = #{href},
+            is_show = #{isShow},
+            permission = #{permission},
+            update_by = #{updateBy.id},
+            update_date = #{updateDate}
+        </set>
+        WHERE id= #{id} AND del_flag = 0
+    </update>
+    <update id="delete" parameterType="string">
+        UPDATE
+        sys_menu
+        <set>
+            del_flag = 1
+        </set>
+        WHERE id= #{id} OR parent_id = #{id}
+    </update>
+
+    <select id="findAllMenu" resultType="com.rmkj.microcap.common.modules.sys.bean.SysMenuTreeBean">
+		SELECT id,name as text,parent_id as parentId FROM sys_menu  WHERE del_flag =0 ORDER BY parent_ids,sort
+	</select>
+    <delete id="deleteRoleMenu" parameterType="java.util.List">
+        DELETE FROM sys_role_menu
+        WHERE menu_id IN (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <update id="deleteMenuList" parameterType="java.util.List">
+        UPDATE sys_menu
+        SET del_flag = 1
+        WHERE id IN (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </update>
+</mapper>
